@@ -9,8 +9,8 @@
 
     <ImageButton
         android:id="@+id/tweet_user_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentStart="true"
         android:layout_marginStart="15dp"
         android:background="@drawable/round_button"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="70dp"
         android:layout_marginEnd="15dp"
         android:background="@color/white">
 
@@ -48,23 +48,24 @@
                     android:id="@+id/tweet_user_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.4"
                     android:gravity="left"
                     android:text="@null"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     tools:ignore="RtlHardcoded" />
 
                 <TextView
                     android:id="@+id/tweet_user_id"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
+                    android:layout_weight="0.35"
                     android:gravity="left"
                     android:text="@null"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
                     android:textColor="@color/action_tweet_action"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     tools:ignore="RtlHardcoded" />
 
                 <ImageView
@@ -72,18 +73,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
                     android:src="@drawable/ic_clock_tweet" />
 
                 <TextView
                     android:id="@+id/tweet_time"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.17"
                     android:gravity="right"
                     android:text="@null"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     tools:ignore="RtlHardcoded" />
 
             </LinearLayout>
@@ -99,7 +100,7 @@
                 android:text="@null"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="17sp"
                 tools:ignore="RtlHardcoded" />
 
 
@@ -126,6 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:text="@null"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
@@ -148,6 +150,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:text="@null"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
@@ -170,6 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.1"
                     android:text="@null"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 

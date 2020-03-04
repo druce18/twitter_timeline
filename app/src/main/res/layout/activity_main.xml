@@ -19,7 +19,7 @@
         layout="@layout/layout_tweet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp" />
+        android:layout_marginTop="90dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
