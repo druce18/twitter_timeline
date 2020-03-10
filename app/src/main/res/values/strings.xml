@@ -4,7 +4,8 @@
     <string name="title_search">Search</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_mail">Mail</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_tweet">New tweet</string>
+    <string name="tweets">Tweets</string>
+    <string name="wrong_input">Wrong input</string>
 </resources>

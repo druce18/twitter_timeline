@@ -23,14 +23,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        bottomNavigationView = findViewById(R.id.nav_view)
-        tweetUserNameTextView = findViewById(R.id.tweet_user_name)
-        tweetUserIDTextView = findViewById(R.id.tweet_user_id)
-        tweetTimeTextView = findViewById(R.id.tweet_time)
-        tweetMassageTextView = findViewById(R.id.tweet_massage)
-        tweetAnswersTextView = findViewById(R.id.tweet_answers_count)
-        tweetRetweetsTextView = findViewById(R.id.tweet_retweets_count)
-        tweetLikesTextView = findViewById(R.id.tweet_likes_count)
+        bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        tweetUserNameTextView = findViewById(R.id.userNameTweetTextView)
+        tweetUserIDTextView = findViewById(R.id.userIDTweetTextView)
+        tweetTimeTextView = findViewById(R.id.timeTweetTextView)
+        tweetMassageTextView = findViewById(R.id.massageTweetTextView)
+        tweetAnswersTextView = findViewById(R.id.answersCountTweetTextView)
+        tweetRetweetsTextView = findViewById(R.id.retweetsCountTweetTextView)
+        tweetLikesTextView = findViewById(R.id.likesCountTweetTextView)
 
         val user = User("Andrey Bereznyatsky", "@druce")
         val tweet = Tweet(

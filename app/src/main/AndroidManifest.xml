@@ -9,7 +9,7 @@
         android:roundIcon="@drawable/ic_twitter"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewActivity">
+        <activity android:name=".NewMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

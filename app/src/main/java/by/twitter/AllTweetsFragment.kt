@@ -5,18 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import by.twitter.model.TweetsSingleton
+import kotlinx.android.synthetic.main.fragment_all_tweets.view.*
+import kotlinx.android.synthetic.main.top_bar.view.*
 
-/**
- * A simple [Fragment] subclass.
- */
 class AllTweetsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_all_tweets, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_all_tweets, container, false)
+        view.nameMenuTextView.text = getString(R.string.tweets)
+        view.tweetsTextView.text = TweetsSingleton.readTweets().toString()
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
