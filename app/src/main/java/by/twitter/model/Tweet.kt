@@ -1,8 +1,10 @@
 package by.twitter.model
 
+import java.util.*
+
 data class Tweet(
     val user: User,
-    val date: String = "today",
+    val date: Date = Date(),
     val massage: String,
     val answers: Int = 0,
     val retweets: Int = 0,

@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import by.twitter.model.TweetsSingleton
-import kotlinx.android.synthetic.main.fragment_all_tweets.view.*
-import kotlinx.android.synthetic.main.top_bar.view.*
+import by.twitter.model.Tweets
+import kotlinx.android.synthetic.main.fragment_all_tweets.*
+import kotlinx.android.synthetic.main.top_bar.*
 
 class AllTweetsFragment : Fragment() {
 
@@ -15,14 +15,13 @@ class AllTweetsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.fragment_all_tweets, container, false)
-        view.nameMenuTextView.text = getString(R.string.tweets)
-        view.tweetsTextView.text = TweetsSingleton.readTweets().toString()
-        return view
+        return inflater.inflate(R.layout.fragment_all_tweets, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        nameMenuTextView.text = getString(R.string.tweets)
+        tweetsTextView.text = Tweets.readTweets().toString()
     }
 
     companion object {

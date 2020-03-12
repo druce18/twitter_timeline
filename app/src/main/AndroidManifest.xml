@@ -9,7 +9,7 @@
         android:roundIcon="@drawable/ic_twitter"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewMainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".oldClasses.OldMainActivity"
             android:label="@string/app_name">
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_new_main.*
 
-class NewMainFragment : Fragment() {
+class MainFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +33,6 @@ class NewMainFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): Fragment = NewMainFragment()
+        fun newInstance(): Fragment = MainFragment()
     }
 }
