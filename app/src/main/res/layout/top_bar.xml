@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/topBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    tools:ignore="PrivateResource">
+
+    <ImageView
+        android:id="@+id/logoImageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_twitter" />
+
+    <TextView
+        android:id="@+id/nameMenuTextView"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:text="@string/tweets"
+        android:textSize="17sp" />
+
+    <ImageButton
+        android:id="@+id/userImageButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/round_button"
+        android:src="@drawable/ic_user" />
+
+</RelativeLayout>
