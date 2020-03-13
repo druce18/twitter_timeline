@@ -1,25 +1,28 @@
-package by.twitter.model
+package by.twitter.storage
 
+import by.twitter.model.Tweet
+import by.twitter.model.User
 import java.util.ArrayList
 
-object Tweets : CRUD<Tweet> {
+object Tweets :
+    Crud<Tweet> {
 
     private val tweets: ArrayList<Tweet> = ArrayList<Tweet>()
 
-    override fun createTweet(element: Tweet) {
+    override fun create(element: Tweet) {
         tweets.add(element)
     }
 
-    override fun readTweets() = ArrayList(tweets)
+    override fun read() = tweets.toList()
 
-    override fun updateTweet(element: Tweet, index: Int) {
+    override fun update(element: Tweet, index: Int) {
         if (index < tweets.size) {
             tweets.removeAt(index)
             tweets.add(index, element)
         }
     }
 
-    override fun deleteTweet(index: Int) {
+    override fun delete(index: Int) {
         if (index < tweets.size) {
             tweets.removeAt(index)
         }

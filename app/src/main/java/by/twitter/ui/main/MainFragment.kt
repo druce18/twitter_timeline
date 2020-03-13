@@ -1,10 +1,13 @@
-package by.twitter
+package by.twitter.ui.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import by.twitter.ui.timeline.AllTweetsFragment
+import by.twitter.ui.createtweet.CreateTweetFragment
+import by.twitter.R
 import kotlinx.android.synthetic.main.fragment_new_main.*
 
 class MainFragment : Fragment() {
@@ -20,13 +23,19 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         addTweetButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.mainContent, CreateTweetFragment.newInstance())
+                .replace(
+                    R.id.mainContent,
+                    CreateTweetFragment.newInstance()
+                )
                 .addToBackStack("Add Tweet")
                 .commit()
         }
         showTweetsButton.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.mainContent, AllTweetsFragment.newInstance())
+                .replace(
+                    R.id.mainContent,
+                    AllTweetsFragment.newInstance()
+                )
                 .addToBackStack("Show Tweets")
                 .commit()
         }

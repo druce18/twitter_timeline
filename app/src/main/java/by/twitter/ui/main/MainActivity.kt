@@ -1,7 +1,8 @@
-package by.twitter
+package by.twitter.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import by.twitter.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,7 +12,10 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.mainContent, MainFragment.newInstance())
+                .replace(
+                    R.id.mainContent,
+                    MainFragment.newInstance()
+                )
                 .commit()
         }
     }

@@ -1,4 +1,4 @@
-package by.twitter
+package by.twitter.ui.createtweet
 
 import android.os.Bundle
 import android.util.Log
@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import by.twitter.model.Tweets
+import by.twitter.R
+import by.twitter.storage.Tweets
+import by.twitter.ui.main.MainFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_create_tweet.*
 import kotlinx.android.synthetic.main.top_bar.*
@@ -35,7 +37,7 @@ class CreateTweetFragment : Fragment() {
         val massage = massageTweetTextInputEditText.text.toString()
         if (username.isNotEmpty() && massage.isNotEmpty()) {
             val tweet = Tweets.newTweet(username, massage)
-            Tweets.createTweet(tweet)
+            Tweets.create(tweet)
             requireActivity().supportFragmentManager.beginTransaction()
                 .remove(this)
                 .replace(R.id.mainContent, MainFragment.newInstance())
@@ -46,7 +48,8 @@ class CreateTweetFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): Fragment = CreateTweetFragment()
+        fun newInstance(): Fragment =
+            CreateTweetFragment()
     }
 
 }
