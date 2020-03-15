@@ -11,12 +11,21 @@
         android:id="@+id/addTweetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tweet" />
+        android:layout_marginBottom="50dp"
+        android:text="New Tweet" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/showTweetsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Show Tweets" />
+        android:layout_marginBottom="50dp"
+        android:text="Show Tweets RecyclerView" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/showTweetsListViewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Tweets ListView" />
 
 </LinearLayout>

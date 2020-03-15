@@ -2,7 +2,7 @@ package by.twitter.model
 
 data class User(
     val name: String,
-    val nameID: String = "@druce18"
+    val nameID: String = "@unique_name"
 ) {
     override fun toString(): String {
         return name

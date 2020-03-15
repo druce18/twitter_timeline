@@ -4,13 +4,12 @@ import by.twitter.model.Tweet
 import by.twitter.model.User
 import java.util.ArrayList
 
-object Tweets :
-    Crud<Tweet> {
+object Tweets : Crud<Tweet> {
 
     private val tweets: ArrayList<Tweet> = ArrayList<Tweet>()
 
     override fun create(element: Tweet) {
-        tweets.add(element)
+        tweets.add(0, element)
     }
 
     override fun read() = tweets.toList()
