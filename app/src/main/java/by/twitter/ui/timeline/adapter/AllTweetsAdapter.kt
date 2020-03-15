@@ -9,18 +9,27 @@ import by.twitter.model.Tweet
 import by.twitter.util.DateUtil
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_tweet.*
+import java.lang.IllegalArgumentException
 
 class AllTweetsAdapter(private val tweetsList: List<Tweet>) :
     RecyclerView.Adapter<AllTweetsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_tweet, parent, false)
+        val view: View = when (viewType) {
+            TYPE_TWEET ->
+                inflater.inflate(R.layout.item_tweet, parent, false)
+
+            TYPE_ADVERTISEMENT ->
+                inflater.inflate(R.layout.item_tweet_advertisement, parent, false)
+
+            else -> (throw  IllegalArgumentException("Invalid view type"))
+        }
         return ViewHolder(view)
     }
 
     override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
+        return tweetsList[position].type
     }
 
     override fun getItemCount(): Int {
@@ -36,14 +45,24 @@ class AllTweetsAdapter(private val tweetsList: List<Tweet>) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         fun bind(tweet: Tweet) {
-            usernameTweetTextView.text = tweet.user.name
-            timeTweetTextView.text = DateUtil.toSimpleString(tweet.date)
-            userIDTweetTextView.text = tweet.user.nameID
-            massageTweetTextView.text = tweet.massage
-            answersCountTweetTextView.text = tweet.answers.toString()
-            retweetsCountTweetTextView.text = tweet.retweets.toString()
-            likesCountTweetTextView.text = tweet.likes.toString()
+            when (tweet.type) {
+                TYPE_TWEET -> {
+                    usernameTweetTextView.text = tweet.user.name
+                    timeTweetTextView.text = DateUtil.toSimpleString(tweet.date)
+                    userIDTweetTextView.text = tweet.user.nameID
+                    massageTweetTextView.text = tweet.massage
+                    answersCountTweetTextView.text = tweet.answers.toString()
+                    retweetsCountTweetTextView.text = tweet.retweets.toString()
+                    likesCountTweetTextView.text = tweet.likes.toString()
+                }
+                TYPE_ADVERTISEMENT -> {
+                }
+            }
         }
     }
 
+    companion object {
+        const val TYPE_TWEET = 0
+        const val TYPE_ADVERTISEMENT = 1
+    }
 }

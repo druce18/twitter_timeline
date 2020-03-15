@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tweet_advertisement"
     android:layout_width="match_parent"
@@ -25,18 +26,18 @@
         android:layout_marginStart="70dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="15dp"
-        android:background="#FFF200">
+        app:cardBackgroundColor="@color/yellow">
 
         <TextView
-            android:id="@+id/massageTweetTextView"
+            android:id="@+id/massageAdvertisementTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="left"
-            android:text="Do you wanna by a house? Please check this out: https://www.zillow.com/pa/"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
+            android:text="@string/advertisement_massage"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
             android:textColor="@color/white"
-            android:textSize="17sp"
+            android:textSize="20sp"
             tools:ignore="RtlHardcoded" />
 
     </com.google.android.material.card.MaterialCardView>

@@ -2,6 +2,7 @@ package by.twitter.util
 
 import by.twitter.model.Tweet
 import by.twitter.storage.Tweets
+import by.twitter.ui.timeline.adapter.AllTweetsAdapter
 
 class RandomTweets {
     companion object {
@@ -13,8 +14,16 @@ class RandomTweets {
                 for (index in 0..30) {
                     val tweet = randomTweet()
                     Tweets.create(tweet)
+                    advertisingTweet()
                 }
                 flag = false
+            }
+        }
+
+        private fun advertisingTweet() {
+            if ((0..5).random() == 1) {
+                val tweetAdvertisement = Tweet(type = AllTweetsAdapter.TYPE_ADVERTISEMENT)
+                Tweets.create(tweetAdvertisement)
             }
         }
 
