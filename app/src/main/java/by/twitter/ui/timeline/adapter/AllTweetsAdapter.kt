@@ -17,11 +17,9 @@ class AllTweetsAdapter(private val tweetsList: List<Tweet>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view: View = when (viewType) {
-            TYPE_TWEET ->
-                inflater.inflate(R.layout.item_tweet, parent, false)
+            TYPE_TWEET -> inflater.inflate(R.layout.item_tweet, parent, false)
 
-            TYPE_ADVERTISEMENT ->
-                inflater.inflate(R.layout.item_tweet_advertisement, parent, false)
+            TYPE_ADVERTISEMENT -> inflater.inflate(R.layout.item_tweet_advertisement, parent, false)
 
             else -> (throw  IllegalArgumentException("Invalid view type"))
         }

@@ -1,7 +1,5 @@
 package by.twitter.storage
 
-import java.util.ArrayList
-
 interface Crud<E> {
 
     fun create(element: E)

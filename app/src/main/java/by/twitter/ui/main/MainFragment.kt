@@ -5,11 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import by.twitter.ui.timeline.AllTweetsFragment
-import by.twitter.ui.createtweet.CreateTweetFragment
+import androidx.navigation.fragment.findNavController
 import by.twitter.R
-import by.twitter.ui.timeline.AllTweetsListViewFragment
+import by.twitter.model.Tweet
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.tool_bar.*
 
 class MainFragment : Fragment() {
 
@@ -23,38 +23,47 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        nameMenuTextView.text = getString(R.string.main)
+        sendTweetButton.visibility = View.GONE
+        newTweetButton.visibility = View.GONE
+
+        MainFragmentArgs.fromBundle(arguments!!).newTweet?.let {
+            tweets.add(0, it)
+            arguments!!.clear()
+        }
+
+
         addTweetButton.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(
-                    R.id.mainContent,
-                    CreateTweetFragment.newInstance()
-                )
-                .addToBackStack("Add Tweet")
-                .commit()
+            navigateToCreateTweet()
         }
 
         showTweetsButton.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(
-                    R.id.mainContent,
-                    AllTweetsFragment.newInstance()
-                )
-                .addToBackStack("Show Tweets RecyclerView")
-                .commit()
+            navigateToAllTweets()
         }
 
-        showTweetsListViewButton.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(
-                    R.id.mainContent,
-                    AllTweetsListViewFragment.newInstance()
-                )
-                .addToBackStack("Show Tweets ListView")
-                .commit()
+        settingsButton.setOnClickListener {
+            navigateToSettings()
         }
+
+    }
+
+    private fun navigateToCreateTweet() {
+        val action = MainFragmentDirections.actionMainFragmentToCreateTweetFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToAllTweets() {
+        val action = MainFragmentDirections.actionMainFragmentToAllTweetsFragment(tweets.toTypedArray())
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToSettings() {
+        val action = MainFragmentDirections.actionMainFragmentToSettingsFragment()
+        findNavController().navigate(action)
     }
 
     companion object {
-        fun newInstance(): Fragment = MainFragment()
+        private val tweets = arrayListOf<Tweet>()
     }
+
 }

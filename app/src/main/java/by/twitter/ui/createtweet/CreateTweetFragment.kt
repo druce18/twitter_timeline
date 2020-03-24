@@ -1,17 +1,17 @@
 package by.twitter.ui.createtweet
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import by.twitter.R
+import by.twitter.model.Tweet
 import by.twitter.storage.Tweets
-import by.twitter.ui.main.MainFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_create_tweet.*
-import kotlinx.android.synthetic.main.top_bar.*
+import kotlinx.android.synthetic.main.tool_bar.*
 
 class CreateTweetFragment : Fragment() {
 
@@ -24,11 +24,17 @@ class CreateTweetFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         nameMenuTextView.text = getString(R.string.new_tweet)
+        sendTweetButton.visibility = View.VISIBLE
+        newTweetButton.visibility = View.GONE
 
         sendTweetButton.setOnClickListener {
-            Log.i(CreateTweetFragment.toString(), "Run send tweet ")
             saveTweet(view)
+        }
+
+        settingsButton.setOnClickListener {
+            navigateToSettings()
         }
     }
 
@@ -37,19 +43,20 @@ class CreateTweetFragment : Fragment() {
         val massage = massageTweetTextInputEditText.text.toString()
         if (username.isNotEmpty() && massage.isNotEmpty()) {
             val tweet = Tweets.newTweet(username, massage)
-            Tweets.create(tweet)
-            requireActivity().supportFragmentManager.beginTransaction()
-                .remove(this)
-                .replace(R.id.mainContent, MainFragment.newInstance())
-                .commit()
+            navigateBackToMain(tweet)
         } else {
             Snackbar.make(view, R.string.wrong_input, Snackbar.LENGTH_LONG).show()
         }
     }
 
-    companion object {
-        fun newInstance(): Fragment =
-            CreateTweetFragment()
+    private fun navigateToSettings() {
+        val action = CreateTweetFragmentDirections.actionCreateTweetFragmentToSettingsFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun navigateBackToMain(tweet: Tweet) {
+        val action = CreateTweetFragmentDirections.actionCreateTweetFragmentToMainFragment(tweet)
+        findNavController().navigate(action)
     }
 
 }
