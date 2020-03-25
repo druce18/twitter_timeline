@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import by.twitter.R
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_main.*
-import java.lang.IllegalArgumentException
 
 
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -17,11 +16,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         viewPager.adapter = MainPageAdapter(this)
 
         TabLayoutMediator(tab, viewPager) { tab, position ->
-            when (position) {
-                0 -> tab.text = "HOME"
-                1 -> tab.text = "Search"
-                2 -> tab.text = "Direct Massages"
-                else -> throw IllegalArgumentException("no required position")
+            tab.text = when (position) {
+                0 -> "HOME"
+                1 -> "Search"
+                2 -> "Direct Massages"
+                else -> throw IllegalArgumentException("position not found")
             }
         }.attach()
 
