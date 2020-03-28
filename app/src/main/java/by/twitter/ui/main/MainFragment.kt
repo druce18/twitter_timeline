@@ -20,6 +20,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 0 -> "HOME"
                 1 -> "Search"
                 2 -> "Direct Massages"
+                3 -> "Learn HTTP"
                 else -> throw IllegalArgumentException("position not found")
             }
         }.attach()
