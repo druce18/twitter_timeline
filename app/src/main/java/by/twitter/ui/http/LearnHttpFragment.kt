@@ -17,8 +17,12 @@ class LearnHttpFragment : Fragment(R.layout.fragment_http) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        startRequestButton.setOnClickListener {
+        startGetRequestButton.setOnClickListener {
             makeGetRequest()
+        }
+
+        startPostRequestButton.setOnClickListener {
+            println("GG")
         }
     }
 
@@ -30,6 +34,7 @@ class LearnHttpFragment : Fragment(R.layout.fragment_http) {
             var inputLine: String?
             while (reader.readLine().also { inputLine = it } != null) {
                 println(inputLine)
+                httpTextView.text = inputLine
             }
             reader.close()
         }
