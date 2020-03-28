@@ -2,71 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    android:id="@+id/nav_graph_new"
+    app:startDestination="@id/fragment_main_new">
 
     <fragment
-        android:id="@+id/allTweetsFragment"
-        android:name="by.twitter.ui.timeline.AllTweetsFragment"
-        android:label="fragment_all_tweets"
-        tools:layout="@layout/fragment_all_tweets">
-        <argument
-            android:name="tweets"
-            app:argType="by.twitter.model.Tweet[]" />
-        <action
-            android:id="@+id/action_allTweetsFragment_to_createTweetFragment"
-            app:destination="@id/createTweetFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
-        <action
-            android:id="@+id/action_allTweetsFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/createTweetFragment"
-        android:name="by.twitter.ui.createtweet.CreateTweetFragment"
-        android:label="fragment_create_tweet"
-        tools:layout="@layout/fragment_create_tweet">
-        <action
-            android:id="@+id/action_createTweetFragment_to_mainFragment"
-            app:destination="@id/mainFragment"
-            app:enterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
-        <action
-            android:id="@+id/action_createTweetFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/mainFragment"
+        android:id="@+id/fragment_main_new"
         android:name="by.twitter.ui.main.MainFragment"
-        android:label="fragment_main"
-        tools:layout="@layout/fragment_main">
-        <action
-            android:id="@+id/action_mainFragment_to_createTweetFragment"
-            app:destination="@id/createTweetFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_open_exit" />
-        <action
-            android:id="@+id/action_mainFragment_to_allTweetsFragment"
-            app:destination="@id/allTweetsFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:popExitAnim="@anim/fragment_fade_exit" />
-        <argument
-            android:name="newTweet"
-            android:defaultValue="@null"
-            app:argType="by.twitter.model.Tweet"
-            app:nullable="true" />
-        <action
-            android:id="@+id/action_mainFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="by.twitter.ui.settings.SettingsFragment"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        android:label="fragment_main_new"
+        tools:layout="@layout/fragment_main" />
 
 </navigation>
