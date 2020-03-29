@@ -11,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="20dp"
         android:text="GET Request" />
 
     <com.google.android.material.button.MaterialButton
@@ -19,15 +18,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="20dp"
+        android:layout_margin="40dp"
         android:text="POST Request" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/httpTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="GG"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        android:text="response from GET or POST Requests"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
