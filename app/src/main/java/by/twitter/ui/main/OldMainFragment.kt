@@ -27,40 +27,40 @@ class OldMainFragment : Fragment() {
         sendTweetButton.visibility = View.GONE
         newTweetButton.visibility = View.GONE
 
-        OldMainFragmentArgs.fromBundle(arguments!!).newTweet?.let {
-            tweets.add(0, it)
-            arguments!!.clear()
-        }
-
-
-        addTweetButton.setOnClickListener {
-            navigateToCreateTweet()
-        }
-
-        showTweetsButton.setOnClickListener {
-            navigateToAllTweets()
-        }
-
-        settingsButton.setOnClickListener {
-            navigateToSettings()
-        }
+//        OldMainFragmentArgs.fromBundle(arguments!!).newTweet?.let {
+//            tweets.add(0, it)
+//            arguments!!.clear()
+//        }
+//
+//
+//        addTweetButton.setOnClickListener {
+//            navigateToCreateTweet()
+//        }
+//
+//        showTweetsButton.setOnClickListener {
+//            navigateToAllTweets()
+//        }
+//
+//        settingsButton.setOnClickListener {
+//            navigateToSettings()
+//        }
 
     }
 
-    private fun navigateToCreateTweet() {
-        val action = OldMainFragmentDirections.actionMainFragmentToCreateTweetFragment()
-        findNavController().navigate(action)
-    }
-
-    private fun navigateToAllTweets() {
-        val action = OldMainFragmentDirections.actionMainFragmentToAllTweetsFragment(tweets.toTypedArray())
-        findNavController().navigate(action)
-    }
-
-    private fun navigateToSettings() {
-        val action = OldMainFragmentDirections.actionMainFragmentToSettingsFragment()
-        findNavController().navigate(action)
-    }
+//    private fun navigateToCreateTweet() {
+//        val action = OldMainFragmentDirections.actionMainFragmentToCreateTweetFragment()
+//        findNavController().navigate(action)
+//    }
+//
+//    private fun navigateToAllTweets() {
+//        val action = OldMainFragmentDirections.actionMainFragmentToAllTweetsFragment(tweets.toTypedArray())
+//        findNavController().navigate(action)
+//    }
+//
+//    private fun navigateToSettings() {
+//        val action = OldMainFragmentDirections.actionMainFragmentToSettingsFragment()
+//        findNavController().navigate(action)
+//    }
 
     companion object {
         private val tweets = arrayListOf<Tweet>()

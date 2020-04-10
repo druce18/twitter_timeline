@@ -1,14 +1,15 @@
 package by.twitter.model
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class User(
-    val name: String = "name",
-    val nameID: String = "@unique_name"
-) : Parcelable {
-    override fun toString(): String {
-        return name
-    }
-}
+        @SerializedName("id")
+        val id: Long,
+        @SerializedName("name")
+        val name: String,
+        @SerializedName("screen_name")
+        val screenName: String
+) : Parcelable

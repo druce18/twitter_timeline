@@ -30,7 +30,9 @@ class DirectMassageFragment : Fragment(R.layout.fragment_direct_massage) {
     }
 
     companion object {
+
         fun newInstance(): Fragment = DirectMassageFragment()
+
     }
 
 }

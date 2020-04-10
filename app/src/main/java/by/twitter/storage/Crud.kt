@@ -2,12 +2,12 @@ package by.twitter.storage
 
 interface Crud<E> {
 
-    fun create(element: E)
+    fun create(text: String)
 
     fun read(): List<E>
 
-    fun update(element: E, index: Int)
+    fun updateAll()
 
-    fun delete(index: Int)
+    fun delete(id: Long)
 
 }
