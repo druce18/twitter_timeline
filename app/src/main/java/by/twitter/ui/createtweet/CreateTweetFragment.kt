@@ -23,6 +23,8 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
         val massage = massageTweetTextInputEditText.text.toString()
         if (massage.isNotEmpty()) {
             Tweets.create(massage)
+            massageTweetTextInputEditText.text?.clear()
+            Snackbar.make(view, "Tweet sent", Snackbar.LENGTH_LONG).show()
         } else {
             Snackbar.make(view, R.string.wrong_input, Snackbar.LENGTH_LONG).show()
         }

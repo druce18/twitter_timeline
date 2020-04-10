@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import by.twitter.R
 import by.twitter.model.Tweet
+import by.twitter.util.DateUtil
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_tweet.*
 import java.lang.IllegalArgumentException
@@ -26,7 +27,7 @@ class AllTweetsAdapter(private val tweetsList: List<Tweet>) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return 0 //tweetsList[position].type
+        return TYPE_TWEET
     }
 
     override fun getItemCount(): Int {
@@ -43,7 +44,7 @@ class AllTweetsAdapter(private val tweetsList: List<Tweet>) :
 
         fun bind(tweet: Tweet) {
             usernameTweetTextView.text = tweet.user.name
-            timeTweetTextView.text = tweet.createdAt
+            timeTweetTextView.text = DateUtil.toSimpleString(tweet.createdAt)
             userIDTweetTextView.text = tweet.user.screenName
             massageTweetTextView.text = tweet.text
             retweetsCountTweetTextView.text = tweet.retweetCount.toString()

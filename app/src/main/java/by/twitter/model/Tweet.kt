@@ -15,7 +15,7 @@ data class Tweet(
         @SerializedName("user")
         val user: User,
         @SerializedName("retweet_count")
-        val retweetCount: Long,
+        val retweetCount: Int,
         @SerializedName("favorite_count")
-        val favoriteCount: Long
+        val favoriteCount: Int
 ) : Parcelable

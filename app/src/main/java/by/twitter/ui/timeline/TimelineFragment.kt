@@ -14,10 +14,9 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val tweetsList = Tweets.read()
-
-        tweetsRecyclerView.adapter = AllTweetsAdapter(tweetsList.toList())
-        tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+//        val tweetsList = Tweets.read()
+//        tweetsRecyclerView.adapter = AllTweetsAdapter(tweetsList.toList())
+//        tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
     }
 

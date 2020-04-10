@@ -6,7 +6,7 @@ interface Crud<E> {
 
     fun read(): List<E>
 
-    fun updateAll()
+    fun update()
 
     fun delete(id: Long)
 

@@ -44,22 +44,20 @@ object Tweets : Crud<Tweet> {
 
             val response = client.newCall(request).execute()
             val json = response.body?.string()
-
             val tweet = parser.fromJson(json, Tweet::class.java)
-            println("Call result: $tweet")
         }
-        updateAll()
+        update()
     }
 
     override fun read(): List<Tweet> {
         if (flag) {
-            updateAll()
+            update()
             flag = false
         }
         return tweets
     }
 
-    override fun updateAll() {
+    override fun update() {
         executorService.submit {
             val parser = Gson()
             val url = "https://api.twitter.com/1.1/statuses/home_timeline.json"
@@ -82,11 +80,10 @@ object Tweets : Crud<Tweet> {
 
             val response = client.newCall(request).execute()
             val json = response.body?.string()
-
             tweets = parser.fromJson(json, Array<Tweet>::class.java).toMutableList()
-
             println("Call result: ${tweets.joinToString(separator = "\n")}")
         }
+        Thread.sleep(3000)
     }
 
     override fun delete(id: Long) {
