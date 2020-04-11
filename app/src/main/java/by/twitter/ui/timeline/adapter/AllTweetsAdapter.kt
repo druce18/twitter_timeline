@@ -45,7 +45,7 @@ class AllTweetsAdapter(private val tweetsList: List<Tweet>) :
         fun bind(tweet: Tweet) {
             usernameTweetTextView.text = tweet.user.name
             timeTweetTextView.text = DateUtil.toSimpleString(tweet.createdAt)
-            userIDTweetTextView.text = "@" + tweet.user.screenName
+            userIDTweetTextView.text = "@${tweet.user.screenName}"
             massageTweetTextView.text = tweet.text
             retweetsCountTweetTextView.text = tweet.retweetCount.toString()
             likesCountTweetTextView.text = tweet.favoriteCount.toString()
