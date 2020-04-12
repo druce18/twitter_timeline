@@ -79,4 +79,5 @@ class LearnHttpFragment : Fragment(R.layout.fragment_http) {
         fun newInstance(): Fragment = LearnHttpFragment()
 
     }
+
 }

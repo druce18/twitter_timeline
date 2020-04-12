@@ -34,7 +34,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     companion object {
+
         fun newInstance(): Fragment = SearchFragment()
+
     }
 
 }

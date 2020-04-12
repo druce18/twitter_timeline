@@ -7,17 +7,17 @@
     android:background="@color/white_grey"
     tools:context=".ui.createtweet.CreateTweetFragment">
 
-    <include
-        layout="@layout/tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top" />
+    <!--    <include-->
+    <!--        layout="@layout/tool_bar"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="top" />-->
 
     <ImageButton
         android:id="@+id/userTweetImageButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/round_button"
         android:scaleX="0.7"
         android:scaleY="0.7"
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="15dp"
         android:background="@color/white">
 
@@ -45,30 +45,30 @@
             tools:ignore="ExtraText">
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:orientation="horizontal">-->
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="User name: "
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
-                    android:textColor="@color/black"
-                    android:textSize="17sp" />
+            <!--                <com.google.android.material.textview.MaterialTextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_gravity="center"-->
+            <!--                    android:text="User name: "-->
+            <!--                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"-->
+            <!--                    android:textColor="@color/black"-->
+            <!--                    android:textSize="17sp" />-->
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/usernameTweetTextInputEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    tools:ignore="RtlHardcoded" />
+            <!--                <com.google.android.material.textfield.TextInputEditText-->
+            <!--                    android:id="@+id/usernameTweetTextInputEditText"-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"-->
+            <!--                    android:textColor="@color/black"-->
+            <!--                    android:textSize="15sp"-->
+            <!--                    tools:ignore="RtlHardcoded" />-->
 
-            </LinearLayout>
+            <!--            </LinearLayout>-->
 
 
             <LinearLayout
@@ -97,14 +97,14 @@
 
             </LinearLayout>
 
-
-            <!--            <com.google.android.material.button.MaterialButton-->
-            <!--                android:id="@+id/sendTweetButton"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_gravity="right"-->
-            <!--                android:text="Send"-->
-            <!--                tools:ignore="RtlHardcoded" />-->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sendTweetButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_margin="10dp"
+                android:text="Send"
+                tools:ignore="RtlHardcoded" />
 
         </LinearLayout>
 
