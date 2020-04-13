@@ -1,9 +1,12 @@
 package by.twitter.storage
 
 import by.twitter.model.Tweet
+import by.twitter.network.TwitterServiceImpl
 import by.twitter.util.TwitterAuthUtil
 import com.google.gson.Gson
 import okhttp3.*
+import retrofit2.Call
+import retrofit2.Callback
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -58,33 +61,25 @@ object Tweets : Crud<Tweet> {
     }
 
     override fun update() {
-        executorService.submit {
-            val parser = Gson()
-            val url = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-            val client = OkHttpClient.Builder()
-                    .addInterceptor(object : Interceptor {
-                        override fun intercept(chain: Interceptor.Chain): Response {
-                            val r = chain.request()
-                            val header = TwitterAuthUtil.generateAuthHeader(r.method, r.url)
-                            val newRequest = r.newBuilder()
-                                    .addHeader("Authorization", header)
-                                    .build()
-                            return chain.proceed(newRequest)
+
+        TwitterServiceImpl.twitterService
+                .getTimelineHome()
+                .enqueue(object : Callback<List<Tweet>> {
+                    override fun onFailure(call: Call<List<Tweet>>, t: Throwable) {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onResponse(call: Call<List<Tweet>>, response: retrofit2.Response<List<Tweet>>) {
+                        val list = response.body()
+                        if (list != null) {
+                            tweets = list.toMutableList()
                         }
-                    })
-                    .build()
+                        println("Call result: ${tweets.joinToString(separator = "\n")}")
+                    }
 
-            val request = Request.Builder()
-                    .url(url)
-                    .build()
-
-            val response = client.newCall(request).execute()
-            val json = response.body?.string()
-            tweets = parser.fromJson(json, Array<Tweet>::class.java).toMutableList()
-            println("Call result: ${tweets.joinToString(separator = "\n")}")
-        }
-        Thread.sleep(3000)
+                })
     }
+
 
     override fun delete(id: Long) {
 

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import by.twitter.R
 import by.twitter.model.Tweet
 import by.twitter.util.DateUtil
+import com.bumptech.glide.Glide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_tweet.*
 import java.lang.IllegalArgumentException
@@ -42,13 +43,23 @@ class AllTweetsAdapter(private val tweetsList: List<Tweet>) :
     class ViewHolder(override val containerView: View) :
             RecyclerView.ViewHolder(containerView), LayoutContainer {
 
+        private val requestManager = Glide.with(containerView.context)
+
         fun bind(tweet: Tweet) {
+            requestManager.clear(userProfileTweetImage)
+
+            requestManager
+                    .load(tweet.user.profileImageUrlHttps)
+                    .circleCrop()
+                    .into(userProfileTweetImage)
+
             usernameTweetTextView.text = tweet.user.name
             timeTweetTextView.text = DateUtil.toSimpleString(tweet.createdAt)
             userIDTweetTextView.text = "@${tweet.user.screenName}"
             massageTweetTextView.text = tweet.text
             retweetsCountTweetTextView.text = tweet.retweetCount.toString()
             likesCountTweetTextView.text = tweet.favoriteCount.toString()
+
         }
     }
 

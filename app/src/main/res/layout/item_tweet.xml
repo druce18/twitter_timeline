@@ -6,14 +6,13 @@
     android:background="@color/ghostly">
 
 
-    <ImageButton
-        android:id="@+id/userTweetImageButton"
+    <ImageView
+        android:id="@+id/userProfileTweetImage"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/round_button"
-        android:src="@drawable/ic_user_tweet" />
+        tools:src="@drawable/ic_user_tweet" />
 
 
     <com.google.android.material.card.MaterialCardView
