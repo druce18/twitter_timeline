@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object TwitterServiceImpl {
 
-    private const val baseUrl = "https://api.twitter.com/1.1/"
+    private const val BASE_URL = "https://api.twitter.com/1.1/"
 
     private val client by lazy {
         OkHttpClient.Builder()
@@ -26,10 +26,11 @@ object TwitterServiceImpl {
                 .build()
     }
 
+
     val twitterService: TwitterService by lazy {
         Retrofit.Builder()
                 .client(client)
-                .baseUrl(baseUrl)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(TwitterService::class.java)

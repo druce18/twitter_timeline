@@ -19,6 +19,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             tab.text = when (position) {
                 0 -> "HOME"
                 1 -> "Create tweet"
+                2 -> "Direct Massage"
                 else -> throw IllegalArgumentException("position not found")
             }
         }.attach()
