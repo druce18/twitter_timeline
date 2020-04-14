@@ -26,17 +26,23 @@ object DateUtil {
 
                 } else if ((dateTimeNow.monthValue - dateTime.monthValue) == 1) {
                     val monthDay = Month.of(dateTime.monthValue).maxLength()
-                    if (dateTimeNow.dayOfMonth + (monthDay - dateTime.dayOfMonth) > AVG_DAYS_MONTH) {
+                    val daysAgo = dateTimeNow.dayOfMonth + (monthDay - dateTime.dayOfMonth)
+                    if (daysAgo > AVG_DAYS_MONTH) {
                         dateTime.format(formatter)
                     } else {
-                        "${dateTimeNow.dayOfMonth + (monthDay - dateTime.dayOfMonth)}d"
+                        "${daysAgo}d"
                     }
 
                 } else if ((dateTimeNow.dayOfMonth - dateTime.dayOfMonth) > 1) {
                     "${dateTimeNow.dayOfMonth - dateTime.dayOfMonth}d"
 
                 } else if ((dateTimeNow.dayOfMonth - dateTime.dayOfMonth) == 1) {
-                    "yesterday"
+                    val hoursAgo = dateTimeNow.hour + (24 - dateTime.hour)
+                    if (hoursAgo > 24) {
+                        "yesterday"
+                    } else {
+                        "${hoursAgo}h"
+                    }
 
                 } else if ((dateTimeNow.hour - dateTime.hour) > 0) {
                     "${dateTimeNow.hour - dateTime.hour}h"
