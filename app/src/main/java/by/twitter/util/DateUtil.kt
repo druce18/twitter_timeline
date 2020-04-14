@@ -12,6 +12,7 @@ object DateUtil {
     private const val TWITTER_FORMAT = "EEE MMM dd HH:mm:ss ZZZZZ yyyy"
     private const val APP_FORMAT = "dd MMM yyyy"
     private const val AVG_DAYS_MONTH = 30
+    private const val HOURS_MAX = 24
 
     fun toSimpleString(dateString: String): String {
         val simpleDateFormat = SimpleDateFormat(TWITTER_FORMAT, Locale.ENGLISH)
@@ -27,21 +28,19 @@ object DateUtil {
                 } else if ((dateTimeNow.monthValue - dateTime.monthValue) == 1) {
                     val monthDay = Month.of(dateTime.monthValue).maxLength()
                     val daysAgo = dateTimeNow.dayOfMonth + (monthDay - dateTime.dayOfMonth)
-                    if (daysAgo > AVG_DAYS_MONTH) {
-                        dateTime.format(formatter)
-                    } else {
-                        "${daysAgo}d"
+                    when (daysAgo) {
+                        in 1..AVG_DAYS_MONTH -> "${daysAgo}h"
+                        else -> dateTime.format(formatter)
                     }
 
                 } else if ((dateTimeNow.dayOfMonth - dateTime.dayOfMonth) > 1) {
                     "${dateTimeNow.dayOfMonth - dateTime.dayOfMonth}d"
 
                 } else if ((dateTimeNow.dayOfMonth - dateTime.dayOfMonth) == 1) {
-                    val hoursAgo = dateTimeNow.hour + (24 - dateTime.hour)
-                    if (hoursAgo > 24) {
-                        "yesterday"
-                    } else {
-                        "${hoursAgo}h"
+                    val hoursAgo = dateTimeNow.hour + (HOURS_MAX - dateTime.hour)
+                    when (hoursAgo) {
+                        in 1..HOURS_MAX -> "${hoursAgo}h"
+                        else -> "yesterday"
                     }
 
                 } else if ((dateTimeNow.hour - dateTime.hour) > 0) {
