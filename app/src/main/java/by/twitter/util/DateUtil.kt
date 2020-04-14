@@ -2,6 +2,7 @@ package by.twitter.util
 
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.time.Month
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -10,7 +11,7 @@ object DateUtil {
 
     private const val TWITTER_FORMAT = "EEE MMM dd HH:mm:ss ZZZZZ yyyy"
     private const val APP_FORMAT = "dd MMM yyyy"
-    private const val AVG_DAY_MONTH = 30
+    private const val AVG_DAYS_MONTH = 30
 
     fun toSimpleString(dateString: String): String {
         val simpleDateFormat = SimpleDateFormat(TWITTER_FORMAT, Locale.ENGLISH)
@@ -23,13 +24,13 @@ object DateUtil {
                 if (dateTimeNow.year > dateTime.year || (dateTimeNow.monthValue - dateTime.monthValue) > 1) {
                     dateTime.format(formatter)
 
-                } else if ((dateTimeNow.monthValue - dateTime.monthValue) == 1 &&
-                        (dateTimeNow.dayOfMonth + (AVG_DAY_MONTH - dateTime.dayOfMonth)) > AVG_DAY_MONTH) {
-                    dateTime.format(formatter)
-
-                } else if ((dateTimeNow.monthValue - dateTime.monthValue) == 1 &&
-                        (dateTimeNow.dayOfMonth + (AVG_DAY_MONTH - dateTime.dayOfMonth)) <= AVG_DAY_MONTH) {
-                    "${dateTimeNow.dayOfMonth + (AVG_DAY_MONTH - dateTime.dayOfMonth)}d"
+                } else if ((dateTimeNow.monthValue - dateTime.monthValue) == 1) {
+                    val monthDay = Month.of(dateTime.monthValue).maxLength()
+                    if (dateTimeNow.dayOfMonth + (monthDay - dateTime.dayOfMonth) > AVG_DAYS_MONTH) {
+                        dateTime.format(formatter)
+                    } else {
+                        "${dateTimeNow.dayOfMonth + (monthDay - dateTime.dayOfMonth)}d"
+                    }
 
                 } else if ((dateTimeNow.dayOfMonth - dateTime.dayOfMonth) > 1) {
                     "${dateTimeNow.dayOfMonth - dateTime.dayOfMonth}d"
