@@ -7,7 +7,15 @@
     android:background="@color/white_grey"
     tools:context=".ui.createtweet.CreateTweetFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/tweetFormMaterialCardView"
         style="@style/TweetsCornerCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

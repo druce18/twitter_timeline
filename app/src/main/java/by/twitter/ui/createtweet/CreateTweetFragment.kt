@@ -3,6 +3,8 @@ package by.twitter.ui.createtweet
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import by.twitter.R
 import by.twitter.storage.Tweets
 import com.google.android.material.snackbar.Snackbar
@@ -13,23 +15,35 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        subscribeViewModel()
+
+    }
+
+    private fun subscribeViewModel() {
+        val viewModel: CreateTweetViewModel by viewModels()
+        viewModel.loading.observe(viewLifecycleOwner, Observer<Boolean?> {
+            if (it == null) return@Observer
+            if (it) {
+                progressBar.visibility = View.VISIBLE
+                tweetFormMaterialCardView.visibility = View.GONE
+            } else {
+                progressBar.visibility = View.GONE
+                tweetFormMaterialCardView.visibility = View.VISIBLE
+            }
+        })
+
+        viewModel.goBackToTimeline.observe(viewLifecycleOwner, Observer<Boolean?> {
+            Snackbar.make(requireView(), "BG", Snackbar.LENGTH_LONG).show()
+        })
+
         sendTweetButton.setOnClickListener {
-            saveTweet(view)
+            val massage = massageTweetTextInputEditText.text.toString()
+            if (massage.isNotEmpty()) {
+                viewModel.createTweet(massage)
+            }
         }
 
     }
-
-    private fun saveTweet(view: View) {
-        val massage = massageTweetTextInputEditText.text.toString()
-        if (massage.isNotEmpty()) {
-            Tweets.create(massage)
-            massageTweetTextInputEditText.text?.clear()
-            Snackbar.make(view, "Tweet sent", Snackbar.LENGTH_LONG).show()
-        } else {
-            Snackbar.make(view, R.string.wrong_input, Snackbar.LENGTH_LONG).show()
-        }
-    }
-
 
     companion object {
 
