@@ -18,11 +18,16 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         TabLayoutMediator(tab, viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> "HOME"
-                1 -> "Create tweet"
-                2 -> "Direct Massage"
+                1 -> "Direct Massage"
                 else -> throw IllegalArgumentException("position not found")
             }
         }.attach()
+
+    }
+
+    companion object {
+
+        fun newInstance(): Fragment = MainFragment()
 
     }
 

@@ -12,13 +12,12 @@ import retrofit2.Callback
 object Tweets : Crud<Tweet> {
 
     private var tweets = mutableListOf<Tweet>()
-    private var flagReadNetwork = true
+    private val _requestEnd = MutableLiveData(false)
+    val requestEnd: LiveData<Boolean> = _requestEnd
 
-    private val _processingEnd = MutableLiveData(false)
-    val processingEnd: LiveData<Boolean> = _processingEnd
 
     override fun create(text: String) {
-        _processingEnd.value = false
+        _requestEnd.value = false
 
         TwitterServiceImpl.twitterService
                 .postUpdateTweet(text)
@@ -34,22 +33,19 @@ object Tweets : Crud<Tweet> {
                         }
                         println("New tweet: $tweet")
 
-                        _processingEnd.value = true
-
+                        _requestEnd.value = true
                     }
                 })
 
     }
 
     override fun read(): List<Tweet> {
-        if (flagReadNetwork) {
-            update()
-            flagReadNetwork = false
-        }
         return tweets
     }
 
     override fun update() {
+        _requestEnd.value = false
+
         TwitterServiceImpl.twitterService
                 .getTimelineHome()
                 .enqueue(object : Callback<List<Tweet>> {
@@ -63,6 +59,8 @@ object Tweets : Crud<Tweet> {
                             tweets = tweetsList.toMutableList()
                         }
                         println("Call result: ${tweets.joinToString(separator = "\n")}")
+
+                        _requestEnd.value = true
                     }
                 })
     }

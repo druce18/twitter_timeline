@@ -14,18 +14,18 @@ class CreateTweetViewModel : ViewModel() {
     private val _goBackToTimeline = MutableLiveData(false)
     val goBackToTimeline: LiveData<Boolean> = _goBackToTimeline
 
-    init {
-        Tweets.processingEnd.observeForever(Observer {
-            if(it){
-                _loading.value = false
-                _goBackToTimeline.value = it
-            }
-        })
-    }
 
     fun createTweet(text: String) {
-        _loading.value = true
         Tweets.create(text)
+        Tweets.requestEnd.observeForever(Observer {
+            if (it) {
+                _loading.value = false
+                _goBackToTimeline.value = true
+            } else{
+                _loading.value = true
+                _goBackToTimeline.value = false
+            }
+        })
     }
 
 }
