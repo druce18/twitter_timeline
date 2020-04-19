@@ -1,90 +1,61 @@
 package by.twitter.storage
 
+import android.accounts.NetworkErrorException
 import by.twitter.model.Tweet
-import by.twitter.util.TwitterAuthUtil
-import com.google.gson.Gson
-import okhttp3.*
-import java.util.*
-import java.util.concurrent.Executors
+import by.twitter.network.TwitterServiceImpl
+import retrofit2.Call
+import retrofit2.Callback
+
 
 object Tweets : Crud<Tweet> {
 
     private var tweets = mutableListOf<Tweet>()
-    private val executorService = Executors.newFixedThreadPool(1)
-    private var flag = true
+    private var flagReadNetwork = true
 
     override fun create(text: String) {
-        executorService.submit {
-            val parser = Gson()
-            val url = "https://api.twitter.com/1.1/statuses/update.json"
-            val client = OkHttpClient.Builder()
-                    .addInterceptor(object : Interceptor {
-                        override fun intercept(chain: Interceptor.Chain): Response {
-                            val r = chain.request()
-                            val postParams = TreeMap<String, String>()
-                            postParams["status"] = text
-                            val header = TwitterAuthUtil.generateAuthHeader(r.method, r.url, postParams)
-                            val newRequest = r.newBuilder()
-                                    .addHeader("Authorization", header)
-                                    .build()
-                            return chain.proceed(newRequest)
+        TwitterServiceImpl.twitterService
+                .postUpdateTweet(text)
+                .enqueue(object : Callback<Tweet> {
+                    override fun onFailure(call: Call<Tweet>, t: Throwable) {
+                        throw NetworkErrorException("Check network connection")
+                    }
+
+                    override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
+                        val tweet = response.body()
+                        if (tweet != null) {
+                            tweets.add(0, tweet)
                         }
-                    })
-                    .build()
-
-            val formBody = FormBody.Builder()
-                    .add("status", text)
-                    .build()
-
-
-            val request = Request.Builder()
-                    .url(url)
-                    .post(formBody)
-                    .build()
-
-            val response = client.newCall(request).execute()
-            val json = response.body?.string()
-            val tweet = parser.fromJson(json, Tweet::class.java)
-        }
-        update()
+                        println("New tweet: $tweet")
+                    }
+                })
     }
 
     override fun read(): List<Tweet> {
-        if (flag) {
+        if (flagReadNetwork) {
             update()
-            flag = false
+            flagReadNetwork = false
         }
         return tweets
     }
 
     override fun update() {
-        executorService.submit {
-            val parser = Gson()
-            val url = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-            val client = OkHttpClient.Builder()
-                    .addInterceptor(object : Interceptor {
-                        override fun intercept(chain: Interceptor.Chain): Response {
-                            val r = chain.request()
-                            val header = TwitterAuthUtil.generateAuthHeader(r.method, r.url)
-                            val newRequest = r.newBuilder()
-                                    .addHeader("Authorization", header)
-                                    .build()
-                            return chain.proceed(newRequest)
+        TwitterServiceImpl.twitterService
+                .getTimelineHome()
+                .enqueue(object : Callback<List<Tweet>> {
+                    override fun onFailure(call: Call<List<Tweet>>, t: Throwable) {
+                        throw NetworkErrorException("Check network connection")
+                    }
+
+                    override fun onResponse(call: Call<List<Tweet>>, response: retrofit2.Response<List<Tweet>>) {
+                        val tweetsList = response.body()
+                        if (tweetsList != null) {
+                            tweets = tweetsList.toMutableList()
                         }
-                    })
-                    .build()
-
-            val request = Request.Builder()
-                    .url(url)
-                    .build()
-
-            val response = client.newCall(request).execute()
-            val json = response.body?.string()
-            tweets = parser.fromJson(json, Array<Tweet>::class.java).toMutableList()
-            println("Call result: ${tweets.joinToString(separator = "\n")}")
-        }
-        Thread.sleep(3000)
+                        println("Call result: ${tweets.joinToString(separator = "\n")}")
+                    }
+                })
     }
+
 
     override fun delete(id: Long) {
 
