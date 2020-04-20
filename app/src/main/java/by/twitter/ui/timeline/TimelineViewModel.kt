@@ -10,20 +10,29 @@ import by.twitter.storage.Tweets
 class TimelineViewModel : ViewModel() {
 
     private val tweetsData: MutableLiveData<List<Tweet>> by lazy {
+        updateTweets()
         MutableLiveData<List<Tweet>>()
     }
 
+    private val observerRequest = Observer<Boolean> { t ->
+        if (t!!) {
+            tweetsData.value = Tweets.read()
+        }
+    }
+
+
     fun getTweets(): LiveData<List<Tweet>> {
-        updateTweets()
         return tweetsData
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Tweets.requestEnd.removeObserver(observerRequest)
     }
 
     private fun updateTweets() {
         Tweets.update()
-        Tweets.requestEnd.observeForever(Observer {
-            if (it) {
-                tweetsData.value = Tweets.read()
-            }
-        })
+        Tweets.requestEnd.observeForever(observerRequest)
     }
+
 }
