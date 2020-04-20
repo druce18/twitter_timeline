@@ -10,7 +10,6 @@ import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_tweet.*
-import java.lang.IllegalArgumentException
 
 class AllTweetsAdapter(private val tweetsList: List<Tweet>) :
         RecyclerView.Adapter<AllTweetsAdapter.ViewHolder>() {

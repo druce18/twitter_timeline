@@ -1,6 +1,8 @@
 package by.twitter.storage
 
 import android.accounts.NetworkErrorException
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import by.twitter.model.Tweet
 import by.twitter.network.TwitterServiceImpl
 import retrofit2.Call
@@ -10,9 +12,13 @@ import retrofit2.Callback
 object Tweets : Crud<Tweet> {
 
     private var tweets = mutableListOf<Tweet>()
-    private var flagReadNetwork = true
+    private val _requestEnd = MutableLiveData(false)
+    val requestEnd: LiveData<Boolean> = _requestEnd
+
 
     override fun create(text: String) {
+        _requestEnd.value = false
+
         TwitterServiceImpl.twitterService
                 .postUpdateTweet(text)
                 .enqueue(object : Callback<Tweet> {
@@ -26,19 +32,20 @@ object Tweets : Crud<Tweet> {
                             tweets.add(0, tweet)
                         }
                         println("New tweet: $tweet")
+
+                        _requestEnd.value = true
                     }
                 })
+
     }
 
     override fun read(): List<Tweet> {
-        if (flagReadNetwork) {
-            update()
-            flagReadNetwork = false
-        }
         return tweets
     }
 
     override fun update() {
+        _requestEnd.value = false
+
         TwitterServiceImpl.twitterService
                 .getTimelineHome()
                 .enqueue(object : Callback<List<Tweet>> {
@@ -52,6 +59,8 @@ object Tweets : Crud<Tweet> {
                             tweets = tweetsList.toMutableList()
                         }
                         println("Call result: ${tweets.joinToString(separator = "\n")}")
+
+                        _requestEnd.value = true
                     }
                 })
     }
