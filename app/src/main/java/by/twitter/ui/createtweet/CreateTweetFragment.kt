@@ -5,16 +5,25 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import by.twitter.R
+import by.twitter.TwitterApplication
 import by.twitter.ui.main.MainFragment
 import kotlinx.android.synthetic.main.fragment_create_tweet.*
 import kotlinx.android.synthetic.main.tool_bar.*
+import javax.inject.Inject
 
 class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
 
+    @Inject
+    lateinit var viewModelProviderFactory: ViewModelProvider.Factory
+
+    private lateinit var createTweetViewModel: CreateTweetViewModel
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        createTweetViewModel = ViewModelProvider(this, viewModelProviderFactory).get(CreateTweetViewModel::class.java)
+
         super.onViewCreated(view, savedInstanceState)
 
         backImageButton.visibility = View.VISIBLE
@@ -31,9 +40,13 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
 
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (context.applicationContext as TwitterApplication).appComponent.inject(this)
+    }
+
     private fun subscribeViewModel() {
-        val viewModel: CreateTweetViewModel by viewModels()
-        viewModel.loading.observe(viewLifecycleOwner, Observer<Boolean?> {
+        createTweetViewModel.loading.observe(viewLifecycleOwner, Observer<Boolean?> {
             if (it == null) return@Observer
             if (it) {
                 progressBar.visibility = View.VISIBLE
@@ -44,7 +57,7 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
             }
         })
 
-        viewModel.goBackToTimeline.observe(viewLifecycleOwner, Observer<Boolean?> {
+        createTweetViewModel.goBackToTimeline.observe(viewLifecycleOwner, Observer<Boolean?> {
             if (it == null) return@Observer
             if (it) {
                 navigateToTimeline()
@@ -54,7 +67,7 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
         sendTweetButton.setOnClickListener {
             val massage = massageTweetInputEditText.text.toString()
             if (massage.isNotEmpty()) {
-                viewModel.createTweet(massage)
+                createTweetViewModel.createTweet(massage)
             }
         }
 

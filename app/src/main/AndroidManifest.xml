@@ -3,6 +3,7 @@
     package="by.twitter">
 
     <application
+        android:name=".TwitterApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_twitter"
         android:label="@string/app_name"

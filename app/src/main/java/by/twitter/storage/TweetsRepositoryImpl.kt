@@ -1,25 +1,22 @@
 package by.twitter.storage
 
 import android.accounts.NetworkErrorException
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import by.twitter.model.Tweet
-import by.twitter.network.TwitterServiceImpl
+import by.twitter.network.TwitterConnection
 import retrofit2.Call
 import retrofit2.Callback
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
-object Tweets : Crud<Tweet> {
+@Singleton
+class TweetsRepositoryImpl @Inject constructor(private val twitterService: TwitterConnection) : TweetsRepository {
 
-    private var tweets = mutableListOf<Tweet>()
-    private val _requestEnd = MutableLiveData(false)
-    val requestEnd: LiveData<Boolean> = _requestEnd
-
-
-    override fun create(text: String) {
-        _requestEnd.value = false
-
-        TwitterServiceImpl.twitterService
+    override fun create(text: String): MutableLiveData<Boolean> {
+        val requestEnd = MutableLiveData(false)
+        twitterService
+                .twitterService
                 .postUpdateTweet(text)
                 .enqueue(object : Callback<Tweet> {
                     override fun onFailure(call: Call<Tweet>, t: Throwable) {
@@ -28,25 +25,20 @@ object Tweets : Crud<Tweet> {
 
                     override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
                         val tweet = response.body()
-                        if (tweet != null) {
-                            tweets.add(0, tweet)
-                        }
                         println("New tweet: $tweet")
 
-                        _requestEnd.value = true
+                        requestEnd.value = true
                     }
                 })
 
+        return requestEnd
     }
 
-    override fun read(): List<Tweet> {
-        return tweets
-    }
+    override fun update(): MutableLiveData<List<Tweet>> {
+        val tweetsLiveData = MutableLiveData<List<Tweet>>()
 
-    override fun update() {
-        _requestEnd.value = false
-
-        TwitterServiceImpl.twitterService
+        twitterService
+                .twitterService
                 .getTimelineHome()
                 .enqueue(object : Callback<List<Tweet>> {
                     override fun onFailure(call: Call<List<Tweet>>, t: Throwable) {
@@ -56,15 +48,14 @@ object Tweets : Crud<Tweet> {
                     override fun onResponse(call: Call<List<Tweet>>, response: retrofit2.Response<List<Tweet>>) {
                         val tweetsList = response.body()
                         if (tweetsList != null) {
-                            tweets = tweetsList.toMutableList()
+                            tweetsLiveData.value = tweetsList
+                            println("Call result: ${tweetsList.joinToString(separator = "\n")}")
                         }
-                        println("Call result: ${tweets.joinToString(separator = "\n")}")
-
-                        _requestEnd.value = true
                     }
                 })
-    }
 
+        return tweetsLiveData
+    }
 
     override fun delete(id: Long) {
 
