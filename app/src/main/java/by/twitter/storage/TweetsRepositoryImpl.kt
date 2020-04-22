@@ -13,7 +13,6 @@ import javax.inject.Singleton
 @Singleton
 class TweetsRepositoryImpl @Inject constructor(private val twitterService: TwitterConnection) : TweetsRepository {
 
-
     override fun create(text: String): MutableLiveData<Boolean> {
         val requestEnd = MutableLiveData(false)
         twitterService

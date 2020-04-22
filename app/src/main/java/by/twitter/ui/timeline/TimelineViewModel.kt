@@ -8,7 +8,7 @@ import by.twitter.storage.TweetsRepository
 import by.twitter.storage.TweetsRepositoryImpl
 import javax.inject.Inject
 
-class TimelineViewModel @Inject constructor(val tweetsRepository: TweetsRepository) : ViewModel() {
+class TimelineViewModel @Inject constructor(private val tweetsRepository: TweetsRepository) : ViewModel() {
 
     private val tweetsData: MutableLiveData<List<Tweet>> by lazy {
         tweetsRepository.update()
