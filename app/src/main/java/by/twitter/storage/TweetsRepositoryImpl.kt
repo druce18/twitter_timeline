@@ -9,9 +9,8 @@ import retrofit2.Call
 import retrofit2.Callback
 
 
-object Tweets : Crud<Tweet> {
+object TweetsRepositoryImpl : TweetsRepository {
 
-    private var tweets = mutableListOf<Tweet>()
     private val _requestEnd = MutableLiveData(false)
     val requestEnd: LiveData<Boolean> = _requestEnd
 
@@ -28,9 +27,6 @@ object Tweets : Crud<Tweet> {
 
                     override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
                         val tweet = response.body()
-                        if (tweet != null) {
-                            tweets.add(0, tweet)
-                        }
                         println("New tweet: $tweet")
 
                         _requestEnd.value = true
@@ -39,12 +35,8 @@ object Tweets : Crud<Tweet> {
 
     }
 
-    override fun read(): List<Tweet> {
-        return tweets
-    }
-
-    override fun update() {
-        _requestEnd.value = false
+    override fun update(): MutableLiveData<List<Tweet>> {
+        val tweetsLiveData = MutableLiveData<List<Tweet>>()
 
         TwitterServiceImpl.twitterService
                 .getTimelineHome()
@@ -56,15 +48,14 @@ object Tweets : Crud<Tweet> {
                     override fun onResponse(call: Call<List<Tweet>>, response: retrofit2.Response<List<Tweet>>) {
                         val tweetsList = response.body()
                         if (tweetsList != null) {
-                            tweets = tweetsList.toMutableList()
+                            tweetsLiveData.value = tweetsList
+                            println("Call result: ${tweetsList.joinToString(separator = "\n")}")
                         }
-                        println("Call result: ${tweets.joinToString(separator = "\n")}")
-
-                        _requestEnd.value = true
                     }
                 })
-    }
 
+        return tweetsLiveData
+    }
 
     override fun delete(id: Long) {
 

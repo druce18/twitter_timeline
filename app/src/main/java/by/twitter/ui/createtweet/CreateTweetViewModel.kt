@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import by.twitter.storage.Tweets
+import by.twitter.storage.TweetsRepositoryImpl
 
 class CreateTweetViewModel : ViewModel() {
 
@@ -26,13 +26,13 @@ class CreateTweetViewModel : ViewModel() {
 
 
     fun createTweet(text: String) {
-        Tweets.create(text)
-        Tweets.requestEnd.observeForever(observerRequest)
+        TweetsRepositoryImpl.create(text)
+        TweetsRepositoryImpl.requestEnd.observeForever(observerRequest)
     }
 
     override fun onCleared() {
         super.onCleared()
-        Tweets.requestEnd.removeObserver(observerRequest)
+        TweetsRepositoryImpl.requestEnd.removeObserver(observerRequest)
     }
 
 }

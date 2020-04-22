@@ -40,7 +40,7 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
                         R.id.nav_controller,
                         CreateTweetFragment.newInstance()
                 )
-                .addToBackStack("Create Tweet")
+                .addToBackStack(CreateTweetFragment::class.java.simpleName)
                 .commit()
     }
 
