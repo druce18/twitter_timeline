@@ -1,13 +1,16 @@
 package by.twitter.di
 
 import android.content.Context
+import by.twitter.ui.createtweet.CreateTweetFragment
 import by.twitter.ui.main.MainActivity
 import by.twitter.ui.main.MainFragment
-import by.twitter.ui.timeline.TimelineViewModel
+import by.twitter.ui.timeline.TimelineFragment
 import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Singleton
 
-@Component(modules = [StorageModule::class])
+@Singleton
+@Component(modules = [StorageModule::class, AppModule::class, ViewModelModule::class])
 interface AppComponent {
 
     @Component.Factory
@@ -15,10 +18,12 @@ interface AppComponent {
         fun create(@BindsInstance context: Context): AppComponent
     }
 
-    fun inject(activity: TimelineViewModel)
-
     fun inject(activity: MainActivity)
 
-    fun inject(activity: MainFragment)
+    fun inject(fragment: TimelineFragment)
+
+    fun inject(fragment: MainFragment)
+
+    fun inject(fragment: CreateTweetFragment)
 
 }

@@ -9,6 +9,7 @@ import dagger.Module
 abstract class StorageModule {
 
     @Binds
-    abstract fun provideStorage(storage: TweetsRepositoryImpl): TweetsRepository
+    abstract fun provideStorage(tweetsRepository: TweetsRepositoryImpl): TweetsRepository
+
 
 }

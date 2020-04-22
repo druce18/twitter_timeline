@@ -4,15 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import by.twitter.storage.TweetsRepository
 import by.twitter.storage.TweetsRepositoryImpl
+import javax.inject.Inject
 
-class CreateTweetViewModel : ViewModel() {
+class CreateTweetViewModel @Inject constructor(private val tweetsRepository: TweetsRepository) : ViewModel() {
 
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean> = _loading
 
     private val _goBackToTimeline = MutableLiveData(false)
     val goBackToTimeline: LiveData<Boolean> = _goBackToTimeline
+
+    private var requestEnd = MutableLiveData(false)
 
     private val observerRequest = Observer<Boolean> { t ->
         if (t!!) {
@@ -26,13 +30,13 @@ class CreateTweetViewModel : ViewModel() {
 
 
     fun createTweet(text: String) {
-        TweetsRepositoryImpl.create(text)
-        TweetsRepositoryImpl.requestEnd.observeForever(observerRequest)
+        requestEnd = tweetsRepository.create(text)
+        requestEnd.observeForever(observerRequest)
     }
 
     override fun onCleared() {
         super.onCleared()
-        TweetsRepositoryImpl.requestEnd.removeObserver(observerRequest)
+        requestEnd.removeObserver(observerRequest)
     }
 
 }

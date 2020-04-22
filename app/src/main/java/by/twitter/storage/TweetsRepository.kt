@@ -5,7 +5,7 @@ import by.twitter.model.Tweet
 
 interface TweetsRepository {
 
-    fun create(text: String)
+    fun create(text: String): MutableLiveData<Boolean>
 
     fun update(): MutableLiveData<List<Tweet>>
 

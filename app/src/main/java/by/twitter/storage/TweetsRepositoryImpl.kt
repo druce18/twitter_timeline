@@ -1,24 +1,23 @@
 package by.twitter.storage
 
 import android.accounts.NetworkErrorException
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import by.twitter.model.Tweet
-import by.twitter.network.TwitterServiceImpl
+import by.twitter.network.TwitterConnection
 import retrofit2.Call
 import retrofit2.Callback
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
-object TweetsRepositoryImpl : TweetsRepository {
-
-    private val _requestEnd = MutableLiveData(false)
-    val requestEnd: LiveData<Boolean> = _requestEnd
+@Singleton
+class TweetsRepositoryImpl @Inject constructor(private val twitterService: TwitterConnection) : TweetsRepository {
 
 
-    override fun create(text: String) {
-        _requestEnd.value = false
-
-        TwitterServiceImpl.twitterService
+    override fun create(text: String): MutableLiveData<Boolean> {
+        val requestEnd = MutableLiveData(false)
+        twitterService
+                .twitterService
                 .postUpdateTweet(text)
                 .enqueue(object : Callback<Tweet> {
                     override fun onFailure(call: Call<Tweet>, t: Throwable) {
@@ -29,16 +28,18 @@ object TweetsRepositoryImpl : TweetsRepository {
                         val tweet = response.body()
                         println("New tweet: $tweet")
 
-                        _requestEnd.value = true
+                        requestEnd.value = true
                     }
                 })
 
+        return requestEnd
     }
 
     override fun update(): MutableLiveData<List<Tweet>> {
         val tweetsLiveData = MutableLiveData<List<Tweet>>()
 
-        TwitterServiceImpl.twitterService
+        twitterService
+                .twitterService
                 .getTimelineHome()
                 .enqueue(object : Callback<List<Tweet>> {
                     override fun onFailure(call: Call<List<Tweet>>, t: Throwable) {
