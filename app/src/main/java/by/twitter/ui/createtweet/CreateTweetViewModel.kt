@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import by.twitter.storage.TweetsRepository
-import by.twitter.storage.TweetsRepositoryImpl
 import javax.inject.Inject
 
 class CreateTweetViewModel @Inject constructor(private val tweetsRepository: TweetsRepository) : ViewModel() {
