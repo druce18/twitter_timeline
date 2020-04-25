@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import by.twitter.R
 import by.twitter.model.Tweet
+import by.twitter.storage.UserNow
 import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
 import kotlinx.android.extensions.LayoutContainer
@@ -58,6 +59,11 @@ class AllTweetsAdapter(private val tweetsList: List<Tweet>) :
             massageTweetTextView.text = tweet.text
             retweetsCountTweetTextView.text = tweet.retweetCount.toString()
             likesCountTweetTextView.text = tweet.favoriteCount.toString()
+
+//            userProfileTweetImage.setOnClickListener {
+//                UserNow.user = tweet.user
+//                println(tweet.user)
+//            }
 
         }
     }

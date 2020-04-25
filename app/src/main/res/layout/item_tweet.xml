@@ -58,7 +58,7 @@
                         android:layout_weight="1"
                         android:gravity="left"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
-                        android:textColor="@color/action_tweet_action"
+                        android:textColor="@color/tweet_text"
                         android:textSize="13sp"
                         tools:text="NameID" />
 

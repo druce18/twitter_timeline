@@ -13,6 +13,9 @@ import by.twitter.model.Tweet
 import by.twitter.ui.createtweet.CreateTweetFragment
 import by.twitter.ui.timeline.adapter.AllTweetsAdapter
 import kotlinx.android.synthetic.main.fragment_timeline.*
+import kotlinx.android.synthetic.main.item_tweet.*
+import kotlinx.android.synthetic.main.item_tweet_advertisement.*
+import kotlinx.android.synthetic.main.item_tweet_advertisement.userProfileTweetImage
 import javax.inject.Inject
 
 class TimelineFragment : Fragment(R.layout.fragment_timeline) {
