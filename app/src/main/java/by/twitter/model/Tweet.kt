@@ -1,10 +1,7 @@
 package by.twitter.model
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
 
-@Parcelize
 data class Tweet(
         @SerializedName("created_at")
         val createdAt: String,
@@ -18,4 +15,4 @@ data class Tweet(
         val retweetCount: Int,
         @SerializedName("favorite_count")
         val favoriteCount: Int
-) : Parcelable
+)
