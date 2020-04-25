@@ -15,17 +15,17 @@ import by.twitter.ui.timeline.adapter.AllTweetsAdapter
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import javax.inject.Inject
 
-class TimelineFragment : Fragment(R.layout.fragment_timeline) {
+class UserTimelineFragment : Fragment(R.layout.fragment_timeline_user) {
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProvider.Factory
 
-    private lateinit var timelineViewModel: TimelineViewModel
-
+    private lateinit var userTimelineViewModel: UserTimelineViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        userTimelineViewModel = ViewModelProvider(this, viewModelProviderFactory).get(UserTimelineViewModel::class.java)
+
         super.onViewCreated(view, savedInstanceState)
-        timelineViewModel = ViewModelProvider(this, viewModelProviderFactory).get(TimelineViewModel::class.java)
 
         subscribeTimelineViewModel()
 
@@ -41,7 +41,7 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
     }
 
     private fun subscribeTimelineViewModel() {
-        timelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<Tweet>> { tweets ->
+        userTimelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<Tweet>> { tweets ->
             tweetsRecyclerView.adapter = AllTweetsAdapter(tweets)
             tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         })
@@ -59,8 +59,7 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
 
     companion object {
 
-        fun newInstance(): Fragment = TimelineFragment()
+        fun newInstance(): Fragment = UserTimelineFragment()
 
     }
-
 }

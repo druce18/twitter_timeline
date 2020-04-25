@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/allTweetsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.timeline.UserTimelineFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/backImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_button"
+                android:src="@drawable/ic_back_button" />
+
+            <ImageButton
+                android:id="@+id/settingsImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_margin="10dp"
+                android:background="@drawable/round_button"
+                android:src="@drawable/ic_menu_dots" />
+
+            <ImageView
+                android:id="@+id/userBackgroundImage"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:alpha="0.3"
+                android:scaleType="centerCrop"
+                tools:src="@color/colorAccent" />
+
+            <ImageView
+                android:id="@+id/userProfileTweetImage"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="80dp"
+                tools:src="@drawable/ic_user_tweet" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/readUserButton"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right|bottom"
+                android:layout_marginEnd="10dp"
+                android:text="@string/read"
+                android:textSize="12sp"
+                app:cornerRadius="12dp" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/usernameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:text="Name User" />
+
+        <TextView
+            android:id="@+id/userIDTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+            android:textColor="@color/action_tweet_action"
+            android:textSize="15sp"
+            tools:text="UserID" />
+
+        <TextView
+            android:id="@+id/descriptionUserTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+            android:textColor="@color/action_tweet_action"
+            android:textSize="15sp"
+            tools:text="Description User" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/userLocationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                android:textColor="@color/action_tweet_action"
+                android:textSize="15sp"
+                tools:text="Here" />
+
+            <TextView
+                android:id="@+id/userUrlTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                android:textColor="@color/action_tweet_action"
+                android:textSize="15sp"
+                tools:text="Url" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/userDateBirthdayTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+            android:textColor="@color/action_tweet_action"
+            android:textSize="15sp"
+            tools:text="User Date Birthday" />
+
+        <TextView
+            android:id="@+id/userDateRegistrationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+            android:textColor="@color/action_tweet_action"
+            android:textSize="15sp"
+            tools:text="User Date Registration" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/userCountReadingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:text="0" />
+
+            <TextView
+                android:id="@+id/userReadingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:text="@string/friends"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                android:textColor="@color/action_tweet_action"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/userCountReadersTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                tools:text="0" />
+
+            <TextView
+                android:id="@+id/userReadersTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:text="@string/followers"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
+                android:textColor="@color/action_tweet_action"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tweetsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white_grey" />
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/createTweetActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="17dp"
+        app:backgroundTint="@color/colorPrimary"
+        app:elevation="10dp"
+        app:srcCompat="@drawable/ic_plus" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

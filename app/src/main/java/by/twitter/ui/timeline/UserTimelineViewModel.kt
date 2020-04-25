@@ -7,15 +7,17 @@ import by.twitter.model.Tweet
 import by.twitter.storage.TweetRepository
 import javax.inject.Inject
 
-class TimelineViewModel @Inject constructor(private val tweetRepository: TweetRepository) : ViewModel() {
+class UserTimelineViewModel @Inject constructor(private val tweetRepository: TweetRepository) : ViewModel() {
 
-    private val tweetsData: MutableLiveData<List<Tweet>> by lazy {
-        tweetRepository.getHomeTimeline()
-    }
+    private var tweetsData = MutableLiveData<List<Tweet>>()
 
 
     fun getTweets(): LiveData<List<Tweet>> {
         return tweetsData
+    }
+
+    fun updateTimeline(userId: Long) {
+        tweetsData = tweetRepository.getUserTimeline(userId)
     }
 
 }

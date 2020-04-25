@@ -9,6 +9,20 @@ data class User(
         val name: String,
         @SerializedName("screen_name")
         val screenName: String,
+        @SerializedName("location")
+        val location: String,
+        @SerializedName("URL")
+        val url_user: String,
+        @SerializedName("description")
+        val description: String,
+        @SerializedName("created_at")
+        val createdAt: String,
+        @SerializedName("friends_count")
+        val friends_count: Int,
+        @SerializedName("followers_count")
+        val followersCount: Int,
         @SerializedName("profile_image_url_https")
-        val profileImageUrlHttps: String
+        val profileImageUrlHttps: String,
+        @SerializedName("profile_banner_url")
+        val profileBannerUrl: String
 )

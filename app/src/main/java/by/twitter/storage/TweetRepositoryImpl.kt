@@ -33,10 +33,10 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
         return requestEnd
     }
 
-    override fun update(): MutableLiveData<List<Tweet>> {
+    override fun getHomeTimeline(): MutableLiveData<List<Tweet>> {
         val tweetsLiveData = MutableLiveData<List<Tweet>>()
         twitterService
-                .getTimelineHome()
+                .getHomeTimeline()
                 .enqueue(object : Callback<List<Tweet>> {
                     override fun onFailure(call: Call<List<Tweet>>, t: Throwable) {
                         throw NetworkErrorException("Check network connection")
@@ -52,6 +52,27 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                 })
 
         return tweetsLiveData
+    }
+
+    override fun getUserTimeline(userId: Long): MutableLiveData<List<Tweet>> {
+        val userTweets = MutableLiveData<List<Tweet>>()
+        twitterService
+                .getUserTimeline(userId = userId)
+                .enqueue(object : Callback<List<Tweet>> {
+                    override fun onFailure(call: Call<List<Tweet>>, t: Throwable) {
+                        throw NetworkErrorException("Check network connection")
+                    }
+
+                    override fun onResponse(call: Call<List<Tweet>>, response: retrofit2.Response<List<Tweet>>) {
+                        val tweetsList = response.body()
+                        if (tweetsList != null) {
+                            userTweets.value = tweetsList
+                            println("Call result user tweets: ${tweetsList.joinToString(separator = "\n")}")
+                        }
+                    }
+                })
+
+        return userTweets
     }
 
     override fun delete(id: Long) {

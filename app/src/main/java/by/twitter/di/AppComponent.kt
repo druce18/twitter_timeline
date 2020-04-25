@@ -5,6 +5,7 @@ import by.twitter.ui.createtweet.CreateTweetFragment
 import by.twitter.ui.main.MainActivity
 import by.twitter.ui.main.MainFragment
 import by.twitter.ui.timeline.TimelineFragment
+import by.twitter.ui.timeline.UserTimelineFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -25,5 +26,7 @@ interface AppComponent {
     fun inject(fragment: MainFragment)
 
     fun inject(fragment: CreateTweetFragment)
+
+    fun inject(fragment: UserTimelineFragment)
 
 }
