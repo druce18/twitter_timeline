@@ -1,4 +1,4 @@
-package by.twitter.ui.timeline
+package by.twitter.ui.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

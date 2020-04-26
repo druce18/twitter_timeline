@@ -5,7 +5,7 @@ import by.twitter.ui.createtweet.CreateTweetFragment
 import by.twitter.ui.main.MainActivity
 import by.twitter.ui.main.MainFragment
 import by.twitter.ui.timeline.TimelineFragment
-import by.twitter.ui.timeline.UserTimelineFragment
+import by.twitter.ui.profile.UserTimelineFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton

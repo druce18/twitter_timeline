@@ -4,18 +4,19 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.twitter.R
 import by.twitter.TwitterApplication
 import by.twitter.model.Tweet
+import by.twitter.model.User
+import by.twitter.storage.UserNow
 import by.twitter.ui.createtweet.CreateTweetFragment
+import by.twitter.ui.profile.UserTimelineFragment
 import by.twitter.ui.timeline.adapter.AllTweetsAdapter
 import kotlinx.android.synthetic.main.fragment_timeline.*
-import kotlinx.android.synthetic.main.item_tweet.*
-import kotlinx.android.synthetic.main.item_tweet_advertisement.*
-import kotlinx.android.synthetic.main.item_tweet_advertisement.userProfileTweetImage
 import javax.inject.Inject
 
 class TimelineFragment : Fragment(R.layout.fragment_timeline) {
@@ -28,6 +29,7 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         timelineViewModel = ViewModelProvider(this, viewModelProviderFactory).get(TimelineViewModel::class.java)
 
         subscribeTimelineViewModel()
@@ -45,9 +47,22 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
 
     private fun subscribeTimelineViewModel() {
         timelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<Tweet>> { tweets ->
-            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets)
+            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets) { user ->
+                navigateToUser(user)
+            }
             tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         })
+    }
+
+    private fun navigateToUser(user: User) {
+        UserNow.user = user
+        requireActivity().supportFragmentManager.beginTransaction()
+                .replace(
+                        R.id.nav_controller,
+                        UserTimelineFragment.newInstance()
+                )
+                .addToBackStack(UserTimelineFragment::class.java.simpleName)
+                .commit()
     }
 
     private fun navigateToCreateTweet() {

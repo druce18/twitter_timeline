@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import by.twitter.ui.createtweet.CreateTweetViewModel
 import by.twitter.ui.timeline.TimelineViewModel
-import by.twitter.ui.timeline.UserTimelineViewModel
+import by.twitter.ui.profile.UserTimelineViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

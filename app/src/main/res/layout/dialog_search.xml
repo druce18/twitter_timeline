@@ -4,7 +4,7 @@
     android:layout_width="300dp"
     android:layout_height="200dp"
     android:layout_gravity="center"
-    android:background="@color/white_grey"
+    android:background="@color/white_grey_background"
     android:orientation="vertical"
     app:cardCornerRadius="20dp">
 

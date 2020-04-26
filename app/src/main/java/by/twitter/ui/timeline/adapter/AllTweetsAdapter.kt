@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import by.twitter.R
 import by.twitter.model.Tweet
+import by.twitter.model.User
 import by.twitter.storage.UserNow
 import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_tweet.*
 
-class AllTweetsAdapter(private val tweetsList: List<Tweet>) :
+class AllTweetsAdapter(private val tweetsList: List<Tweet>, private val clickListener: (User) -> Unit) :
         RecyclerView.Adapter<AllTweetsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,7 +38,7 @@ class AllTweetsAdapter(private val tweetsList: List<Tweet>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val tweet = tweetsList[position]
-        holder.bind(tweet)
+        holder.bind(tweet, clickListener)
     }
 
     class ViewHolder(override val containerView: View) :
@@ -45,7 +46,7 @@ class AllTweetsAdapter(private val tweetsList: List<Tweet>) :
 
         private val requestManager = Glide.with(containerView.context)
 
-        fun bind(tweet: Tweet) {
+        fun bind(tweet: Tweet, clickListener: (User) -> Unit) {
             requestManager.clear(userProfileTweetImage)
 
             requestManager
@@ -60,10 +61,9 @@ class AllTweetsAdapter(private val tweetsList: List<Tweet>) :
             retweetsCountTweetTextView.text = tweet.retweetCount.toString()
             likesCountTweetTextView.text = tweet.favoriteCount.toString()
 
-//            userProfileTweetImage.setOnClickListener {
-//                UserNow.user = tweet.user
-//                println(tweet.user)
-//            }
+            userProfileTweetImage.setOnClickListener {
+                clickListener(tweet.user)
+            }
 
         }
     }
