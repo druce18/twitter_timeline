@@ -12,9 +12,8 @@ import by.twitter.R
 import by.twitter.TwitterApplication
 import by.twitter.model.Tweet
 import by.twitter.model.User
-import by.twitter.storage.UserNow
 import by.twitter.ui.createtweet.CreateTweetFragment
-import by.twitter.ui.profile.UserTimelineFragment
+import by.twitter.ui.profile.UserProfileFragment
 import by.twitter.ui.timeline.adapter.AllTweetsAdapter
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import javax.inject.Inject
@@ -46,22 +45,34 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
     }
 
     private fun subscribeTimelineViewModel() {
+        timelineViewModel.setTweetsForTimeline()
         timelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<Tweet>> { tweets ->
-            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets) { user ->
-                navigateToUser(user)
-            }
+            tweetsRecyclerView.adapter = AllTweetsAdapter(
+                    tweets,
+                    { user -> navigateToUser(user) },
+                    { tweet -> likeOrDislikeTweet(tweet) },
+                    { tweet -> retweetOrUnretweet(tweet) }
+            )
             tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         })
     }
 
+    private fun likeOrDislikeTweet(tweet: Tweet) {
+        timelineViewModel.likeOrDislikeTweet(tweet)
+    }
+
+    private fun retweetOrUnretweet(tweet: Tweet) {
+        timelineViewModel.retweetOrUnretweet(tweet)
+    }
+
     private fun navigateToUser(user: User) {
-        UserNow.user = user
+        timelineViewModel.user = user
         requireActivity().supportFragmentManager.beginTransaction()
                 .replace(
                         R.id.nav_controller,
-                        UserTimelineFragment.newInstance()
+                        UserProfileFragment.newInstance()
                 )
-                .addToBackStack(UserTimelineFragment::class.java.simpleName)
+                .addToBackStack(UserProfileFragment::class.java.simpleName)
                 .commit()
     }
 

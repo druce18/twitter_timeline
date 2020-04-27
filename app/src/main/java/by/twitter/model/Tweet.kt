@@ -13,6 +13,10 @@ data class Tweet(
         val user: User,
         @SerializedName("retweet_count")
         val retweetCount: Int,
+        @SerializedName("retweeted")
+        val retweeted: Boolean,
         @SerializedName("favorite_count")
-        val favoriteCount: Int
+        val favoriteCount: Int,
+        @SerializedName("favorited")
+        val favorited: Boolean
 )

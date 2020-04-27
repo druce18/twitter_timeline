@@ -75,6 +75,79 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
         return userTweets
     }
 
+    override fun retweet(id: Long): MutableLiveData<Tweet> {
+        val tweetLiveData = MutableLiveData<Tweet>()
+        twitterService
+                .postRetweet(id)
+                .enqueue(object : Callback<Tweet> {
+                    override fun onFailure(call: Call<Tweet>, t: Throwable) {
+                        throw NetworkErrorException("Check network connection")
+                    }
+
+                    override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
+                        val tweet = response.body()
+                        tweetLiveData.value = tweet
+
+                        println("New retweet: $tweet")
+                    }
+                })
+        return tweetLiveData
+    }
+
+    override fun unretweet(id: Long): MutableLiveData<Tweet> {
+        val tweetLiveData = MutableLiveData<Tweet>()
+        twitterService
+                .postUnretweet(id)
+                .enqueue(object : Callback<Tweet> {
+                    override fun onFailure(call: Call<Tweet>, t: Throwable) {
+                        throw NetworkErrorException("Check network connection")
+                    }
+
+                    override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
+                        val tweet = response.body()
+                        tweetLiveData.value = tweet
+                        println("New unretweet: $tweet")
+                    }
+                })
+        return tweetLiveData
+    }
+
+    override fun favoritesCreate(id: Long): MutableLiveData<Tweet> {
+        val tweetLiveData = MutableLiveData<Tweet>()
+        twitterService
+                .postFavoritesCreate(id)
+                .enqueue(object : Callback<Tweet> {
+                    override fun onFailure(call: Call<Tweet>, t: Throwable) {
+                        throw NetworkErrorException("Check network connection")
+                    }
+
+                    override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
+                        val tweet = response.body()
+                        tweetLiveData.value = tweet
+                        println("New like tweet: $tweet")
+                    }
+                })
+        return tweetLiveData
+    }
+
+    override fun favoritesDestroy(id: Long): MutableLiveData<Tweet> {
+        val tweetLiveData = MutableLiveData<Tweet>()
+        twitterService
+                .postFavoritesDestroy(id)
+                .enqueue(object : Callback<Tweet> {
+                    override fun onFailure(call: Call<Tweet>, t: Throwable) {
+                        throw NetworkErrorException("Check network connection")
+                    }
+
+                    override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
+                        val tweet = response.body()
+                        tweetLiveData.value = tweet
+                        println("New dislike tweet: $tweet")
+                    }
+                })
+        return tweetLiveData
+    }
+
     override fun delete(id: Long) {
 
     }

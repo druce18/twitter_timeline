@@ -2,7 +2,6 @@ package by.twitter.ui.profile
 
 import android.content.Context
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -12,8 +11,8 @@ import by.twitter.R
 import by.twitter.TwitterApplication
 import by.twitter.model.Tweet
 import by.twitter.model.User
-import by.twitter.storage.UserNow
 import by.twitter.ui.createtweet.CreateTweetFragment
+import by.twitter.ui.timeline.TimelineViewModel
 import by.twitter.ui.timeline.adapter.AllTweetsAdapter
 import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
@@ -22,16 +21,16 @@ import kotlinx.android.synthetic.main.item_tweet.userProfileTweetImage
 import kotlinx.android.synthetic.main.item_user_profile.*
 import javax.inject.Inject
 
-class UserTimelineFragment : Fragment(R.layout.fragment_timeline_user) {
+class UserProfileFragment : Fragment(R.layout.fragment_timeline_user) {
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProvider.Factory
 
-    private lateinit var userTimelineViewModel: UserTimelineViewModel
+    private lateinit var timelineViewModel: TimelineViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userTimelineViewModel = ViewModelProvider(this, viewModelProviderFactory).get(UserTimelineViewModel::class.java)
+        timelineViewModel = ViewModelProvider(this, viewModelProviderFactory).get(TimelineViewModel::class.java)
 
         printUser()
 
@@ -52,62 +51,63 @@ class UserTimelineFragment : Fragment(R.layout.fragment_timeline_user) {
     }
 
     private fun printUser() {
+        val user = timelineViewModel.user
+
         val requestManager = context?.let { Glide.with(it) }
         if (requestManager != null) {
             requestManager.clear(userProfileTweetImage)
             requestManager
-                    .load(UserNow.user?.profileImageUrlHttps)
+                    .load(user.profileImageUrlHttps)
                     .circleCrop()
                     .into(userProfileTweetImage)
 
             requestManager.clear(userBackgroundImage)
             requestManager
-                    .load(UserNow.user?.profileBannerUrl)
+                    .load(user.profileBannerUrl)
                     .into(userBackgroundImage)
         }
 
-        usernameTextView.text = UserNow.user?.name
-        userIDTextView.text = "@${UserNow.user?.screenName}"
-        descriptionUserTextView.text = UserNow.user?.description
+        usernameTextView.text = user.name
+        userIDTextView.text = "@${user.screenName}"
+        descriptionUserTextView.text = user.description
 
-        if (!UserNow.user?.location.isNullOrEmpty()) {
+        if (!user.location.isNullOrEmpty()) {
             locationLinearLayout.visibility = View.VISIBLE
-            locationUserTextView.text = UserNow.user?.location
+            locationUserTextView.text = user.location
         }
 
-        if (!UserNow.user?.url_user.isNullOrEmpty()) {
+        if (!user.url_user.isNullOrEmpty()) {
             urlLinearLayout.visibility = View.VISIBLE
-//            urlUserTextView.movementMethod = LinkMovementMethod.getInstance()
-            urlUserTextView.text = UserNow.user?.url_user
+            urlUserTextView.text = user.url_user
         }
 
-        if (!UserNow.user?.createdAt.isNullOrEmpty()) {
+        if (!user.createdAt.isNullOrEmpty()) {
             registrationLinearLayout.visibility = View.VISIBLE
-            registrationUserTextView.text = DateUtil.toSimpleString(UserNow.user?.createdAt!!)
+            registrationUserTextView.text = "Registration: ${DateUtil.toSimpleString(user.createdAt)}"
         }
 
-        friendsCountUserTextView.text = UserNow.user?.friendsCount.toString()
-        followersCountUserTextView.text = UserNow.user?.followersCount.toString()
+        friendsCountUserTextView.text = user.friendsCount.toString()
+        followersCountUserTextView.text = user.followersCount.toString()
     }
 
     private fun subscribeTimelineViewModel() {
-        UserNow.user?.id?.let { userTimelineViewModel.updateTimeline(it) }
-        userTimelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<Tweet>> { tweets ->
-            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets) { user ->
-                navigateToUser(user)
-            }
-            tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        })
+//        timelineViewModel.setTweetsForUser()
+//        timelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<Tweet>> { tweets ->
+//            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets) { user ->
+//                navigateToUser(user)
+//            }
+//            tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+//        })
     }
 
     private fun navigateToUser(user: User) {
-//        UserNow.user = user
+//        timelineViewModel.user = user
 //        requireActivity().supportFragmentManager.beginTransaction()
 //                .replace(
 //                        R.id.nav_controller,
 //                        newInstance()
 //                )
-//                .addToBackStack(UserTimelineFragment::class.java.simpleName)
+//                .addToBackStack(UserProfileFragment::class.java.simpleName)
 //                .commit()
     }
 
@@ -123,7 +123,7 @@ class UserTimelineFragment : Fragment(R.layout.fragment_timeline_user) {
 
     companion object {
 
-        fun newInstance(): Fragment = UserTimelineFragment()
+        fun newInstance(): Fragment = UserProfileFragment()
 
     }
 }

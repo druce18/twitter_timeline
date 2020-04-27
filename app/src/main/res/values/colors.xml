@@ -10,4 +10,6 @@
     <color name="ghostly">#00FFFFFF</color>
     <color name="user_tweet_text">#939393</color>
     <color name="yellow">#B2FFF200</color>
+    <color name="red_like">#FF0000</color>
+    <color name="retweet">#00FF44</color>
 </resources>
