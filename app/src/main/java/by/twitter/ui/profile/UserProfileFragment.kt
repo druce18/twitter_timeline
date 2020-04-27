@@ -91,13 +91,20 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user) {
     }
 
     private fun subscribeTimelineViewModel() {
-//        timelineViewModel.setTweetsForUser()
-//        timelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<Tweet>> { tweets ->
-//            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets) { user ->
-//                navigateToUser(user)
-//            }
-//            tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-//        })
+        timelineViewModel.setTweetsForUser()
+        val userOnClick: (User) -> Unit = { user -> navigateToUser(user) }
+        val likeOnClick: (Tweet, Int) -> Unit = { tweet, position ->
+            timelineViewModel.likeOrDislikeTweet(tweet, position)
+        }
+        val retweetOnClick: (Tweet, Int) -> Unit = { tweet, position ->
+            timelineViewModel.retweetOrUnretweet(tweet, position)
+        }
+
+        timelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<Tweet>> { tweets ->
+            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets, userOnClick, likeOnClick, retweetOnClick)
+            tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            tweetsRecyclerView.scrollToPosition(timelineViewModel.position)
+        })
     }
 
     private fun navigateToUser(user: User) {

@@ -15,7 +15,8 @@ import by.twitter.model.User
 import by.twitter.ui.createtweet.CreateTweetFragment
 import by.twitter.ui.profile.UserProfileFragment
 import by.twitter.ui.timeline.adapter.AllTweetsAdapter
-import kotlinx.android.synthetic.main.fragment_timeline.*
+import kotlinx.android.synthetic.main.fragment_timeline.createTweetActionButton
+import kotlinx.android.synthetic.main.fragment_timeline.tweetsRecyclerView
 import javax.inject.Inject
 
 class TimelineFragment : Fragment(R.layout.fragment_timeline) {
@@ -46,23 +47,19 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
 
     private fun subscribeTimelineViewModel() {
         timelineViewModel.setTweetsForTimeline()
+        val userOnClick: (User) -> Unit = { user -> navigateToUser(user) }
+        val likeOnClick: (Tweet, Int) -> Unit = { tweet, position ->
+            timelineViewModel.likeOrDislikeTweet(tweet, position)
+        }
+        val retweetOnClick: (Tweet, Int) -> Unit = { tweet, position ->
+            timelineViewModel.retweetOrUnretweet(tweet, position)
+        }
+
         timelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<Tweet>> { tweets ->
-            tweetsRecyclerView.adapter = AllTweetsAdapter(
-                    tweets,
-                    { user -> navigateToUser(user) },
-                    { tweet -> likeOrDislikeTweet(tweet) },
-                    { tweet -> retweetOrUnretweet(tweet) }
-            )
+            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets, userOnClick, likeOnClick, retweetOnClick)
             tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            tweetsRecyclerView.scrollToPosition(timelineViewModel.position)
         })
-    }
-
-    private fun likeOrDislikeTweet(tweet: Tweet) {
-        timelineViewModel.likeOrDislikeTweet(tweet)
-    }
-
-    private fun retweetOrUnretweet(tweet: Tweet) {
-        timelineViewModel.retweetOrUnretweet(tweet)
     }
 
     private fun navigateToUser(user: User) {

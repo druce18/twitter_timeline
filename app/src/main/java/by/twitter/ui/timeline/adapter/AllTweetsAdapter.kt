@@ -14,8 +14,8 @@ import kotlinx.android.synthetic.main.item_tweet.*
 
 class AllTweetsAdapter(private val tweetsList: List<Tweet>,
                        private val userClickListener: (User) -> Unit,
-                       private val likeClickListener: (Tweet) -> Unit,
-                       private val retweetClickListener: (Tweet) -> Unit) :
+                       private val likeClickListener: (Tweet, Int) -> Unit,
+                       private val retweetClickListener: (Tweet, Int) -> Unit) :
         RecyclerView.Adapter<AllTweetsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,16 +38,18 @@ class AllTweetsAdapter(private val tweetsList: List<Tweet>,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val tweet = tweetsList[position]
-        holder.bind(tweet, userClickListener, likeClickListener, retweetClickListener)
+        holder.bind(tweet, position, userClickListener, likeClickListener, retweetClickListener)
     }
+
 
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         private val requestManager = Glide.with(containerView.context)
 
-        fun bind(tweet: Tweet, userClickListener: (User) -> Unit,
-                 likeClickListener: (Tweet) -> Unit,
-                 retweetClickListener: (Tweet) -> Unit) {
+        fun bind(tweet: Tweet, position: Int,
+                 userClickListener: (User) -> Unit,
+                 likeClickListener: (Tweet, Int) -> Unit,
+                 retweetClickListener: (Tweet, Int) -> Unit) {
 
             requestManager.clear(userProfileTweetImage)
 
@@ -80,11 +82,11 @@ class AllTweetsAdapter(private val tweetsList: List<Tweet>,
             }
 
             likeTweetImageButton.setOnClickListener {
-                likeClickListener(tweet)
+                likeClickListener(tweet, position)
             }
 
             retweetTweetImageButton.setOnClickListener {
-                retweetClickListener(tweet)
+                retweetClickListener(tweet, position)
             }
         }
     }

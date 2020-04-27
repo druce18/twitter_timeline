@@ -6,6 +6,7 @@ import by.twitter.model.Tweet
 import by.twitter.network.TwitterService
 import retrofit2.Call
 import retrofit2.Callback
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,12 +25,10 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
 
                     override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
                         val tweet = response.body()
-                        println("New tweet: $tweet")
-
+                        Timber.i("New tweet: $tweet")
                         requestEnd.value = true
                     }
                 })
-
         return requestEnd
     }
 
@@ -46,11 +45,10 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                         val tweetsList = response.body()
                         if (tweetsList != null) {
                             tweetsLiveData.value = tweetsList
-                            println("Call result: ${tweetsList.joinToString(separator = "\n")}")
+                            Timber.i("Call result: ${tweetsList.joinToString(separator = "\n")}")
                         }
                     }
                 })
-
         return tweetsLiveData
     }
 
@@ -67,11 +65,10 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                         val tweetsList = response.body()
                         if (tweetsList != null) {
                             userTweets.value = tweetsList
-                            println("Call result user tweets: ${tweetsList.joinToString(separator = "\n")}")
+                            Timber.i("Call result user tweets: ${tweetsList.joinToString(separator = "\n")}")
                         }
                     }
                 })
-
         return userTweets
     }
 
@@ -87,8 +84,7 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                     override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
                         val tweet = response.body()
                         tweetLiveData.value = tweet
-
-                        println("New retweet: $tweet")
+                        Timber.i("retweet: $tweet")
                     }
                 })
         return tweetLiveData
@@ -106,7 +102,7 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                     override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
                         val tweet = response.body()
                         tweetLiveData.value = tweet
-                        println("New unretweet: $tweet")
+                        Timber.i("unretweet: $tweet")
                     }
                 })
         return tweetLiveData
@@ -124,7 +120,7 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                     override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
                         val tweet = response.body()
                         tweetLiveData.value = tweet
-                        println("New like tweet: $tweet")
+                        Timber.i("like tweet: $tweet")
                     }
                 })
         return tweetLiveData
@@ -142,7 +138,7 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                     override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
                         val tweet = response.body()
                         tweetLiveData.value = tweet
-                        println("New dislike tweet: $tweet")
+                        Timber.i("dislike tweet: $tweet")
                     }
                 })
         return tweetLiveData

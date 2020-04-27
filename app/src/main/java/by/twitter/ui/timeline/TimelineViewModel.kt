@@ -12,7 +12,7 @@ import javax.inject.Inject
 class TimelineViewModel @Inject constructor(private val tweetRepository: TweetRepository) : ViewModel() {
 
     private var tweetsData = MutableLiveData<List<Tweet>>()
-
+    var position = 0
     lateinit var user: User
 
 
@@ -28,7 +28,8 @@ class TimelineViewModel @Inject constructor(private val tweetRepository: TweetRe
         tweetsData = tweetRepository.getUserTimeline(user.id)
     }
 
-    fun likeOrDislikeTweet(tweet: Tweet) {
+    fun likeOrDislikeTweet(tweet: Tweet, pos: Int) {
+        position = pos
         val tweetLiveData = if (tweet.favorited) {
             tweetRepository.favoritesDestroy(tweet.id)
         } else {
@@ -39,16 +40,15 @@ class TimelineViewModel @Inject constructor(private val tweetRepository: TweetRe
         val value = tweetsData.value?.toMutableList()
         tweetLiveData.observeForever(Observer {
             if (it != null) {
-                if (value != null && index != null) {
-                    value.removeAt(index)
-                    value.add(index, it)
-                    tweetsData.value = value
-                }
+                value?.removeAt(index!!)
+                value?.add(index!!, it)
+                tweetsData.value = value
             }
         })
     }
 
-    fun retweetOrUnretweet(tweet: Tweet) {
+    fun retweetOrUnretweet(tweet: Tweet, pos: Int) {
+        position = pos
         val tweetLiveData = if (tweet.retweeted) {
             tweetRepository.unretweet(tweet.id)
         } else {
@@ -59,11 +59,9 @@ class TimelineViewModel @Inject constructor(private val tweetRepository: TweetRe
         val value = tweetsData.value?.toMutableList()
         tweetLiveData.observeForever(Observer {
             if (it != null) {
-                if (value != null && index != null) {
-                    value.removeAt(index)
-                    value.add(index, it)
-                    tweetsData.value = value
-                }
+                value?.removeAt(index!!)
+                value?.add(index!!, it)
+                tweetsData.value = value
             }
         })
     }
