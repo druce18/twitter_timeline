@@ -2,7 +2,7 @@ package by.twitter.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Tweet(
+data class TweetPayload(
         @SerializedName("created_at")
         val createdAt: String,
         @SerializedName("id")
@@ -10,7 +10,7 @@ data class Tweet(
         @SerializedName("text")
         val text: String,
         @SerializedName("user")
-        val user: User,
+        val user: UserPayload,
         @SerializedName("retweet_count")
         val retweetCount: Int,
         @SerializedName("retweeted")

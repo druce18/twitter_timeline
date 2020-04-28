@@ -2,7 +2,7 @@ package by.twitter.storage
 
 import android.accounts.NetworkErrorException
 import androidx.lifecycle.MutableLiveData
-import by.twitter.model.Tweet
+import by.twitter.model.TweetPayload
 import by.twitter.network.TwitterService
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,12 +18,12 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
         val requestEnd = MutableLiveData(false)
         twitterService
                 .postUpdateTweet(text)
-                .enqueue(object : Callback<Tweet> {
-                    override fun onFailure(call: Call<Tweet>, t: Throwable) {
+                .enqueue(object : Callback<TweetPayload> {
+                    override fun onFailure(call: Call<TweetPayload>, t: Throwable) {
                         throw NetworkErrorException("Check network connection")
                     }
 
-                    override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
+                    override fun onResponse(call: Call<TweetPayload>, response: retrofit2.Response<TweetPayload>) {
                         val tweet = response.body()
                         Timber.i("New tweet: $tweet")
                         requestEnd.value = true
@@ -32,16 +32,16 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
         return requestEnd
     }
 
-    override fun getHomeTimeline(): MutableLiveData<List<Tweet>> {
-        val tweetsLiveData = MutableLiveData<List<Tweet>>()
+    override fun getHomeTimeline(): MutableLiveData<List<TweetPayload>> {
+        val tweetsLiveData = MutableLiveData<List<TweetPayload>>()
         twitterService
                 .getHomeTimeline()
-                .enqueue(object : Callback<List<Tweet>> {
-                    override fun onFailure(call: Call<List<Tweet>>, t: Throwable) {
+                .enqueue(object : Callback<List<TweetPayload>> {
+                    override fun onFailure(call: Call<List<TweetPayload>>, t: Throwable) {
                         throw NetworkErrorException("Check network connection")
                     }
 
-                    override fun onResponse(call: Call<List<Tweet>>, response: retrofit2.Response<List<Tweet>>) {
+                    override fun onResponse(call: Call<List<TweetPayload>>, response: retrofit2.Response<List<TweetPayload>>) {
                         val tweetsList = response.body()
                         if (tweetsList != null) {
                             tweetsLiveData.value = tweetsList
@@ -52,16 +52,16 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
         return tweetsLiveData
     }
 
-    override fun getUserTimeline(userId: Long): MutableLiveData<List<Tweet>> {
-        val userTweets = MutableLiveData<List<Tweet>>()
+    override fun getUserTimeline(userId: Long): MutableLiveData<List<TweetPayload>> {
+        val userTweets = MutableLiveData<List<TweetPayload>>()
         twitterService
                 .getUserTimeline(userId = userId)
-                .enqueue(object : Callback<List<Tweet>> {
-                    override fun onFailure(call: Call<List<Tweet>>, t: Throwable) {
+                .enqueue(object : Callback<List<TweetPayload>> {
+                    override fun onFailure(call: Call<List<TweetPayload>>, t: Throwable) {
                         throw NetworkErrorException("Check network connection")
                     }
 
-                    override fun onResponse(call: Call<List<Tweet>>, response: retrofit2.Response<List<Tweet>>) {
+                    override fun onResponse(call: Call<List<TweetPayload>>, response: retrofit2.Response<List<TweetPayload>>) {
                         val tweetsList = response.body()
                         if (tweetsList != null) {
                             userTweets.value = tweetsList
@@ -72,16 +72,16 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
         return userTweets
     }
 
-    override fun retweet(id: Long): MutableLiveData<Tweet> {
-        val tweetLiveData = MutableLiveData<Tweet>()
+    override fun retweet(id: Long): MutableLiveData<TweetPayload> {
+        val tweetLiveData = MutableLiveData<TweetPayload>()
         twitterService
                 .postRetweet(id)
-                .enqueue(object : Callback<Tweet> {
-                    override fun onFailure(call: Call<Tweet>, t: Throwable) {
+                .enqueue(object : Callback<TweetPayload> {
+                    override fun onFailure(call: Call<TweetPayload>, t: Throwable) {
                         throw NetworkErrorException("Check network connection")
                     }
 
-                    override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
+                    override fun onResponse(call: Call<TweetPayload>, response: retrofit2.Response<TweetPayload>) {
                         val tweet = response.body()
                         tweetLiveData.value = tweet
                         Timber.i("retweet: $tweet")
@@ -90,16 +90,16 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
         return tweetLiveData
     }
 
-    override fun unretweet(id: Long): MutableLiveData<Tweet> {
-        val tweetLiveData = MutableLiveData<Tweet>()
+    override fun unretweet(id: Long): MutableLiveData<TweetPayload> {
+        val tweetLiveData = MutableLiveData<TweetPayload>()
         twitterService
                 .postUnretweet(id)
-                .enqueue(object : Callback<Tweet> {
-                    override fun onFailure(call: Call<Tweet>, t: Throwable) {
+                .enqueue(object : Callback<TweetPayload> {
+                    override fun onFailure(call: Call<TweetPayload>, t: Throwable) {
                         throw NetworkErrorException("Check network connection")
                     }
 
-                    override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
+                    override fun onResponse(call: Call<TweetPayload>, response: retrofit2.Response<TweetPayload>) {
                         val tweet = response.body()
                         tweetLiveData.value = tweet
                         Timber.i("unretweet: $tweet")
@@ -108,16 +108,16 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
         return tweetLiveData
     }
 
-    override fun favoritesCreate(id: Long): MutableLiveData<Tweet> {
-        val tweetLiveData = MutableLiveData<Tweet>()
+    override fun favoritesCreate(id: Long): MutableLiveData<TweetPayload> {
+        val tweetLiveData = MutableLiveData<TweetPayload>()
         twitterService
                 .postFavoritesCreate(id)
-                .enqueue(object : Callback<Tweet> {
-                    override fun onFailure(call: Call<Tweet>, t: Throwable) {
+                .enqueue(object : Callback<TweetPayload> {
+                    override fun onFailure(call: Call<TweetPayload>, t: Throwable) {
                         throw NetworkErrorException("Check network connection")
                     }
 
-                    override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
+                    override fun onResponse(call: Call<TweetPayload>, response: retrofit2.Response<TweetPayload>) {
                         val tweet = response.body()
                         tweetLiveData.value = tweet
                         Timber.i("like tweet: $tweet")
@@ -126,16 +126,16 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
         return tweetLiveData
     }
 
-    override fun favoritesDestroy(id: Long): MutableLiveData<Tweet> {
-        val tweetLiveData = MutableLiveData<Tweet>()
+    override fun favoritesDestroy(id: Long): MutableLiveData<TweetPayload> {
+        val tweetLiveData = MutableLiveData<TweetPayload>()
         twitterService
                 .postFavoritesDestroy(id)
-                .enqueue(object : Callback<Tweet> {
-                    override fun onFailure(call: Call<Tweet>, t: Throwable) {
+                .enqueue(object : Callback<TweetPayload> {
+                    override fun onFailure(call: Call<TweetPayload>, t: Throwable) {
                         throw NetworkErrorException("Check network connection")
                     }
 
-                    override fun onResponse(call: Call<Tweet>, response: retrofit2.Response<Tweet>) {
+                    override fun onResponse(call: Call<TweetPayload>, response: retrofit2.Response<TweetPayload>) {
                         val tweet = response.body()
                         tweetLiveData.value = tweet
                         Timber.i("dislike tweet: $tweet")

@@ -2,7 +2,7 @@ package by.twitter.model
 
 import com.google.gson.annotations.SerializedName
 
-data class User(
+data class UserPayload(
         @SerializedName("id")
         val id: Long,
         @SerializedName("name")

@@ -4,19 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import by.twitter.model.Tweet
-import by.twitter.model.User
+import by.twitter.model.TweetPayload
+import by.twitter.model.UserPayload
 import by.twitter.storage.TweetRepository
 import javax.inject.Inject
 
 class TimelineViewModel @Inject constructor(private val tweetRepository: TweetRepository) : ViewModel() {
 
-    private var tweetsData = MutableLiveData<List<Tweet>>()
+    private var tweetsData = MutableLiveData<List<TweetPayload>>()
     var position = 0
-    lateinit var user: User
+    lateinit var user: UserPayload
 
 
-    fun getTweets(): LiveData<List<Tweet>> {
+    fun getTweets(): LiveData<List<TweetPayload>> {
         return tweetsData
     }
 
@@ -28,7 +28,7 @@ class TimelineViewModel @Inject constructor(private val tweetRepository: TweetRe
         tweetsData = tweetRepository.getUserTimeline(user.id)
     }
 
-    fun likeOrDislikeTweet(tweet: Tweet, pos: Int) {
+    fun likeOrDislikeTweet(tweet: TweetPayload, pos: Int) {
         position = pos
         val tweetLiveData = if (tweet.favorited) {
             tweetRepository.favoritesDestroy(tweet.id)
@@ -47,7 +47,7 @@ class TimelineViewModel @Inject constructor(private val tweetRepository: TweetRe
         })
     }
 
-    fun retweetOrUnretweet(tweet: Tweet, pos: Int) {
+    fun retweetOrUnretweet(tweet: TweetPayload, pos: Int) {
         position = pos
         val tweetLiveData = if (tweet.retweeted) {
             tweetRepository.unretweet(tweet.id)

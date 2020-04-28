@@ -5,17 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import by.twitter.R
-import by.twitter.model.Tweet
-import by.twitter.model.User
+import by.twitter.model.TweetPayload
+import by.twitter.model.UserPayload
 import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_tweet.*
 
-class AllTweetsAdapter(private val tweetsList: List<Tweet>,
-                       private val userClickListener: (User) -> Unit,
-                       private val likeClickListener: (Tweet, Int) -> Unit,
-                       private val retweetClickListener: (Tweet, Int) -> Unit) :
+class AllTweetsAdapter(private val tweetsList: List<TweetPayload>,
+                       private val userClickListener: (UserPayload) -> Unit,
+                       private val likeClickListener: (TweetPayload, Int) -> Unit,
+                       private val retweetClickListener: (TweetPayload, Int) -> Unit) :
         RecyclerView.Adapter<AllTweetsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,10 +46,10 @@ class AllTweetsAdapter(private val tweetsList: List<Tweet>,
 
         private val requestManager = Glide.with(containerView.context)
 
-        fun bind(tweet: Tweet, position: Int,
-                 userClickListener: (User) -> Unit,
-                 likeClickListener: (Tweet, Int) -> Unit,
-                 retweetClickListener: (Tweet, Int) -> Unit) {
+        fun bind(tweet: TweetPayload, position: Int,
+                 userClickListener: (UserPayload) -> Unit,
+                 likeClickListener: (TweetPayload, Int) -> Unit,
+                 retweetClickListener: (TweetPayload, Int) -> Unit) {
 
             requestManager.clear(userProfileTweetImage)
 
