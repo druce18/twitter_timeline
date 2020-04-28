@@ -33,7 +33,7 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
         imm.showSoftInput(massageTweetInputEditText, InputMethodManager.SHOW_IMPLICIT)
 
         backImageButton.setOnClickListener {
-            navigateToTimeline()
+            requireActivity().supportFragmentManager.popBackStack()
         }
 
         subscribeViewModel()
@@ -60,7 +60,7 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
         createTweetViewModel.goBackToTimeline.observe(viewLifecycleOwner, Observer<Boolean?> {
             if (it == null) return@Observer
             if (it) {
-                navigateToTimeline()
+                requireActivity().supportFragmentManager.popBackStack()
             }
         })
 
@@ -71,15 +71,6 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
             }
         }
 
-    }
-
-    private fun navigateToTimeline() {
-        requireActivity().supportFragmentManager.beginTransaction()
-                .replace(
-                        R.id.nav_controller,
-                        MainFragment.newInstance()
-                )
-                .commit()
     }
 
     companion object {

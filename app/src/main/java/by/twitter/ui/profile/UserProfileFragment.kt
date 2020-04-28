@@ -31,6 +31,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         timelineViewModel = ViewModelProvider(this, viewModelProviderFactory).get(TimelineViewModel::class.java)
+        timelineViewModel.position = 0
 
         printUser()
 
