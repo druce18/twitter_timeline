@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.twitter.R
 import by.twitter.TwitterApplication
-import by.twitter.model.TweetPayload
-import by.twitter.model.UserPayload
+import by.twitter.network.model.TweetPayload
+import by.twitter.network.model.UserPayload
 import by.twitter.ui.createtweet.CreateTweetFragment
 import by.twitter.ui.profile.UserProfileFragment
 import by.twitter.ui.timeline.adapter.AllTweetsAdapter

@@ -1,7 +1,7 @@
 package by.twitter.storage
 
 import androidx.lifecycle.MutableLiveData
-import by.twitter.model.TweetPayload
+import by.twitter.network.model.TweetPayload
 
 interface TweetRepository {
 

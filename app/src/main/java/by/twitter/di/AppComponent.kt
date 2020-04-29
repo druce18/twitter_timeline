@@ -1,6 +1,7 @@
 package by.twitter.di
 
 import android.content.Context
+import by.twitter.TwitterApplication
 import by.twitter.ui.createtweet.CreateTweetFragment
 import by.twitter.ui.main.MainActivity
 import by.twitter.ui.main.MainFragment
@@ -16,7 +17,7 @@ interface AppComponent {
 
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance context: Context): AppComponent
+        fun create(@BindsInstance application: TwitterApplication): AppComponent
     }
 
     fun inject(activity: MainActivity)

@@ -1,5 +1,7 @@
 package by.twitter.di
 
+import android.content.Context
+import by.twitter.TwitterApplication
 import by.twitter.network.TwitterService
 import by.twitter.util.TwitterAuthUtil
 import dagger.Module
@@ -45,5 +47,8 @@ class AppModule {
 
         return twitterConnection
     }
+
+    @Provides
+    fun provideContext(application: TwitterApplication): Context = application.applicationContext
 
 }

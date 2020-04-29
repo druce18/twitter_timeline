@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import by.twitter.R
-import by.twitter.model.TweetPayload
-import by.twitter.model.UserPayload
+import by.twitter.network.model.TweetPayload
+import by.twitter.network.model.UserPayload
 import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
 import kotlinx.android.extensions.LayoutContainer

@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.twitter.R
 import by.twitter.TwitterApplication
-import by.twitter.model.TweetPayload
-import by.twitter.model.UserPayload
+import by.twitter.network.model.TweetPayload
+import by.twitter.network.model.UserPayload
 import by.twitter.ui.createtweet.CreateTweetFragment
 import by.twitter.ui.timeline.TimelineViewModel
 import by.twitter.ui.timeline.adapter.AllTweetsAdapter
@@ -77,9 +77,9 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user) {
             locationUserTextView.text = user.location
         }
 
-        if (!user.url_user.isNullOrEmpty()) {
+        if (!user.urlUser.isNullOrEmpty()) {
             urlLinearLayout.visibility = View.VISIBLE
-            urlUserTextView.text = user.url_user
+            urlUserTextView.text = user.urlUser
         }
 
         if (!user.createdAt.isNullOrEmpty()) {

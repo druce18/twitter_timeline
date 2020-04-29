@@ -1,4 +1,4 @@
-package by.twitter.model
+package by.twitter.network.model
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,6 +1,6 @@
 package by.twitter.network
 
-import by.twitter.model.TweetPayload
+import by.twitter.network.model.TweetPayload
 import retrofit2.Call
 import retrofit2.http.*
 

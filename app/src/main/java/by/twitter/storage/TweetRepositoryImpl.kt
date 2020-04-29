@@ -2,8 +2,10 @@ package by.twitter.storage
 
 import android.accounts.NetworkErrorException
 import androidx.lifecycle.MutableLiveData
-import by.twitter.model.TweetPayload
+import by.twitter.network.model.TweetPayload
 import by.twitter.network.TwitterService
+import by.twitter.storage.entity.Tweet
+import by.twitter.storage.entity.User
 import retrofit2.Call
 import retrofit2.Callback
 import timber.log.Timber
@@ -12,7 +14,10 @@ import javax.inject.Singleton
 
 
 @Singleton
-class TweetRepositoryImpl @Inject constructor(private val twitterService: TwitterService) : TweetRepository {
+class TweetRepositoryImpl @Inject constructor(
+        private val twitterService: TwitterService,
+        private val db: AppDatabase
+) : TweetRepository {
 
     override fun create(text: String): MutableLiveData<Boolean> {
         val requestEnd = MutableLiveData(false)
@@ -45,6 +50,41 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                         val tweetsList = response.body()
                         if (tweetsList != null) {
                             tweetsLiveData.value = tweetsList
+
+                            db.runInTransaction {
+                                tweetsList.map {
+                                    val tweet = Tweet(
+                                            id = it.id,
+                                            createdAt = it.createdAt,
+                                            text = it.text,
+                                            retweetCount = it.retweetCount,
+                                            retweeted = it.retweeted,
+                                            favoriteCount = it.favoriteCount,
+                                            favorited = it.favorited,
+                                            userId = it.user.id
+
+                                    )
+                                    val user = User(
+                                            id = it.user.id,
+                                            name = it.user.name,
+                                            screenName = it.user.screenName,
+                                            location = it.user.location,
+                                            urlUser = it.user.urlUser,
+                                            description = it.user.description,
+                                            createdAt = it.user.createdAt,
+                                            friendsCount = it.user.friendsCount,
+                                            followersCount = it.user.followersCount,
+                                            profileImageUrlHttps = it.user.profileImageUrlHttps,
+                                            profileBannerUrl = it.user.profileBannerUrl
+                                    )
+                                    Pair(tweet, user)
+                                }
+                                        .forEach { (tweet, user) ->
+                                            db.tweetDao().insert(tweet)
+                                            db.tweetDao().insertUser(user)
+                                        }
+                            }
+
                             Timber.i("Call result: ${tweetsList.joinToString(separator = "\n")}")
                         }
                     }
