@@ -1,10 +1,7 @@
 package by.twitter.storage
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
 import by.twitter.storage.entity.User
@@ -13,10 +10,16 @@ import by.twitter.storage.entity.User
 interface TweetDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(tweet: Tweet)
+    fun insertTweet(tweet: Tweet)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user: User)
+
+    @Update
+    fun updateTweet(tweet: Tweet)
+
+    @Update
+    fun updateUser(user: User)
 
     @Query("SELECT * FROM tweets")
     fun getAll(): LiveData<List<Tweet>>
@@ -35,6 +38,7 @@ interface TweetDao {
           users.*
           FROM tweets 
          INNER JOIN users ON tweets.user_id=users.id
+         ORDER BY tweet_created_at DESC
             """
     )
     fun getAllWithUser(): LiveData<List<TweetWithUser>>

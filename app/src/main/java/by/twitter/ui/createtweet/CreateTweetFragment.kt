@@ -22,11 +22,9 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
     private lateinit var createTweetViewModel: CreateTweetViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         createTweetViewModel = ViewModelProvider(this, viewModelProviderFactory).get(CreateTweetViewModel::class.java)
 
-        super.onViewCreated(view, savedInstanceState)
-
-        backImageButton.visibility = View.VISIBLE
         nameMenuTextView.text = getString(R.string.new_tweet)
         massageTweetInputEditText.requestFocus()
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -60,7 +58,13 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
         createTweetViewModel.goBackToTimeline.observe(viewLifecycleOwner, Observer<Boolean?> {
             if (it == null) return@Observer
             if (it) {
-                requireActivity().supportFragmentManager.popBackStack()
+                requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(
+                                R.id.nav_controller,
+                                MainFragment.newInstance()
+                        )
+                        .addToBackStack(MainFragment::class.java.simpleName)
+                        .commit()
             }
         })
 

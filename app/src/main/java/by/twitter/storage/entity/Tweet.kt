@@ -1,9 +1,8 @@
 package by.twitter.storage.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
+import by.twitter.util.DateConverters
+import java.time.OffsetDateTime
 
 @Entity(tableName = "tweets", foreignKeys = [
     ForeignKey(entity = User::class,
@@ -15,7 +14,8 @@ class Tweet(
         @ColumnInfo(name = "id")
         val id: Long,
         @ColumnInfo(name = "created_at")
-        val createdAt: String,
+        @TypeConverters(DateConverters::class)
+        val createdAt: OffsetDateTime,
         @ColumnInfo(name = "text")
         val text: String,
         @ColumnInfo(name = "retweet_count")

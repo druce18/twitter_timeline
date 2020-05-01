@@ -5,17 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import by.twitter.R
-import by.twitter.network.model.TweetPayload
-import by.twitter.network.model.UserPayload
+import by.twitter.storage.entity.Tweet
+import by.twitter.storage.entity.TweetWithUser
+import by.twitter.storage.entity.User
 import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_tweet.*
 
-class AllTweetsAdapter(private val tweetsList: List<TweetPayload>,
-                       private val userClickListener: (UserPayload) -> Unit,
-                       private val likeClickListener: (TweetPayload, Int) -> Unit,
-                       private val retweetClickListener: (TweetPayload, Int) -> Unit) :
+class AllTweetsAdapter(private val tweetsList: List<TweetWithUser>,
+                       private val userClickListener: (User) -> Unit,
+                       private val likeClickListener: (Tweet, Int) -> Unit,
+                       private val retweetClickListener: (Tweet, Int) -> Unit) :
         RecyclerView.Adapter<AllTweetsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,10 +47,10 @@ class AllTweetsAdapter(private val tweetsList: List<TweetPayload>,
 
         private val requestManager = Glide.with(containerView.context)
 
-        fun bind(tweet: TweetPayload, position: Int,
-                 userClickListener: (UserPayload) -> Unit,
-                 likeClickListener: (TweetPayload, Int) -> Unit,
-                 retweetClickListener: (TweetPayload, Int) -> Unit) {
+        fun bind(tweet: TweetWithUser, position: Int,
+                 userClickListener: (User) -> Unit,
+                 likeClickListener: (Tweet, Int) -> Unit,
+                 retweetClickListener: (Tweet, Int) -> Unit) {
 
             requestManager.clear(userProfileTweetImage)
 
@@ -59,19 +60,19 @@ class AllTweetsAdapter(private val tweetsList: List<TweetPayload>,
                     .into(userProfileTweetImage)
 
             usernameTweetTextView.text = tweet.user.name
-            timeTweetTextView.text = DateUtil.toSimpleString(tweet.createdAt)
+            timeTweetTextView.text = DateUtil.printDateOnTweet(tweet.tweet.createdAt)
             userIDTweetTextView.text = "@${tweet.user.screenName}"
-            massageTweetTextView.text = tweet.text
-            retweetsCountTweetTextView.text = tweet.retweetCount.toString()
-            likesCountTweetTextView.text = tweet.favoriteCount.toString()
+            massageTweetTextView.text = tweet.tweet.text
+            retweetsCountTweetTextView.text = tweet.tweet.retweetCount.toString()
+            likesCountTweetTextView.text = tweet.tweet.favoriteCount.toString()
 
-            if (tweet.favorited) {
+            if (tweet.tweet.favorited) {
                 likeTweetImageButton.setImageResource(R.drawable.ic_like_tweet)
             } else {
                 likeTweetImageButton.setImageResource(R.drawable.ic_dislike_tweet)
             }
 
-            if (tweet.retweeted) {
+            if (tweet.tweet.retweeted) {
                 retweetTweetImageButton.setImageResource(R.drawable.ic_retweet_arrows)
             } else {
                 retweetTweetImageButton.setImageResource(R.drawable.ic_disretweet_arrows)
@@ -82,11 +83,11 @@ class AllTweetsAdapter(private val tweetsList: List<TweetPayload>,
             }
 
             likeTweetImageButton.setOnClickListener {
-                likeClickListener(tweet, position)
+                likeClickListener(tweet.tweet, position)
             }
 
             retweetTweetImageButton.setOnClickListener {
-                retweetClickListener(tweet, position)
+                retweetClickListener(tweet.tweet, position)
             }
         }
     }

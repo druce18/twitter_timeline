@@ -14,11 +14,11 @@ data class User(
         @ColumnInfo(name = "screenName")
         val screenName: String,
         @ColumnInfo(name = "location")
-        val location: String,
+        val location: String?,
         @ColumnInfo(name = "urlUser")
-        val urlUser: String,
+        val urlUser: String?,
         @ColumnInfo(name = "description")
-        val description: String,
+        val description: String?,
         @ColumnInfo(name = "createdAt")
         val createdAt: String,
         @ColumnInfo(name = "friendsCount")
@@ -26,7 +26,7 @@ data class User(
         @ColumnInfo(name = "followersCount")
         val followersCount: Int,
         @ColumnInfo(name = "profileImageUrlHttps")
-        val profileImageUrlHttps: String,
+        val profileImageUrlHttps: String?,
         @ColumnInfo(name = "profileBannerUrl")
-        val profileBannerUrl: String
+        val profileBannerUrl: String?
 )
