@@ -9,7 +9,7 @@ import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
 import javax.inject.Inject
 
-class TimelineViewModel @Inject constructor(
+class TweetTimelineViewModel @Inject constructor(
         private val tweetRepository: TweetRepository,
         private val appDatabase: AppDatabase
 ) : ViewModel() {

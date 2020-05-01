@@ -9,6 +9,7 @@ object DateUtil {
 
     private const val TWITTER_FORMAT = "EEE MMM dd HH:mm:ss ZZZ yyyy"
     private const val APP_FORMAT = "dd MMM yyyy"
+    private const val REF_FORMAT = "dd MMMM yyyy"
     private const val AVG_DAYS_MONTH = 30
     private const val HOURS_MAX = 24
 
@@ -47,6 +48,12 @@ object DateUtil {
                 }
 
         return timeScreen
+    }
+
+    fun getDateReg(dateString: String): String {
+        val dateTime = getOffsetDateTime(dateString).toLocalDateTime()
+        val formatter = DateTimeFormatter.ofPattern(REF_FORMAT)
+        return dateTime.format(formatter)
     }
 
     fun getOffsetDateTime(dateString: String): OffsetDateTime {

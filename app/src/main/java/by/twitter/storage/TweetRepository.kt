@@ -9,7 +9,7 @@ interface TweetRepository {
 
     fun homeTimeline()
 
-    fun getUserTimeline(userId: Long): MutableLiveData<List<TweetPayload>>
+    fun userTimeline(userId: Long): MutableLiveData<List<TweetPayload>>
 
     fun retweet(id: Long)
 

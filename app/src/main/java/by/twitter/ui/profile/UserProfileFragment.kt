@@ -9,8 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.twitter.R
 import by.twitter.TwitterApplication
-import by.twitter.network.model.TweetPayload
-import by.twitter.network.model.UserPayload
 import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
 import by.twitter.storage.entity.User
@@ -24,17 +22,18 @@ import kotlinx.android.synthetic.main.item_tweet.userProfileTweetImage
 import kotlinx.android.synthetic.main.item_user_profile.*
 import javax.inject.Inject
 
-class UserProfileFragment : Fragment(R.layout.fragment_timeline_user) {
+class UserProfileFragment : Fragment(R.layout.fragment_timeline_user_profile) {
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProvider.Factory
 
-    private lateinit var timelineViewModel: TimelineViewModel
+    private lateinit var userProfileViewModel: UserProfileViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        timelineViewModel = ViewModelProvider(this, viewModelProviderFactory).get(TimelineViewModel::class.java)
-        timelineViewModel.position = 0
+        userProfileViewModel = ViewModelProvider(this, viewModelProviderFactory).get(UserProfileViewModel::class.java)
+
+        userProfileViewModel.userId = UserProfileFragmentArgs.fromBundle(requireArguments()).userId
 
         printUser()
 
@@ -55,58 +54,59 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user) {
     }
 
     private fun printUser() {
-        val user = timelineViewModel.user
+        userProfileViewModel.getUser().observe(viewLifecycleOwner, Observer { user ->
+            val requestManager = context?.let { Glide.with(it) }
+            if (requestManager != null) {
+                requestManager.clear(userProfileTweetImage)
+                requestManager
+                        .load(user.profileImageUrlHttps)
+                        .circleCrop()
+                        .into(userProfileTweetImage)
 
-        val requestManager = context?.let { Glide.with(it) }
-        if (requestManager != null) {
-            requestManager.clear(userProfileTweetImage)
-            requestManager
-                    .load(user.profileImageUrlHttps)
-                    .circleCrop()
-                    .into(userProfileTweetImage)
+                requestManager.clear(userBackgroundImage)
+                requestManager
+                        .load(user.profileBannerUrl)
+                        .into(userBackgroundImage)
+            }
 
-            requestManager.clear(userBackgroundImage)
-            requestManager
-                    .load(user.profileBannerUrl)
-                    .into(userBackgroundImage)
-        }
+            usernameTextView.text = user.name
+            userIDTextView.text = "@${user.screenName}"
+            descriptionUserTextView.text = user.description
 
-        usernameTextView.text = user.name
-        userIDTextView.text = "@${user.screenName}"
-        descriptionUserTextView.text = user.description
+            if (!user.location.isNullOrEmpty()) {
+                locationLinearLayout.visibility = View.VISIBLE
+                locationUserTextView.text = user.location
+            }
 
-        if (!user.location.isNullOrEmpty()) {
-            locationLinearLayout.visibility = View.VISIBLE
-            locationUserTextView.text = user.location
-        }
+            if (!user.urlUser.isNullOrEmpty()) {
+                urlLinearLayout.visibility = View.VISIBLE
+                urlUserTextView.text = user.urlUser
+            }
 
-        if (!user.urlUser.isNullOrEmpty()) {
-            urlLinearLayout.visibility = View.VISIBLE
-            urlUserTextView.text = user.urlUser
-        }
+            if (!user.createdAt.isNullOrEmpty()) {
+                registrationLinearLayout.visibility = View.VISIBLE
+                registrationUserTextView.text = "Registration: ${DateUtil.getDateReg(user.createdAt)}"
+            }
 
-//        if (!user.createdAt.isNullOrEmpty()) {
-//            registrationLinearLayout.visibility = View.VISIBLE
-//            registrationUserTextView.text = "Registration: ${DateUtil.printDateOnTweet(user.createdAt)}"
-//        }
-
-        friendsCountUserTextView.text = user.friendsCount.toString()
-        followersCountUserTextView.text = user.followersCount.toString()
+            friendsCountUserTextView.text = user.friendsCount.toString()
+            followersCountUserTextView.text = user.followersCount.toString()
+        })
     }
 
     private fun subscribeTimelineViewModel() {
+        userProfileViewModel.setTweetsUserTimeline()
         val userOnClick: (User) -> Unit = { user -> navigateToUser(user) }
         val likeOnClick: (Tweet, Int) -> Unit = { tweet, position ->
-            timelineViewModel.likeOrDislikeTweet(tweet, position)
+            userProfileViewModel.likeOrDislikeTweet(tweet, position)
         }
         val retweetOnClick: (Tweet, Int) -> Unit = { tweet, position ->
-            timelineViewModel.retweetOrUnretweet(tweet, position)
+            userProfileViewModel.retweetOrUnretweet(tweet, position)
         }
 
-        timelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<TweetWithUser>> { tweets ->
+        userProfileViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<TweetWithUser>> { tweets ->
             tweetsRecyclerView.adapter = AllTweetsAdapter(tweets, userOnClick, likeOnClick, retweetOnClick)
             tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-            tweetsRecyclerView.scrollToPosition(timelineViewModel.position)
+            tweetsRecyclerView.scrollToPosition(userProfileViewModel.position)
         })
     }
 

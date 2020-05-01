@@ -73,7 +73,7 @@ class TweetRepositoryImpl @Inject constructor(
                 })
     }
 
-    override fun getUserTimeline(userId: Long): MutableLiveData<List<TweetPayload>> {
+    override fun userTimeline(userId: Long): MutableLiveData<List<TweetPayload>> {
         val userTweets = MutableLiveData<List<TweetPayload>>()
         twitterService
                 .getUserTimeline(userId = userId)

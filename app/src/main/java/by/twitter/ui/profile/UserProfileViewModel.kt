@@ -1,31 +1,36 @@
-package by.twitter.ui.timeline
+package by.twitter.ui.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import by.twitter.network.model.UserPayload
 import by.twitter.storage.AppDatabase
 import by.twitter.storage.TweetRepository
 import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
+import by.twitter.storage.entity.User
 import javax.inject.Inject
 
-class TimelineViewModel @Inject constructor(
+class UserProfileViewModel @Inject constructor(
         private val tweetRepository: TweetRepository,
         private val appDatabase: AppDatabase
 ) : ViewModel() {
 
     private lateinit var tweetsData: LiveData<List<TweetWithUser>>
+    var userId: Long = 0L
     var position = 0
-    lateinit var user: UserPayload
+    lateinit var user: User
 
+
+    fun getUser(): LiveData<User> {
+        return appDatabase.tweetDao().getUserById(userId)
+    }
 
     fun getTweets(): LiveData<List<TweetWithUser>> {
         return tweetsData
     }
 
-    fun setTweetsTimeline() {
-        tweetRepository.homeTimeline()
-        tweetsData = appDatabase.tweetDao().getAllWithUser()
+    fun setTweetsUserTimeline() {
+        tweetRepository.userTimeline(userId)
+        tweetsData = appDatabase.tweetDao().getAllByUserId(userId)
     }
 
     fun updateTweetsForTimeline() {
@@ -48,6 +53,7 @@ class TimelineViewModel @Inject constructor(
         } else {
             tweetRepository.retweet(tweet.id)
         }
+
     }
 
 }

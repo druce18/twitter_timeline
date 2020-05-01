@@ -58,13 +58,14 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
         createTweetViewModel.goBackToTimeline.observe(viewLifecycleOwner, Observer<Boolean?> {
             if (it == null) return@Observer
             if (it) {
-                requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(
-                                R.id.nav_controller,
-                                MainFragment.newInstance()
-                        )
-                        .addToBackStack(MainFragment::class.java.simpleName)
-                        .commit()
+                requireActivity().supportFragmentManager.popBackStack()
+//                requireActivity().supportFragmentManager.beginTransaction()
+//                        .replace(
+//                                R.id.nav_controller,
+//                                MainFragment.newInstance()
+//                        )
+//                        .addToBackStack(MainFragment::class.java.simpleName)
+//                        .commit()
             }
         })
 
