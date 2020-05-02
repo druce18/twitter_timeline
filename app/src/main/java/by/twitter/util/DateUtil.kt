@@ -2,6 +2,7 @@ package by.twitter.util
 
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -15,6 +16,7 @@ object DateUtil {
 
     fun printDateOnTweet(offsetDateTime: OffsetDateTime): String {
         val dateTime = offsetDateTime.toLocalDateTime()
+        dateTime.atZone(ZoneId.systemDefault())
         val dateTimeNow = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern(APP_FORMAT)
 

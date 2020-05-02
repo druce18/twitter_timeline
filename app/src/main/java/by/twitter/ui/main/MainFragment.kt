@@ -8,16 +8,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import by.twitter.R
 import by.twitter.TwitterApplication
-import by.twitter.storage.TweetRepository
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_main.*
-import javax.inject.Inject
 
 
 class MainFragment : Fragment(R.layout.fragment_main) {
-
-    @Inject
-    lateinit var tweetRepository: TweetRepository
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,7 +27,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 else -> throw IllegalArgumentException("position not found")
             }
         }.attach()
-
     }
 
     override fun onAttach(context: Context) {

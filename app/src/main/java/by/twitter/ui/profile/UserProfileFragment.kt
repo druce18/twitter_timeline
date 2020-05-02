@@ -32,11 +32,9 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userProfileViewModel = ViewModelProvider(this, viewModelProviderFactory).get(UserProfileViewModel::class.java)
-
         userProfileViewModel.userId = UserProfileFragmentArgs.fromBundle(requireArguments()).userId
 
         printUser()
-
         subscribeTimelineViewModel()
 
         createTweetActionButton.setOnClickListener {
@@ -95,7 +93,8 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user_profile) {
 
     private fun subscribeTimelineViewModel() {
         userProfileViewModel.setTweetsUserTimeline()
-        val userOnClick: (User) -> Unit = { user -> navigateToUser(user) }
+        val userOnClick: (Long) -> Unit = { userId -> navigateToUser(userId) }
+        val tweetOnClick: (Long) -> Unit = { tweetId -> navigateToTweet(tweetId) }
         val likeOnClick: (Tweet, Int) -> Unit = { tweet, position ->
             userProfileViewModel.likeOrDislikeTweet(tweet, position)
         }
@@ -104,22 +103,15 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user_profile) {
         }
 
         userProfileViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<TweetWithUser>> { tweets ->
-            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets, userOnClick, likeOnClick, retweetOnClick)
+            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets, userOnClick, tweetOnClick, likeOnClick, retweetOnClick)
             tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             tweetsRecyclerView.scrollToPosition(userProfileViewModel.position)
         })
     }
 
-    private fun navigateToUser(user: User) {
-//        timelineViewModel.user = user
-//        requireActivity().supportFragmentManager.beginTransaction()
-//                .replace(
-//                        R.id.nav_controller,
-//                        newInstance()
-//                )
-//                .addToBackStack(UserProfileFragment::class.java.simpleName)
-//                .commit()
-    }
+    private fun navigateToUser(userId: Long) {}
+
+    private fun navigateToTweet(tweetId: Long) {}
 
     private fun navigateToCreateTweet() {
         requireActivity().supportFragmentManager.beginTransaction()

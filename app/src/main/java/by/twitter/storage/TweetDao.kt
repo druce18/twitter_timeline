@@ -66,4 +66,24 @@ interface TweetDao {
     )
     fun getAllByUserId(userId: Long): LiveData<List<TweetWithUser>>
 
+    @Query(
+            """
+         SELECT 
+          tweets.id as tweet_id,
+          tweets.created_at as tweet_created_at,
+          tweets.text as tweet_text,
+          tweets.retweet_count as tweet_retweet_count,
+          tweets.retweeted as tweet_retweeted,
+          tweets.favorite_count as tweet_favorite_count,
+          tweets.favorited as tweet_favorited,
+          tweets.user_id as tweet_user_id,
+          users.*
+          FROM tweets 
+         INNER JOIN users ON tweets.user_id=users.id
+         WHERE tweet_id=:tweetId
+         ORDER BY tweet_created_at DESC
+            """
+    )
+    fun getTweetWithUserByTweetId(tweetId: Long): LiveData<TweetWithUser>
+
 }

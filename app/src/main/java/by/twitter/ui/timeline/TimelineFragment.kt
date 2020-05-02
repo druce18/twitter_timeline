@@ -11,7 +11,6 @@ import by.twitter.R
 import by.twitter.TwitterApplication
 import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
-import by.twitter.storage.entity.User
 import by.twitter.ui.createtweet.CreateTweetFragment
 import by.twitter.ui.main.MainFragment
 import by.twitter.ui.timeline.adapter.AllTweetsAdapter
@@ -44,7 +43,8 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
 
     private fun subscribeTimelineViewModel() {
         timelineViewModel.setTweetsTimeline()
-        val userOnClick: (User) -> Unit = { user -> navigateToUser(user) }
+        val userOnClick: (Long) -> Unit = { userId -> navigateToUser(userId) }
+        val tweetOnClick: (Long) -> Unit = { tweetId -> navigateToTweet(tweetId) }
         val likeOnClick: (Tweet, Int) -> Unit = { tweet, position ->
             timelineViewModel.likeOrDislikeTweet(tweet, position)
         }
@@ -53,15 +53,20 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
         }
 
         timelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<TweetWithUser>> { tweets ->
-            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets, userOnClick, likeOnClick, retweetOnClick)
+            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets, userOnClick, tweetOnClick, likeOnClick, retweetOnClick)
             tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 //            tweetsRecyclerView.scrollToPosition(timelineViewModel.position)
         })
     }
 
-    private fun navigateToUser(user: User) {
-        val mainFragment:MainFragment = parentFragment as MainFragment
-        mainFragment.navigateToUser(user.id)
+    private fun navigateToUser(userId: Long) {
+        val mainFragment: MainFragment = parentFragment as MainFragment
+        mainFragment.navigateToUser(userId)
+    }
+
+    private fun navigateToTweet(tweetId: Long) {
+        val mainFragment: MainFragment = parentFragment as MainFragment
+        mainFragment.navigateToTweet(tweetId)
     }
 
     private fun navigateToCreateTweet() {

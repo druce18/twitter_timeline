@@ -1,6 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tweet"
+    android:id="@+id/tweetItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/ghostly">
@@ -140,7 +140,7 @@
                         tools:src="@drawable/ic_retweet_arrows" />
 
                     <TextView
-                        android:id="@+id/retweetsCountTweetTextView"
+                        android:id="@+id/retweetsCountMainTweetTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"

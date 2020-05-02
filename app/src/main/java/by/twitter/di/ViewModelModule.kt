@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import by.twitter.ui.createtweet.CreateTweetViewModel
 import by.twitter.ui.profile.UserProfileViewModel
 import by.twitter.ui.timeline.TimelineViewModel
-import by.twitter.ui.timeline.TweetTimelineViewModel
+import by.twitter.ui.profile.TweetProfileViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -33,7 +33,7 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(TweetTimelineViewModel::class)
-    internal abstract fun userProfileViewModel(viewModel: TweetTimelineViewModel): ViewModel
+    @ViewModelKey(TweetProfileViewModel::class)
+    internal abstract fun tweetProfileViewModel(viewModel: TweetProfileViewModel): ViewModel
 
 }

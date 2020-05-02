@@ -1,4 +1,4 @@
-package by.twitter.ui.timeline
+package by.twitter.ui.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -9,27 +9,27 @@ import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
 import javax.inject.Inject
 
-class TweetTimelineViewModel @Inject constructor(
+class TweetProfileViewModel @Inject constructor(
         private val tweetRepository: TweetRepository,
         private val appDatabase: AppDatabase
 ) : ViewModel() {
 
     private lateinit var tweetsData: LiveData<List<TweetWithUser>>
+    var tweetId: Long = 0L
     var position = 0
-    lateinit var user: UserPayload
 
 
     fun getTweets(): LiveData<List<TweetWithUser>> {
         return tweetsData
     }
 
-    fun setTweetsTimeline() {
-        tweetRepository.homeTimeline()
-        tweetsData = appDatabase.tweetDao().getAllWithUser()
+    fun getTweetMain(): LiveData<TweetWithUser> {
+        return appDatabase.tweetDao().getTweetWithUserByTweetId(tweetId)
     }
 
-    fun updateTweetsForTimeline() {
-        tweetRepository.homeTimeline()
+    fun setTweetsTimeline() {
+//        tweetRepository.homeTimeline()
+//        tweetsData = appDatabase.tweetDao().getAllWithUser()
     }
 
     fun likeOrDislikeTweet(tweet: Tweet, pos: Int) {

@@ -92,7 +92,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/retweetsCountUserTextView"
+                    android:id="@+id/retweetsCountMainTweetTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
@@ -101,7 +101,7 @@
                     tools:text="0" />
 
                 <TextView
-                    android:id="@+id/friendsTextView"
+                    android:id="@+id/retweetsTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -111,7 +111,7 @@
                     android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/likesCountUserTextView"
+                    android:id="@+id/favoritesCountMainTweetTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -121,7 +121,7 @@
                     tools:text="0" />
 
                 <TextView
-                    android:id="@+id/followersTextView"
+                    android:id="@+id/favoritesTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"

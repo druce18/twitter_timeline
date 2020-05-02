@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/tweetTimelineFragment"
-        android:name="by.twitter.ui.timeline.TweetTimelineFragment"
+        android:name="by.twitter.ui.profile.TweetProfileFragment"
         android:label="TweetTimelineFragment" >
         <argument
             android:name="tweetId"

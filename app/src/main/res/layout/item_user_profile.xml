@@ -229,7 +229,7 @@
             tools:text="0" />
 
         <TextView
-            android:id="@+id/friendsTextView"
+            android:id="@+id/retweetsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -249,7 +249,7 @@
             tools:text="0" />
 
         <TextView
-            android:id="@+id/followersTextView"
+            android:id="@+id/favoritesTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"

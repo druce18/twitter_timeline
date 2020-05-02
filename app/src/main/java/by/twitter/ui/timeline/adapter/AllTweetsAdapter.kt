@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import by.twitter.R
 import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
-import by.twitter.storage.entity.User
 import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_tweet.*
 
 class AllTweetsAdapter(private val tweetsList: List<TweetWithUser>,
-                       private val userClickListener: (User) -> Unit,
+                       private val userClickListener: (Long) -> Unit,
+                       private val tweetClickListener: (Long) -> Unit,
                        private val likeClickListener: (Tweet, Int) -> Unit,
                        private val retweetClickListener: (Tweet, Int) -> Unit) :
         RecyclerView.Adapter<AllTweetsAdapter.ViewHolder>() {
@@ -39,7 +39,7 @@ class AllTweetsAdapter(private val tweetsList: List<TweetWithUser>,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val tweet = tweetsList[position]
-        holder.bind(tweet, position, userClickListener, likeClickListener, retweetClickListener)
+        holder.bind(tweet, position, userClickListener, tweetClickListener, likeClickListener, retweetClickListener)
     }
 
 
@@ -47,47 +47,52 @@ class AllTweetsAdapter(private val tweetsList: List<TweetWithUser>,
 
         private val requestManager = Glide.with(containerView.context)
 
-        fun bind(tweet: TweetWithUser, position: Int,
-                 userClickListener: (User) -> Unit,
+        fun bind(tweetWithUser: TweetWithUser, position: Int,
+                 userClickListener: (Long) -> Unit,
+                 tweetClickListener: (Long) -> Unit,
                  likeClickListener: (Tweet, Int) -> Unit,
                  retweetClickListener: (Tweet, Int) -> Unit) {
 
             requestManager.clear(userProfileTweetImage)
 
             requestManager
-                    .load(tweet.user.profileImageUrlHttps)
+                    .load(tweetWithUser.user.profileImageUrlHttps)
                     .circleCrop()
                     .into(userProfileTweetImage)
 
-            usernameTweetTextView.text = tweet.user.name
-            timeTweetTextView.text = DateUtil.printDateOnTweet(tweet.tweet.createdAt)
-            userIDTweetTextView.text = "@${tweet.user.screenName}"
-            massageTweetTextView.text = tweet.tweet.text
-            retweetsCountTweetTextView.text = tweet.tweet.retweetCount.toString()
-            likesCountTweetTextView.text = tweet.tweet.favoriteCount.toString()
+            usernameTweetTextView.text = tweetWithUser.user.name
+            timeTweetTextView.text = DateUtil.printDateOnTweet(tweetWithUser.tweet.createdAt)
+            userIDTweetTextView.text = "@${tweetWithUser.user.screenName}"
+            massageTweetTextView.text = tweetWithUser.tweet.text
+            retweetsCountMainTweetTextView.text = tweetWithUser.tweet.retweetCount.toString()
+            likesCountTweetTextView.text = tweetWithUser.tweet.favoriteCount.toString()
 
-            if (tweet.tweet.favorited) {
+            if (tweetWithUser.tweet.favorited) {
                 likeTweetImageButton.setImageResource(R.drawable.ic_like_tweet)
             } else {
                 likeTweetImageButton.setImageResource(R.drawable.ic_dislike_tweet)
             }
 
-            if (tweet.tweet.retweeted) {
+            if (tweetWithUser.tweet.retweeted) {
                 retweetTweetImageButton.setImageResource(R.drawable.ic_retweet_arrows)
             } else {
                 retweetTweetImageButton.setImageResource(R.drawable.ic_disretweet_arrows)
             }
 
             userProfileTweetImage.setOnClickListener {
-                userClickListener(tweet.user)
+                userClickListener(tweetWithUser.user.id)
+            }
+
+            tweetItem.setOnClickListener {
+                tweetClickListener(tweetWithUser.tweet.id)
             }
 
             likeTweetImageButton.setOnClickListener {
-                likeClickListener(tweet.tweet, position)
+                likeClickListener(tweetWithUser.tweet, position)
             }
 
             retweetTweetImageButton.setOnClickListener {
-                retweetClickListener(tweet.tweet, position)
+                retweetClickListener(tweetWithUser.tweet, position)
             }
         }
     }
