@@ -27,5 +27,11 @@ class Tweet(
         @ColumnInfo(name = "favorited")
         val favorited: Boolean,
         @ColumnInfo(name = "user_id")
-        val userId: Long
+        val userId: Long,
+        @ColumnInfo(name = "quoted_status_id")
+        val quotedStatusId: Long,
+        @ColumnInfo(name = "is_quote_status")
+        val isQuoteStatus: Boolean,
+        @ColumnInfo(name = "in_reply_to_status_id")
+        val inReplyToStatusId: Long
 )

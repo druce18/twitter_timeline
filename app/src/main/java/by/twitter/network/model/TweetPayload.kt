@@ -18,5 +18,11 @@ data class TweetPayload(
         @SerializedName("favorite_count")
         val favoriteCount: Int,
         @SerializedName("favorited")
-        val favorited: Boolean
+        val favorited: Boolean,
+        @SerializedName("quoted_status_id")
+        val quotedStatusId: Long,
+        @SerializedName("is_quote_status")
+        val isQuoteStatus: Boolean,
+        @SerializedName("in_reply_to_status_id")
+        val inReplyToStatusId: Long
 )

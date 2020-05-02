@@ -6,7 +6,7 @@
     <color name="black">#000000</color>
     <color name="black_ghostly">#98000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="white_grey_background">#7FD5D5D5</color>
+    <color name="white_grey_background">#65D5D5D5</color>
     <color name="ghostly">#00FFFFFF</color>
     <color name="user_tweet_text">#CC939393</color>
     <color name="yellow">#B2FFF200</color>

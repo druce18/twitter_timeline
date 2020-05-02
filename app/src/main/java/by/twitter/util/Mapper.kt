@@ -33,8 +33,10 @@ object Mapper {
                 retweeted = tweetPayload.retweeted,
                 favoriteCount = tweetPayload.favoriteCount,
                 favorited = tweetPayload.favorited,
-                userId = tweetPayload.user.id
-
+                userId = tweetPayload.user.id,
+                quotedStatusId = tweetPayload.quotedStatusId,
+                isQuoteStatus = tweetPayload.isQuoteStatus,
+                inReplyToStatusId = tweetPayload.inReplyToStatusId
         )
         return tweet
     }

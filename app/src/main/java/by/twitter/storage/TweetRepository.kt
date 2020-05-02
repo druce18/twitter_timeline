@@ -1,7 +1,6 @@
 package by.twitter.storage
 
 import androidx.lifecycle.MutableLiveData
-import by.twitter.network.model.TweetPayload
 
 interface TweetRepository {
 
@@ -9,7 +8,7 @@ interface TweetRepository {
 
     fun homeTimeline()
 
-    fun userTimeline(userId: Long): MutableLiveData<List<TweetPayload>>
+    fun userTimeline(userId: Long)
 
     fun retweet(id: Long)
 
@@ -18,6 +17,8 @@ interface TweetRepository {
     fun favoritesCreate(id: Long)
 
     fun favoritesDestroy(id: Long)
+
+    fun getAnswersByTweetId(id: Long)
 
     fun delete(id: Long)
 

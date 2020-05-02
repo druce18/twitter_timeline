@@ -1,6 +1,7 @@
 package by.twitter.util
 
 import java.time.LocalDateTime
+import java.time.Month
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -15,32 +16,31 @@ object DateUtil {
     private const val HOURS_MAX = 24
 
     fun printDateOnTweet(offsetDateTime: OffsetDateTime): String {
-        val dateTime = offsetDateTime.toLocalDateTime()
-        dateTime.atZone(ZoneId.systemDefault())
+        val dateTime = offsetDateTime.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
         val dateTimeNow = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern(APP_FORMAT)
 
         val timeScreen: String =
-                if (dateTimeNow.year > dateTime.year || (dateTimeNow.monthValue - dateTime.monthValue) >= 1) {
+                if (dateTimeNow.year > dateTime.year || (dateTimeNow.monthValue - dateTime.monthValue) > 1) {
                     dateTime.format(formatter)
 
-//                } else if ((dateTimeNow.monthValue - dateTime.monthValue) == 1) {
-//                    val monthDay = Month.of(dateTime.monthValue).maxLength()
-//                    val daysAgo = dateTimeNow.dayOfMonth + (monthDay - dateTime.dayOfMonth)
-//                    when (daysAgo) {
-//                        in 1..AVG_DAYS_MONTH -> "${daysAgo}h"
-//                        else -> dateTime.format(formatter)
-//                    }
+                } else if ((dateTimeNow.monthValue - dateTime.monthValue) == 1) {
+                    val monthDay = Month.of(dateTime.monthValue).maxLength()
+                    val daysAgo = dateTimeNow.dayOfMonth + (monthDay - dateTime.dayOfMonth)
+                    when (daysAgo) {
+                        in 1..AVG_DAYS_MONTH -> "${daysAgo}h"
+                        else -> dateTime.format(formatter)
+                    }
 
-                } else if ((dateTimeNow.dayOfMonth - dateTime.dayOfMonth) >= 1) {
+                } else if ((dateTimeNow.dayOfMonth - dateTime.dayOfMonth) > 1) {
                     "${dateTimeNow.dayOfMonth - dateTime.dayOfMonth}d"
 
-//                } else if ((dateTimeNow.dayOfMonth - dateTime.dayOfMonth) == 1) {
-//                    val hoursAgo = dateTimeNow.hour + (HOURS_MAX - dateTime.hour)
-//                    when (hoursAgo) {
-//                        in 1..HOURS_MAX -> "${hoursAgo}h"
-//                        else -> "yesterday"
-//                    }
+                } else if ((dateTimeNow.dayOfMonth - dateTime.dayOfMonth) == 1) {
+                    val hoursAgo = dateTimeNow.hour + (HOURS_MAX - dateTime.hour)
+                    when (hoursAgo) {
+                        in 1..HOURS_MAX -> "${hoursAgo}h"
+                        else -> "yesterday"
+                    }
 
                 } else if ((dateTimeNow.hour - dateTime.hour) > 0) {
                     "${dateTimeNow.hour - dateTime.hour}h"

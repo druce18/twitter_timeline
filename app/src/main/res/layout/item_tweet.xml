@@ -111,8 +111,8 @@
                         android:layout_weight="0.15"
                         android:background="@color/ghostly"
                         android:scaleType="fitEnd"
-                        android:scaleX="0.65"
-                        android:scaleY="0.65"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
                         android:src="@drawable/ic_answer_tweet" />
 
                     <TextView
@@ -135,8 +135,6 @@
                         android:layout_weight="0.15"
                         android:background="@color/ghostly"
                         android:scaleType="fitEnd"
-                        android:scaleX="0.85"
-                        android:scaleY="0.85"
                         tools:src="@drawable/ic_retweet_arrows" />
 
                     <TextView
@@ -159,8 +157,8 @@
                         android:layout_weight="0.15"
                         android:background="@color/ghostly"
                         android:scaleType="fitEnd"
-                        android:scaleX="0.7"
-                        android:scaleY="0.7"
+                        android:scaleX="0.8"
+                        android:scaleY="0.8"
                         tools:src="@drawable/ic_like_tweet" />
 
                     <TextView

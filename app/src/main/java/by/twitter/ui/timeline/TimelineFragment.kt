@@ -21,13 +21,14 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProvider.Factory
-
     private lateinit var timelineViewModel: TimelineViewModel
+    private lateinit var retweetLikeViewModel: RetweetLikeViewModel
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         timelineViewModel = ViewModelProvider(this, viewModelProviderFactory).get(TimelineViewModel::class.java)
+        retweetLikeViewModel = ViewModelProvider(this, viewModelProviderFactory).get(RetweetLikeViewModel::class.java)
 
         subscribeTimelineViewModel()
 
@@ -46,16 +47,16 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
         val userOnClick: (Long) -> Unit = { userId -> navigateToUser(userId) }
         val tweetOnClick: (Long) -> Unit = { tweetId -> navigateToTweet(tweetId) }
         val likeOnClick: (Tweet, Int) -> Unit = { tweet, position ->
-            timelineViewModel.likeOrDislikeTweet(tweet, position)
+            retweetLikeViewModel.likeOrDislikeTweet(tweet, position)
         }
         val retweetOnClick: (Tweet, Int) -> Unit = { tweet, position ->
-            timelineViewModel.retweetOrUnretweet(tweet, position)
+            retweetLikeViewModel.retweetOrUnretweet(tweet, position)
         }
 
         timelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<TweetWithUser>> { tweets ->
             tweetsRecyclerView.adapter = AllTweetsAdapter(tweets, userOnClick, tweetOnClick, likeOnClick, retweetOnClick)
             tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-//            tweetsRecyclerView.scrollToPosition(timelineViewModel.position)
+            tweetsRecyclerView.scrollToPosition(retweetLikeViewModel.position)
         })
     }
 

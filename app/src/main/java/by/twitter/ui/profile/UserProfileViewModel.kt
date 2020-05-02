@@ -7,6 +7,7 @@ import by.twitter.storage.TweetRepository
 import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
 import by.twitter.storage.entity.User
+import timber.log.Timber
 import javax.inject.Inject
 
 class UserProfileViewModel @Inject constructor(
@@ -17,7 +18,6 @@ class UserProfileViewModel @Inject constructor(
     private lateinit var tweetsData: LiveData<List<TweetWithUser>>
     var userId: Long = 0L
     var position = 0
-    lateinit var user: User
 
 
     fun getUser(): LiveData<User> {
@@ -31,29 +31,6 @@ class UserProfileViewModel @Inject constructor(
     fun setTweetsUserTimeline() {
         tweetRepository.userTimeline(userId)
         tweetsData = appDatabase.tweetDao().getAllByUserId(userId)
-    }
-
-    fun updateTweetsForTimeline() {
-        tweetRepository.homeTimeline()
-    }
-
-    fun likeOrDislikeTweet(tweet: Tweet, pos: Int) {
-        position = pos
-        if (tweet.favorited) {
-            tweetRepository.favoritesDestroy(tweet.id)
-        } else {
-            tweetRepository.favoritesCreate(tweet.id)
-        }
-    }
-
-    fun retweetOrUnretweet(tweet: Tweet, pos: Int) {
-        position = pos
-        if (tweet.retweeted) {
-            tweetRepository.unretweet(tweet.id)
-        } else {
-            tweetRepository.retweet(tweet.id)
-        }
-
     }
 
 }

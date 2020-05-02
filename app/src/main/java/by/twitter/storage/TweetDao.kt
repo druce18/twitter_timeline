@@ -6,6 +6,7 @@ import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
 import by.twitter.storage.entity.User
 
+
 @Dao
 interface TweetDao {
 
@@ -15,11 +16,8 @@ interface TweetDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user: User)
 
-    @Update
-    fun updateTweet(tweet: Tweet)
-
-    @Update
-    fun updateUser(user: User)
+    @Delete
+    fun deleteTweet(tweet: Tweet)
 
     @Query("SELECT * FROM tweets")
     fun getAll(): LiveData<List<Tweet>>
@@ -35,13 +33,17 @@ interface TweetDao {
           tweets.favorite_count as tweet_favorite_count,
           tweets.favorited as tweet_favorited,
           tweets.user_id as tweet_user_id,
+          tweets.quoted_status_id as tweet_quoted_status_id,
+          tweets.is_quote_status as tweet_is_quote_status,
+          tweets.in_reply_to_status_id as tweet_in_reply_to_status_id,
           users.*
           FROM tweets 
          INNER JOIN users ON tweets.user_id=users.id
-         ORDER BY tweet_created_at DESC
+         WHERE tweet_in_reply_to_status_id=:inReplyToStatusId
+         ORDER BY tweet_created_at DESC 
             """
     )
-    fun getAllWithUser(): LiveData<List<TweetWithUser>>
+    fun getAllWithUser(inReplyToStatusId: Long = 0): LiveData<List<TweetWithUser>>
 
     @Query("SELECT * FROM users WHERE users.id=:userId")
     fun getUserById(userId: Long): LiveData<User>
@@ -57,14 +59,17 @@ interface TweetDao {
           tweets.favorite_count as tweet_favorite_count,
           tweets.favorited as tweet_favorited,
           tweets.user_id as tweet_user_id,
+          tweets.quoted_status_id as tweet_quoted_status_id,
+          tweets.is_quote_status as tweet_is_quote_status,
+          tweets.in_reply_to_status_id as tweet_in_reply_to_status_id,
           users.*
           FROM tweets 
          INNER JOIN users ON tweets.user_id=users.id
-         WHERE users.id=:userId
+         WHERE users.id=:userId AND tweet_in_reply_to_status_id=:inReplyToStatusId
          ORDER BY tweet_created_at DESC
             """
     )
-    fun getAllByUserId(userId: Long): LiveData<List<TweetWithUser>>
+    fun getAllByUserId(userId: Long, inReplyToStatusId: Long = 0): LiveData<List<TweetWithUser>>
 
     @Query(
             """
@@ -77,6 +82,9 @@ interface TweetDao {
           tweets.favorite_count as tweet_favorite_count,
           tweets.favorited as tweet_favorited,
           tweets.user_id as tweet_user_id,
+          tweets.quoted_status_id as tweet_quoted_status_id,
+          tweets.is_quote_status as tweet_is_quote_status,
+          tweets.in_reply_to_status_id as tweet_in_reply_to_status_id,
           users.*
           FROM tweets 
          INNER JOIN users ON tweets.user_id=users.id

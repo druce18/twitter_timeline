@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import by.twitter.storage.AppDatabase
 import by.twitter.storage.TweetRepository
-import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
 import javax.inject.Inject
 
@@ -14,7 +13,6 @@ class TimelineViewModel @Inject constructor(
 ) : ViewModel() {
 
     private lateinit var tweetsData: LiveData<List<TweetWithUser>>
-    var position = 0
 
     fun getTweets(): LiveData<List<TweetWithUser>> {
         return tweetsData
@@ -23,24 +21,6 @@ class TimelineViewModel @Inject constructor(
     fun setTweetsTimeline() {
         tweetRepository.homeTimeline()
         tweetsData = appDatabase.tweetDao().getAllWithUser()
-    }
-
-    fun likeOrDislikeTweet(tweet: Tweet, pos: Int) {
-        position = pos
-        if (tweet.favorited) {
-            tweetRepository.favoritesDestroy(tweet.id)
-        } else {
-            tweetRepository.favoritesCreate(tweet.id)
-        }
-    }
-
-    fun retweetOrUnretweet(tweet: Tweet, pos: Int) {
-        position = pos
-        if (tweet.retweeted) {
-            tweetRepository.unretweet(tweet.id)
-        } else {
-            tweetRepository.retweet(tweet.id)
-        }
     }
 
 }

@@ -29,4 +29,10 @@ interface TwitterService {
     @POST("favorites/destroy.json")
     fun postFavoritesDestroy(@Query("id") id: Long): Call<TweetPayload>
 
+    @GET("statuses/show.json")
+    fun getAnswersByTweetId(
+            @Query("id") id: Long,
+            @Query("include_entities") includeEntities: Boolean = true
+    ): Call<TweetPayload>
+
 }

@@ -8,6 +8,7 @@ import by.twitter.storage.TweetRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 @Module
 abstract class StorageModule {
@@ -16,8 +17,9 @@ abstract class StorageModule {
     abstract fun provideStorage(tweetRepository: TweetRepositoryImpl): TweetRepository
 
 
-    companion object{
+    companion object {
         @JvmStatic
+        @Singleton
         @Provides
         fun provideDb(context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, AppDatabase.NAME_DB).build()
