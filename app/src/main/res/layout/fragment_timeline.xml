@@ -5,14 +5,14 @@
     android:id="@+id/allTweetsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_grey"
+    android:background="@color/white_grey_background"
     tools:context=".ui.timeline.TimelineFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tweetsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white_grey" />
+        android:background="@color/white_grey_background" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/createTweetActionButton"

@@ -7,6 +7,7 @@ import by.twitter.ui.timeline.TimelineViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import javax.inject.Singleton
 
 @Module
 abstract class ViewModelModule {
@@ -14,6 +15,7 @@ abstract class ViewModelModule {
     @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
+    @Singleton
     @Binds
     @IntoMap
     @ViewModelKey(TimelineViewModel::class)
@@ -22,6 +24,6 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(CreateTweetViewModel::class)
-    internal abstract fun demoViewModel(viewModel: CreateTweetViewModel): ViewModel
+    internal abstract fun createTweetViewModel(viewModel: CreateTweetViewModel): ViewModel
 
 }

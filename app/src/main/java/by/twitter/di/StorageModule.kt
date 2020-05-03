@@ -1,7 +1,7 @@
 package by.twitter.di
 
-import by.twitter.storage.TweetsRepository
-import by.twitter.storage.TweetsRepositoryImpl
+import by.twitter.storage.TweetRepository
+import by.twitter.storage.TweetRepositoryImpl
 import dagger.Binds
 import dagger.Module
 
@@ -9,7 +9,7 @@ import dagger.Module
 abstract class StorageModule {
 
     @Binds
-    abstract fun provideStorage(tweetsRepository: TweetsRepositoryImpl): TweetsRepository
+    abstract fun provideStorage(tweetRepository: TweetRepositoryImpl): TweetRepository
 
 
 }

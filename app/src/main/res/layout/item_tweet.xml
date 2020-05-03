@@ -46,11 +46,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="7dp"
                         android:gravity="left"
-                        android:text="@null"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                         android:textColor="@color/black"
                         android:textSize="13sp"
-                        tools:ignore="RtlHardcoded" />
+                        tools:text="Name" />
 
                     <TextView
                         android:id="@+id/userIDTweetTextView"
@@ -58,11 +57,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="left"
-                        android:text="@null"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
-                        android:textColor="@color/action_tweet_action"
+                        android:textColor="@color/user_tweet_text"
                         android:textSize="13sp"
-                        tools:ignore="RtlHardcoded" />
+                        tools:text="NameID" />
 
                     <ImageView
                         android:id="@+id/clockTweetImageView"
@@ -93,11 +91,11 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
                     android:gravity="left"
-                    android:text="@null"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
                     android:textColor="@color/black"
                     android:textSize="17sp"
-                    tools:ignore="RtlHardcoded" />
+                    tools:ignore="RtlHardcoded"
+                    tools:text="Massage" />
 
 
                 <LinearLayout
@@ -139,7 +137,7 @@
                         android:scaleType="fitEnd"
                         android:scaleX="0.85"
                         android:scaleY="0.85"
-                        android:src="@drawable/ic_retweet_arrows" />
+                        tools:src="@drawable/ic_retweet_arrows" />
 
                     <TextView
                         android:id="@+id/retweetsCountTweetTextView"
@@ -163,7 +161,7 @@
                         android:scaleType="fitEnd"
                         android:scaleX="0.7"
                         android:scaleY="0.7"
-                        android:src="@drawable/ic_like_tweet" />
+                        tools:src="@drawable/ic_like_tweet" />
 
                     <TextView
                         android:id="@+id/likesCountTweetTextView"

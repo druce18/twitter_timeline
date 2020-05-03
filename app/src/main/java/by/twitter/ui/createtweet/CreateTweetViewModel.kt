@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import by.twitter.storage.TweetsRepository
+import by.twitter.storage.TweetRepository
 import javax.inject.Inject
 
-class CreateTweetViewModel @Inject constructor(private val tweetsRepository: TweetsRepository) : ViewModel() {
+class CreateTweetViewModel @Inject constructor(private val tweetRepository: TweetRepository) : ViewModel() {
 
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean> = _loading
@@ -29,7 +29,7 @@ class CreateTweetViewModel @Inject constructor(private val tweetsRepository: Twe
 
 
     fun createTweet(text: String) {
-        requestEnd = tweetsRepository.create(text)
+        requestEnd = tweetRepository.create(text)
         requestEnd.observeForever(observerRequest)
     }
 
