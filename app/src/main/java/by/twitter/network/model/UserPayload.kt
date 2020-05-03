@@ -1,4 +1,4 @@
-package by.twitter.model
+package by.twitter.network.model
 
 import com.google.gson.annotations.SerializedName
 
@@ -12,7 +12,7 @@ data class UserPayload(
         @SerializedName("location")
         val location: String,
         @SerializedName("url")
-        val url_user: String,
+        val urlUser: String,
         @SerializedName("description")
         val description: String,
         @SerializedName("created_at")

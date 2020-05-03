@@ -6,13 +6,14 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.twitter.R
 import by.twitter.TwitterApplication
-import by.twitter.model.TweetPayload
-import by.twitter.model.UserPayload
+import by.twitter.storage.entity.Tweet
+import by.twitter.storage.entity.TweetWithUser
 import by.twitter.ui.createtweet.CreateTweetFragment
-import by.twitter.ui.timeline.TimelineViewModel
+import by.twitter.ui.timeline.RetweetLikeViewModel
 import by.twitter.ui.timeline.adapter.AllTweetsAdapter
 import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
@@ -21,20 +22,21 @@ import kotlinx.android.synthetic.main.item_tweet.userProfileTweetImage
 import kotlinx.android.synthetic.main.item_user_profile.*
 import javax.inject.Inject
 
-class UserProfileFragment : Fragment(R.layout.fragment_timeline_user) {
+class UserProfileFragment : Fragment(R.layout.fragment_timeline_user_profile) {
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProvider.Factory
+    private lateinit var userProfileViewModel: UserProfileViewModel
+    private lateinit var retweetLikeViewModel: RetweetLikeViewModel
 
-    private lateinit var timelineViewModel: TimelineViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        timelineViewModel = ViewModelProvider(this, viewModelProviderFactory).get(TimelineViewModel::class.java)
-        timelineViewModel.position = 0
+        userProfileViewModel = ViewModelProvider(this, viewModelProviderFactory).get(UserProfileViewModel::class.java)
+        retweetLikeViewModel = ViewModelProvider(this, viewModelProviderFactory).get(RetweetLikeViewModel::class.java)
+        userProfileViewModel.userId = UserProfileFragmentArgs.fromBundle(requireArguments()).userId
 
         printUser()
-
         subscribeTimelineViewModel()
 
         createTweetActionButton.setOnClickListener {
@@ -42,7 +44,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user) {
         }
 
         backImageButton.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
+            findNavController().popBackStack()
         }
     }
 
@@ -52,71 +54,68 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user) {
     }
 
     private fun printUser() {
-        val user = timelineViewModel.user
+        userProfileViewModel.getUser().observe(viewLifecycleOwner, Observer { user ->
+            val requestManager = context?.let { Glide.with(it) }
+            if (requestManager != null) {
+                requestManager.clear(userProfileTweetImage)
+                requestManager
+                        .load(user.profileImageUrlHttps)
+                        .circleCrop()
+                        .into(userProfileTweetImage)
 
-        val requestManager = context?.let { Glide.with(it) }
-        if (requestManager != null) {
-            requestManager.clear(userProfileTweetImage)
-            requestManager
-                    .load(user.profileImageUrlHttps)
-                    .circleCrop()
-                    .into(userProfileTweetImage)
+                requestManager.clear(userBackgroundImage)
+                requestManager
+                        .load(user.profileBannerUrl)
+                        .into(userBackgroundImage)
+            }
 
-            requestManager.clear(userBackgroundImage)
-            requestManager
-                    .load(user.profileBannerUrl)
-                    .into(userBackgroundImage)
-        }
+            usernameTextView.text = user.name
+            userIDTextView.text = "@${user.screenName}"
+            descriptionUserTextView.text = user.description
 
-        usernameTextView.text = user.name
-        userIDTextView.text = "@${user.screenName}"
-        descriptionUserTextView.text = user.description
+            if (!user.location.isNullOrEmpty()) {
+                locationLinearLayout.visibility = View.VISIBLE
+                locationUserTextView.text = user.location
+            }
 
-        if (!user.location.isNullOrEmpty()) {
-            locationLinearLayout.visibility = View.VISIBLE
-            locationUserTextView.text = user.location
-        }
+            if (!user.urlUser.isNullOrEmpty()) {
+                urlLinearLayout.visibility = View.VISIBLE
+                urlUserTextView.text = user.urlUser
+            }
 
-        if (!user.url_user.isNullOrEmpty()) {
-            urlLinearLayout.visibility = View.VISIBLE
-            urlUserTextView.text = user.url_user
-        }
+            if (!user.createdAt.isNullOrEmpty()) {
+                registrationLinearLayout.visibility = View.VISIBLE
+                registrationUserTextView.text = "Registration: ${DateUtil.printDateReg(user.createdAt)}"
+            }
 
-        if (!user.createdAt.isNullOrEmpty()) {
-            registrationLinearLayout.visibility = View.VISIBLE
-            registrationUserTextView.text = "Registration: ${DateUtil.toSimpleString(user.createdAt)}"
-        }
-
-        friendsCountUserTextView.text = user.friendsCount.toString()
-        followersCountUserTextView.text = user.followersCount.toString()
-    }
-
-    private fun subscribeTimelineViewModel() {
-        timelineViewModel.setTweetsForUser()
-        val userOnClick: (UserPayload) -> Unit = { user -> navigateToUser(user) }
-        val likeOnClick: (TweetPayload, Int) -> Unit = { tweet, position ->
-            timelineViewModel.likeOrDislikeTweet(tweet, position)
-        }
-        val retweetOnClick: (TweetPayload, Int) -> Unit = { tweet, position ->
-            timelineViewModel.retweetOrUnretweet(tweet, position)
-        }
-
-        timelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<TweetPayload>> { tweets ->
-            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets, userOnClick, likeOnClick, retweetOnClick)
-            tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-            tweetsRecyclerView.scrollToPosition(timelineViewModel.position)
+            friendsCountUserTextView.text = user.friendsCount.toString()
+            followersCountUserTextView.text = user.followersCount.toString()
         })
     }
 
-    private fun navigateToUser(user: UserPayload) {
-//        timelineViewModel.user = user
-//        requireActivity().supportFragmentManager.beginTransaction()
-//                .replace(
-//                        R.id.nav_controller,
-//                        newInstance()
-//                )
-//                .addToBackStack(UserProfileFragment::class.java.simpleName)
-//                .commit()
+    private fun subscribeTimelineViewModel() {
+        userProfileViewModel.setTweetsUserTimeline()
+        val userOnClick: (Long) -> Unit = { userId -> navigateToUser(userId) }
+        val tweetOnClick: (Long) -> Unit = { tweetId -> navigateToTweet(tweetId) }
+        val likeOnClick: (Tweet, Int) -> Unit = { tweet, position ->
+            retweetLikeViewModel.likeOrDislikeTweet(tweet, position)
+        }
+        val retweetOnClick: (Tweet, Int) -> Unit = { tweet, position ->
+            retweetLikeViewModel.retweetOrUnretweet(tweet, position)
+        }
+
+        userProfileViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<TweetWithUser>> { tweets ->
+            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets, userOnClick, tweetOnClick, likeOnClick, retweetOnClick)
+            tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            tweetsRecyclerView.scrollToPosition(userProfileViewModel.position)
+        })
+    }
+
+    private fun navigateToUser(userId: Long) {}
+
+    private fun navigateToTweet(tweetId: Long) {
+        val action = UserProfileFragmentDirections.actionUserProfileFragmentToTweetProfileFragment(tweetId)
+        findNavController().navigate(action)
     }
 
     private fun navigateToCreateTweet() {

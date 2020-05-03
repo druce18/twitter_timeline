@@ -1,11 +1,12 @@
 package by.twitter.di
 
-import android.content.Context
+import by.twitter.TwitterApplication
 import by.twitter.ui.createtweet.CreateTweetFragment
 import by.twitter.ui.main.MainActivity
 import by.twitter.ui.main.MainFragment
 import by.twitter.ui.timeline.TimelineFragment
 import by.twitter.ui.profile.UserProfileFragment
+import by.twitter.ui.profile.TweetProfileFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -16,7 +17,7 @@ interface AppComponent {
 
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance context: Context): AppComponent
+        fun create(@BindsInstance application: TwitterApplication): AppComponent
     }
 
     fun inject(activity: MainActivity)
@@ -28,5 +29,7 @@ interface AppComponent {
     fun inject(fragment: CreateTweetFragment)
 
     fun inject(fragment: UserProfileFragment)
+
+    fun inject(fragment: TweetProfileFragment)
 
 }

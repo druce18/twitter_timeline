@@ -1,23 +1,23 @@
 package by.twitter.util
 
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.Month
+import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 object DateUtil {
 
-    private const val TWITTER_FORMAT = "EEE MMM dd HH:mm:ss ZZZZZ yyyy"
+    private const val TWITTER_FORMAT = "EEE MMM dd HH:mm:ss ZZZ yyyy"
     private const val APP_FORMAT = "dd MMM yyyy"
+    private const val REG_FORMAT = "dd MMMM yyyy"
+    private const val FULL_TWEET_FORMAT = "HH:mm dd MMMM yyyy"
     private const val AVG_DAYS_MONTH = 30
     private const val HOURS_MAX = 24
 
-    fun toSimpleString(dateString: String): String {
-        val simpleDateFormat = SimpleDateFormat(TWITTER_FORMAT, Locale.ENGLISH)
-        val date = simpleDateFormat.parse(dateString)
-        val dateTime = LocalDateTime.ofInstant(date!!.toInstant(), ZoneId.systemDefault())
+    fun printDateOnTweet(offsetDateTime: OffsetDateTime): String {
+        val dateTime = offsetDateTime.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
         val dateTimeNow = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern(APP_FORMAT)
 
@@ -51,6 +51,24 @@ object DateUtil {
                 }
 
         return timeScreen
+    }
+
+    fun printDateReg(dateString: String): String {
+        val dateTime = getOffsetDateTime(dateString).atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
+        val formatter = DateTimeFormatter.ofPattern(REG_FORMAT)
+        return dateTime.format(formatter)
+    }
+
+    fun printFullDateTweet(offsetDateTime: OffsetDateTime): String {
+        val dateTime = offsetDateTime.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
+        val formatter = DateTimeFormatter.ofPattern(FULL_TWEET_FORMAT)
+        return dateTime.format(formatter)
+    }
+
+    fun getOffsetDateTime(dateString: String): OffsetDateTime {
+        val formatter = DateTimeFormatter.ofPattern(TWITTER_FORMAT, Locale.ENGLISH)
+        val offsetDateTime = OffsetDateTime.parse(dateString, formatter)
+        return offsetDateTime
     }
 
 }

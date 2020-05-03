@@ -1,9 +1,11 @@
 package by.twitter.storage
 
 import android.accounts.NetworkErrorException
+import android.os.AsyncTask
 import androidx.lifecycle.MutableLiveData
-import by.twitter.model.TweetPayload
+import by.twitter.network.model.TweetPayload
 import by.twitter.network.TwitterService
+import by.twitter.util.Mapper
 import retrofit2.Call
 import retrofit2.Callback
 import timber.log.Timber
@@ -12,7 +14,10 @@ import javax.inject.Singleton
 
 
 @Singleton
-class TweetRepositoryImpl @Inject constructor(private val twitterService: TwitterService) : TweetRepository {
+class TweetRepositoryImpl @Inject constructor(
+        private val twitterService: TwitterService,
+        private val appDatabase: AppDatabase
+) : TweetRepository {
 
     override fun create(text: String): MutableLiveData<Boolean> {
         val requestEnd = MutableLiveData(false)
@@ -24,16 +29,23 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                     }
 
                     override fun onResponse(call: Call<TweetPayload>, response: retrofit2.Response<TweetPayload>) {
-                        val tweet = response.body()
-                        Timber.i("New tweet: $tweet")
+                        val tweetResponse = response.body()
+                        if (tweetResponse != null) {
+                            val tweet = Mapper.tweetPayloadToEntity(tweetResponse)
+                            val user = Mapper.userPayloadToEntity(tweetResponse.user)
+                            AsyncTask.execute {
+                                appDatabase.tweetDao().insertUser(user)
+                                appDatabase.tweetDao().insertTweet(tweet)
+                            }
+                        }
+                        Timber.i("New tweet: $tweetResponse")
                         requestEnd.value = true
                     }
                 })
         return requestEnd
     }
 
-    override fun getHomeTimeline(): MutableLiveData<List<TweetPayload>> {
-        val tweetsLiveData = MutableLiveData<List<TweetPayload>>()
+    override fun homeTimeline() {
         twitterService
                 .getHomeTimeline()
                 .enqueue(object : Callback<List<TweetPayload>> {
@@ -44,16 +56,24 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                     override fun onResponse(call: Call<List<TweetPayload>>, response: retrofit2.Response<List<TweetPayload>>) {
                         val tweetsList = response.body()
                         if (tweetsList != null) {
-                            tweetsLiveData.value = tweetsList
+                            AsyncTask.execute {
+                                tweetsList.map {
+                                    val tweet = Mapper.tweetPayloadToEntity(it)
+                                    val user = Mapper.userPayloadToEntity(it.user)
+                                    Pair(tweet, user)
+                                }
+                                        .forEach { (tweet, user) ->
+                                            appDatabase.tweetDao().insertUser(user)
+                                            appDatabase.tweetDao().insertTweet(tweet)
+                                        }
+                            }
                             Timber.i("Call result: ${tweetsList.joinToString(separator = "\n")}")
                         }
                     }
                 })
-        return tweetsLiveData
     }
 
-    override fun getUserTimeline(userId: Long): MutableLiveData<List<TweetPayload>> {
-        val userTweets = MutableLiveData<List<TweetPayload>>()
+    override fun userTimeline(userId: Long) {
         twitterService
                 .getUserTimeline(userId = userId)
                 .enqueue(object : Callback<List<TweetPayload>> {
@@ -64,16 +84,24 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                     override fun onResponse(call: Call<List<TweetPayload>>, response: retrofit2.Response<List<TweetPayload>>) {
                         val tweetsList = response.body()
                         if (tweetsList != null) {
-                            userTweets.value = tweetsList
+                            AsyncTask.execute {
+                                tweetsList.map {
+                                    val tweet = Mapper.tweetPayloadToEntity(it)
+                                    val user = Mapper.userPayloadToEntity(it.user)
+                                    Pair(tweet, user)
+                                }
+                                        .forEach { (tweet, user) ->
+                                            appDatabase.tweetDao().insertUser(user)
+                                            appDatabase.tweetDao().insertTweet(tweet)
+                                        }
+                            }
                             Timber.i("Call result user tweets: ${tweetsList.joinToString(separator = "\n")}")
                         }
                     }
                 })
-        return userTweets
     }
 
-    override fun retweet(id: Long): MutableLiveData<TweetPayload> {
-        val tweetLiveData = MutableLiveData<TweetPayload>()
+    override fun retweet(id: Long) {
         twitterService
                 .postRetweet(id)
                 .enqueue(object : Callback<TweetPayload> {
@@ -82,16 +110,22 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                     }
 
                     override fun onResponse(call: Call<TweetPayload>, response: retrofit2.Response<TweetPayload>) {
-                        val tweet = response.body()
-                        tweetLiveData.value = tweet
-                        Timber.i("retweet: $tweet")
+                        val tweetResponse = response.body()
+                        if (tweetResponse != null) {
+                            val tweet = Mapper.tweetPayloadToEntity(tweetResponse)
+                            val user = Mapper.userPayloadToEntity(tweetResponse.user)
+                            AsyncTask.execute {
+                                appDatabase.tweetDao().insertUser(user)
+                                appDatabase.tweetDao().insertTweet(tweet)
+                            }
+                        }
+                        Timber.i("Retweet: $tweetResponse")
                     }
                 })
-        return tweetLiveData
+
     }
 
-    override fun unretweet(id: Long): MutableLiveData<TweetPayload> {
-        val tweetLiveData = MutableLiveData<TweetPayload>()
+    override fun unretweet(id: Long) {
         twitterService
                 .postUnretweet(id)
                 .enqueue(object : Callback<TweetPayload> {
@@ -100,16 +134,21 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                     }
 
                     override fun onResponse(call: Call<TweetPayload>, response: retrofit2.Response<TweetPayload>) {
-                        val tweet = response.body()
-                        tweetLiveData.value = tweet
-                        Timber.i("unretweet: $tweet")
+                        val tweetResponse = response.body()
+                        if (tweetResponse != null) {
+                            val tweet = Mapper.tweetPayloadToEntity(tweetResponse)
+                            val user = Mapper.userPayloadToEntity(tweetResponse.user)
+                            AsyncTask.execute {
+                                appDatabase.tweetDao().insertUser(user)
+                                appDatabase.tweetDao().insertTweet(tweet)
+                            }
+                        }
+                        Timber.i("Unretweet: $tweetResponse")
                     }
                 })
-        return tweetLiveData
     }
 
-    override fun favoritesCreate(id: Long): MutableLiveData<TweetPayload> {
-        val tweetLiveData = MutableLiveData<TweetPayload>()
+    override fun favoritesCreate(id: Long) {
         twitterService
                 .postFavoritesCreate(id)
                 .enqueue(object : Callback<TweetPayload> {
@@ -118,16 +157,21 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                     }
 
                     override fun onResponse(call: Call<TweetPayload>, response: retrofit2.Response<TweetPayload>) {
-                        val tweet = response.body()
-                        tweetLiveData.value = tweet
-                        Timber.i("like tweet: $tweet")
+                        val tweetResponse = response.body()
+                        if (tweetResponse != null) {
+                            val tweet = Mapper.tweetPayloadToEntity(tweetResponse)
+                            val user = Mapper.userPayloadToEntity(tweetResponse.user)
+                            AsyncTask.execute {
+                                appDatabase.tweetDao().insertUser(user)
+                                appDatabase.tweetDao().insertTweet(tweet)
+                            }
+                        }
+                        Timber.i("Like tweet: $tweetResponse")
                     }
                 })
-        return tweetLiveData
     }
 
-    override fun favoritesDestroy(id: Long): MutableLiveData<TweetPayload> {
-        val tweetLiveData = MutableLiveData<TweetPayload>()
+    override fun favoritesDestroy(id: Long) {
         twitterService
                 .postFavoritesDestroy(id)
                 .enqueue(object : Callback<TweetPayload> {
@@ -136,12 +180,43 @@ class TweetRepositoryImpl @Inject constructor(private val twitterService: Twitte
                     }
 
                     override fun onResponse(call: Call<TweetPayload>, response: retrofit2.Response<TweetPayload>) {
-                        val tweet = response.body()
-                        tweetLiveData.value = tweet
-                        Timber.i("dislike tweet: $tweet")
+                        val tweetResponse = response.body()
+                        if (tweetResponse != null) {
+                            val tweet = Mapper.tweetPayloadToEntity(tweetResponse)
+                            val user = Mapper.userPayloadToEntity(tweetResponse.user)
+                            AsyncTask.execute {
+                                appDatabase.tweetDao().insertUser(user)
+                                appDatabase.tweetDao().insertTweet(tweet)
+                            }
+                        }
+                        Timber.i("Dislike tweet: $tweetResponse")
                     }
                 })
-        return tweetLiveData
+
+    }
+
+    override fun getAnswersByTweetId(id: Long) {
+        twitterService
+                .getAnswersByTweetId(id)
+                .enqueue(object : Callback<TweetPayload> {
+                    override fun onFailure(call: Call<TweetPayload>, t: Throwable) {
+                        throw NetworkErrorException("Check network connection")
+                    }
+
+                    override fun onResponse(call: Call<TweetPayload>, response: retrofit2.Response<TweetPayload>) {
+                        Timber.d("Response $response")
+//                        val tweetResponse = response.body()
+//                        if (tweetResponse != null) {
+//                            val tweet = Mapper.tweetPayloadToEntity(tweetResponse)
+//                            val user = Mapper.userPayloadToEntity(tweetResponse.user)
+//                            AsyncTask.execute {
+//                                appDatabase.tweetDao().insertUser(user)
+//                                appDatabase.tweetDao().insertTweet(tweet)
+//                            }
+//                        }
+//                        Timber.i("Answer by tweet ID: $tweetResponse")
+                    }
+                })
     }
 
     override fun delete(id: Long) {

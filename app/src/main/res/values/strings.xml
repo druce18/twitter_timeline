@@ -14,4 +14,7 @@
     <string name="read">Read</string>
     <string name="friends">Friends</string>
     <string name="followers">Followers</string>
+    <string name="retweets">Retweets</string>
+    <string name="likes">Likes</string>
+    <string name="tweet">Tweet</string>
 </resources>

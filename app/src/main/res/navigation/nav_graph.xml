@@ -2,13 +2,48 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph_new"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/fragment_main">
 
     <fragment
         android:id="@+id/fragment_main"
         android:name="by.twitter.ui.main.MainFragment"
-        android:label="fragment_main_new"
-        tools:layout="@layout/fragment_main" />
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_fragment_main_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_fragment_main_to_tweetTimelineFragment"
+            app:destination="@id/tweetProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="by.twitter.ui.profile.UserProfileFragment"
+        android:label="fragment_timeline_user_profile"
+        tools:layout="@layout/fragment_timeline_user_profile">
+        <argument
+            android:name="userId"
+            android:defaultValue="0L"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_userProfileFragment_to_tweetProfileFragment"
+            app:destination="@id/tweetProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/tweetProfileFragment"
+        android:name="by.twitter.ui.profile.TweetProfileFragment"
+        android:label="TweetProfileFragment"
+        tools:layout="@layout/fragment_timeline_tweet_profile">
+        <argument
+            android:name="tweetId"
+            android:defaultValue="0L"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_tweetProfileFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+    </fragment>
 
 </navigation>
