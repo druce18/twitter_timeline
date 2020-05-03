@@ -69,6 +69,9 @@ class TweetProfileFragment : Fragment(R.layout.fragment_timeline_tweet_profile) 
                         .circleCrop()
                         .into(userProfileTweetImage)
             }
+            userProfileTweetImage.setOnClickListener {
+                navigateToUser(tweetWithUser.user.id)
+            }
 
             usernameTextView.text = tweetWithUser.user.name
             userIDTextView.text = "@${tweetWithUser.user.screenName}"

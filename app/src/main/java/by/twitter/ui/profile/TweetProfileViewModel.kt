@@ -25,7 +25,6 @@ class TweetProfileViewModel @Inject constructor(
     }
 
     fun setTweetsTimeline() {
-        tweetRepository.getAnswersByTweetId(tweetId)
         tweetsData = appDatabase.tweetDao().getAllWithUser(tweetId)
     }
 
