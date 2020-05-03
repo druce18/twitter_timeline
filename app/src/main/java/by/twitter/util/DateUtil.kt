@@ -11,7 +11,8 @@ object DateUtil {
 
     private const val TWITTER_FORMAT = "EEE MMM dd HH:mm:ss ZZZ yyyy"
     private const val APP_FORMAT = "dd MMM yyyy"
-    private const val REF_FORMAT = "dd MMMM yyyy"
+    private const val REG_FORMAT = "dd MMMM yyyy"
+    private const val FULL_TWEET_FORMAT = "HH:mm dd MMMM yyyy"
     private const val AVG_DAYS_MONTH = 30
     private const val HOURS_MAX = 24
 
@@ -52,9 +53,15 @@ object DateUtil {
         return timeScreen
     }
 
-    fun getDateReg(dateString: String): String {
-        val dateTime = getOffsetDateTime(dateString).toLocalDateTime()
-        val formatter = DateTimeFormatter.ofPattern(REF_FORMAT)
+    fun printDateReg(dateString: String): String {
+        val dateTime = getOffsetDateTime(dateString).atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
+        val formatter = DateTimeFormatter.ofPattern(REG_FORMAT)
+        return dateTime.format(formatter)
+    }
+
+    fun printFullDateTweet(offsetDateTime: OffsetDateTime): String {
+        val dateTime = offsetDateTime.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
+        val formatter = DateTimeFormatter.ofPattern(FULL_TWEET_FORMAT)
         return dateTime.format(formatter)
     }
 

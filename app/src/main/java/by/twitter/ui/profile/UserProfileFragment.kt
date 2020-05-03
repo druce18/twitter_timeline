@@ -85,7 +85,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user_profile) {
 
             if (!user.createdAt.isNullOrEmpty()) {
                 registrationLinearLayout.visibility = View.VISIBLE
-                registrationUserTextView.text = "Registration: ${DateUtil.getDateReg(user.createdAt)}"
+                registrationUserTextView.text = "Registration: ${DateUtil.printDateReg(user.createdAt)}"
             }
 
             friendsCountUserTextView.text = user.friendsCount.toString()

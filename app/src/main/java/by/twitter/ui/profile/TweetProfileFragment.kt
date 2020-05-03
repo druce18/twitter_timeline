@@ -73,7 +73,7 @@ class TweetProfileFragment : Fragment(R.layout.fragment_timeline_tweet_profile) 
             usernameTextView.text = tweetWithUser.user.name
             userIDTextView.text = "@${tweetWithUser.user.screenName}"
             massageTweetTextView.text = tweetWithUser.tweet.text
-            timeTweetTextView.text = "${DateUtil.printDateOnTweet(tweetWithUser.tweet.createdAt)}"
+            timeTweetTextView.text = "${DateUtil.printFullDateTweet(tweetWithUser.tweet.createdAt)}"
             retweetsCountMainTweetTextView.text = tweetWithUser.tweet.retweetCount.toString()
             favoritesCountMainTweetTextView.text = tweetWithUser.tweet.favoriteCount.toString()
 

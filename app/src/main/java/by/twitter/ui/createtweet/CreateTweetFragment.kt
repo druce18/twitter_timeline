@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import by.twitter.R
 import by.twitter.TwitterApplication
-import by.twitter.ui.main.MainFragment
 import kotlinx.android.synthetic.main.fragment_create_tweet.*
 import kotlinx.android.synthetic.main.tool_bar.*
 import javax.inject.Inject
