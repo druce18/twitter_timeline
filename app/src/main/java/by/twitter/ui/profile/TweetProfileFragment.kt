@@ -12,7 +12,6 @@ import by.twitter.R
 import by.twitter.TwitterApplication
 import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
-import by.twitter.ui.timeline.RetweetLikeViewModel
 import by.twitter.ui.timeline.adapter.AllTweetsAdapter
 import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
@@ -35,14 +34,11 @@ class TweetProfileFragment : Fragment(R.layout.fragment_timeline_tweet_profile) 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProvider.Factory
     private lateinit var tweetProfileViewModel: TweetProfileViewModel
-    private lateinit var retweetLikeViewModel: RetweetLikeViewModel
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tweetProfileViewModel = ViewModelProvider(this, viewModelProviderFactory).get(TweetProfileViewModel::class.java)
-        retweetLikeViewModel = ViewModelProvider(this, viewModelProviderFactory).get(RetweetLikeViewModel::class.java)
-        tweetProfileViewModel.tweetId = TweetProfileFragmentArgs.fromBundle(requireArguments()).tweetId
 
         nameMenuTextView.text = getString(R.string.tweet)
 
@@ -60,6 +56,7 @@ class TweetProfileFragment : Fragment(R.layout.fragment_timeline_tweet_profile) 
     }
 
     private fun printTweet() {
+        tweetProfileViewModel.tweetId = TweetProfileFragmentArgs.fromBundle(requireArguments()).tweetId
         tweetProfileViewModel.mainTweet().observe(viewLifecycleOwner, Observer { tweetWithUser ->
             val requestManager = context?.let { Glide.with(it) }
             if (requestManager != null) {
@@ -86,7 +83,7 @@ class TweetProfileFragment : Fragment(R.layout.fragment_timeline_tweet_profile) 
                 likeTweetImageButton.setImageResource(R.drawable.ic_dislike_tweet)
             }
             likeTweetImageButton.setOnClickListener {
-                retweetLikeViewModel.likeOrDislikeTweet(tweetWithUser.tweet, 0)
+                tweetProfileViewModel.likeOrDislikeTweet(tweetWithUser.tweet, 0)
             }
 
             if (tweetWithUser.tweet.retweeted) {
@@ -102,16 +99,16 @@ class TweetProfileFragment : Fragment(R.layout.fragment_timeline_tweet_profile) 
         val userOnClick: (Long) -> Unit = { userId -> navigateToUser(userId) }
         val tweetOnClick: (Long) -> Unit = { tweetId -> navigateToTweet(tweetId) }
         val likeOnClick: (Tweet, Int) -> Unit = { tweet, position ->
-            retweetLikeViewModel.likeOrDislikeTweet(tweet, position)
+            tweetProfileViewModel.likeOrDislikeTweet(tweet, position)
         }
         val retweetOnClick: (Tweet, Int) -> Unit = { tweet, position ->
-            retweetLikeViewModel.retweetOrUnretweet(tweet, position)
+            tweetProfileViewModel.retweetOrUnretweet(tweet, position)
         }
 
         tweetProfileViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<TweetWithUser>> { tweets ->
             tweetsRecyclerView.adapter = AllTweetsAdapter(tweets, userOnClick, tweetOnClick, likeOnClick, retweetOnClick)
             tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-            tweetsRecyclerView.scrollToPosition(retweetLikeViewModel.position)
+            tweetsRecyclerView.scrollToPosition(tweetProfileViewModel.position)
         })
     }
 
@@ -121,11 +118,5 @@ class TweetProfileFragment : Fragment(R.layout.fragment_timeline_tweet_profile) 
     }
 
     private fun navigateToTweet(tweetId: Long) {}
-
-    companion object {
-
-        fun newInstance(): Fragment = TweetProfileFragment()
-
-    }
 
 }

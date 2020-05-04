@@ -13,7 +13,6 @@ import by.twitter.TwitterApplication
 import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
 import by.twitter.ui.createtweet.CreateTweetFragment
-import by.twitter.ui.timeline.RetweetLikeViewModel
 import by.twitter.ui.timeline.adapter.AllTweetsAdapter
 import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
@@ -27,14 +26,11 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user_profile) {
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProvider.Factory
     private lateinit var userProfileViewModel: UserProfileViewModel
-    private lateinit var retweetLikeViewModel: RetweetLikeViewModel
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userProfileViewModel = ViewModelProvider(this, viewModelProviderFactory).get(UserProfileViewModel::class.java)
-        retweetLikeViewModel = ViewModelProvider(this, viewModelProviderFactory).get(RetweetLikeViewModel::class.java)
-        userProfileViewModel.userId = UserProfileFragmentArgs.fromBundle(requireArguments()).userId
 
         printUser()
         subscribeTimelineViewModel()
@@ -54,6 +50,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user_profile) {
     }
 
     private fun printUser() {
+        userProfileViewModel.userId = UserProfileFragmentArgs.fromBundle(requireArguments()).userId
         userProfileViewModel.getUser().observe(viewLifecycleOwner, Observer { user ->
             val requestManager = context?.let { Glide.with(it) }
             if (requestManager != null) {
@@ -98,10 +95,10 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user_profile) {
         val userOnClick: (Long) -> Unit = { userId -> navigateToUser(userId) }
         val tweetOnClick: (Long) -> Unit = { tweetId -> navigateToTweet(tweetId) }
         val likeOnClick: (Tweet, Int) -> Unit = { tweet, position ->
-            retweetLikeViewModel.likeOrDislikeTweet(tweet, position)
+            userProfileViewModel.likeOrDislikeTweet(tweet, position)
         }
         val retweetOnClick: (Tweet, Int) -> Unit = { tweet, position ->
-            retweetLikeViewModel.retweetOrUnretweet(tweet, position)
+            userProfileViewModel.retweetOrUnretweet(tweet, position)
         }
 
         userProfileViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<TweetWithUser>> { tweets ->
@@ -128,9 +125,4 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user_profile) {
                 .commit()
     }
 
-    companion object {
-
-        fun newInstance(): Fragment = UserProfileFragment()
-
-    }
 }

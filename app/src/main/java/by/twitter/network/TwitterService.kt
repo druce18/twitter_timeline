@@ -29,13 +29,4 @@ interface TwitterService {
     @POST("favorites/destroy.json")
     fun postFavoritesDestroy(@Query("id") id: Long): Call<TweetPayload>
 
-    @GET("statuses/show.json?tweet_mode=extended")
-    fun getAnswersByTweetId(
-            @Query("id") id: Long,
-            @Query("include_entities") includeEntities: Boolean = true
-//            @Query("trim_user") trim_user: Boolean = false,
-//            @Query("include_my_retweet") include_my_retweet: Boolean = false,
-//            @Query("include_card_uri") include_card_uri: Boolean = false
-    ): Call<TweetPayload>
-
 }
