@@ -42,6 +42,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         findNavController().navigate(action)
     }
 
+    fun navigateToCreateTweet() {
+        val action = MainFragmentDirections.actionFragmentMainToCreateTweetFragment()
+        findNavController().navigate(action)
+    }
+
     companion object {
 
         fun newInstance(): Fragment = MainFragment()

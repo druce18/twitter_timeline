@@ -1,4 +1,4 @@
-package by.twitter.ui.timeline.adapter
+package by.twitter.ui.profile
 
 import android.view.LayoutInflater
 import android.view.View

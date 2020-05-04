@@ -13,7 +13,6 @@ import by.twitter.TwitterApplication
 import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
 import by.twitter.ui.createtweet.CreateTweetFragment
-import by.twitter.ui.timeline.adapter.AllTweetsAdapter
 import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_timeline.*
@@ -116,13 +115,8 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user_profile) {
     }
 
     private fun navigateToCreateTweet() {
-        requireActivity().supportFragmentManager.beginTransaction()
-                .replace(
-                        R.id.nav_controller,
-                        CreateTweetFragment.newInstance()
-                )
-                .addToBackStack(CreateTweetFragment::class.java.simpleName)
-                .commit()
+        val action = UserProfileFragmentDirections.actionUserProfileFragmentToCreateTweetFragment()
+        findNavController().navigate(action)
     }
 
 }

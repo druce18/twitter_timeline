@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import by.twitter.R
 import by.twitter.TwitterApplication
 import kotlinx.android.synthetic.main.fragment_create_tweet.*
@@ -30,7 +31,7 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
         imm.showSoftInput(massageTweetInputEditText, InputMethodManager.SHOW_IMPLICIT)
 
         backImageButton.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
+            findNavController().popBackStack()
         }
 
         subscribeViewModel()
@@ -57,7 +58,7 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
         createTweetViewModel.goBackToTimeline.observe(viewLifecycleOwner, Observer<Boolean?> {
             if (it == null) return@Observer
             if (it) {
-                requireActivity().supportFragmentManager.popBackStack()
+                findNavController().popBackStack()
             }
         })
 
