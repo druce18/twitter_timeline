@@ -2,7 +2,7 @@ package by.twitter.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import by.twitter.ui.createtweet.CreateTweetViewModel
+import by.twitter.ui.create.CreateTweetViewModel
 import by.twitter.ui.profile.UserProfileViewModel
 import by.twitter.ui.timeline.TimelineViewModel
 import by.twitter.ui.profile.TweetProfileViewModel

@@ -51,7 +51,13 @@ fun setRetweetTweet(imageButton: ImageButton, retweeted: Boolean) {
     }
 }
 
-//@BindingAdapter("app:items")
-//fun setItems(recyclerView: RecyclerView, items: List<TweetWithUser>) {
-//    (recyclerView.adapter as AllTweetsAdapterBinding).tweetsList = items
-//}
+@BindingAdapter("app:listData")
+fun <T> setRecyclerViewList (recyclerView: RecyclerView, data: T) {
+    if (recyclerView.adapter is BindableListAdapter<*>) {
+        (recyclerView.adapter as BindableListAdapter<T>).setData(data)
+    }
+}
+
+interface BindableListAdapter<T> {
+    fun setData(data: T)
+}

@@ -4,15 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import by.twitter.databinding.ItemTweetBinding
-import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
+import by.twitter.ui.timeline.BindableListAdapter
 import by.twitter.ui.timeline.TimelineViewModel
 
-class AllTweetsAdapterBinding(private val tweetsList: List<TweetWithUser>,
-                              private val userClickListener: (Long) -> Unit,
-                              private val tweetClickListener: (Long) -> Unit,
+class AllTweetsAdapterBinding(private var tweetsList: List<TweetWithUser>,
                               private val timelineViewModel: TimelineViewModel) :
-        RecyclerView.Adapter<AllTweetsAdapterBinding.ViewHolder>() {
+        RecyclerView.Adapter<AllTweetsAdapterBinding.ViewHolder>(), BindableListAdapter<List<TweetWithUser>> {
+
+    override fun setData(data: List<TweetWithUser>) {
+        tweetsList = data
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -30,36 +33,33 @@ class AllTweetsAdapterBinding(private val tweetsList: List<TweetWithUser>,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val tweet = tweetsList[position]
-        holder.bind(tweet, position, userClickListener, tweetClickListener, timelineViewModel)
+        holder.bind(tweet, timelineViewModel)
     }
 
 
     class ViewHolder(private val itemTweetBinding: ItemTweetBinding) : RecyclerView.ViewHolder(itemTweetBinding.root) {
 
-        fun bind(tweetWithUser: TweetWithUser,
-                 position: Int,
-                 userClickListener: (Long) -> Unit,
-                 tweetClickListener: (Long) -> Unit,
-                 timelineViewModel: TimelineViewModel) {
+        fun bind(tweetUser: TweetWithUser, timelineViewModel: TimelineViewModel) {
 
-            itemTweetBinding.tweetWithUser = tweetWithUser
-            itemTweetBinding.executePendingBindings()
+            itemTweetBinding.apply {
+                tweetWithUser = tweetUser
+                itemTweetBinding.executePendingBindings()
 
+                userProfileTweetImage.setOnClickListener {
+                    timelineViewModel.mainFragment.navigateToUser(tweetUser.user.id)
+                }
 
-            itemTweetBinding.userProfileTweetImage.setOnClickListener {
-                userClickListener(tweetWithUser.user.id)
-            }
+                tweetItem.setOnClickListener {
+                    timelineViewModel.mainFragment.navigateToTweet(tweetUser.tweet.id)
+                }
 
-            itemTweetBinding.tweetItem.setOnClickListener {
-                tweetClickListener(tweetWithUser.tweet.id)
-            }
+                likeTweetImageButton.setOnClickListener {
+                    timelineViewModel.likeOrDislikeTweet(tweetUser.tweet)
+                }
 
-            itemTweetBinding.likeTweetImageButton.setOnClickListener {
-                timelineViewModel.likeOrDislikeTweet(tweetWithUser.tweet, position)
-            }
-
-            itemTweetBinding.retweetTweetImageButton.setOnClickListener {
-                timelineViewModel.retweetOrUnretweet(tweetWithUser.tweet, position)
+                retweetTweetImageButton.setOnClickListener {
+                    timelineViewModel.retweetOrUnretweet(tweetUser.tweet)
+                }
             }
         }
     }

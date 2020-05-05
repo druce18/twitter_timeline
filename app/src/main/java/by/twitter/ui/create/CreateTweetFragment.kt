@@ -1,4 +1,4 @@
-package by.twitter.ui.createtweet
+package by.twitter.ui.create
 
 import android.content.Context
 import android.os.Bundle

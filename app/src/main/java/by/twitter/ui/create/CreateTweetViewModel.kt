@@ -1,4 +1,4 @@
-package by.twitter.ui.createtweet
+package by.twitter.ui.create
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

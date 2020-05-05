@@ -1,7 +1,7 @@
 package by.twitter.di
 
 import by.twitter.TwitterApplication
-import by.twitter.ui.createtweet.CreateTweetFragment
+import by.twitter.ui.create.CreateTweetFragment
 import by.twitter.ui.main.MainActivity
 import by.twitter.ui.main.MainFragment
 import by.twitter.ui.timeline.TimelineFragment

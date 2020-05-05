@@ -10,20 +10,13 @@ import javax.inject.Inject
 
 class TimelineViewModel @Inject constructor(private val tweetRepository: TweetRepository) : ViewModel() {
 
-    private val tweetsData: LiveData<List<TweetWithUser>> by lazy {
+    val tweetsData: LiveData<List<TweetWithUser>> by lazy {
         tweetRepository.homeTimeline()
     }
-    var position: Int = 0
-
     lateinit var mainFragment: MainFragment
 
-
-    fun getTweets(): LiveData<List<TweetWithUser>> {
-        return tweetsData
-    }
-
-    fun likeOrDislikeTweet(tweet: Tweet, pos: Int) {
-        position = pos
+    
+    fun likeOrDislikeTweet(tweet: Tweet) {
         if (tweet.favorited) {
             tweetRepository.favoritesDestroy(tweet.id)
         } else {
@@ -31,8 +24,7 @@ class TimelineViewModel @Inject constructor(private val tweetRepository: TweetRe
         }
     }
 
-    fun retweetOrUnretweet(tweet: Tweet, pos: Int) {
-        position = pos
+    fun retweetOrUnretweet(tweet: Tweet) {
         if (tweet.retweeted) {
             tweetRepository.unretweet(tweet.id)
         } else {

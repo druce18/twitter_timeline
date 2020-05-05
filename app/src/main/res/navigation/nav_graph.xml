@@ -53,7 +53,7 @@
     </fragment>
     <fragment
         android:id="@+id/createTweetFragment"
-        android:name="by.twitter.ui.createtweet.CreateTweetFragment"
+        android:name="by.twitter.ui.create.CreateTweetFragment"
         android:label="fragment_create_tweet"
         tools:layout="@layout/fragment_create_tweet" />
 

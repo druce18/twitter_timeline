@@ -12,7 +12,6 @@ import by.twitter.R
 import by.twitter.TwitterApplication
 import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
-import by.twitter.ui.createtweet.CreateTweetFragment
 import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_timeline.*

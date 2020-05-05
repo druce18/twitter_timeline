@@ -21,7 +21,8 @@
             android:id="@+id/tweetsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white_grey_background" />
+            android:background="@color/white_grey_background"
+            app:listData="@{viewModel.tweetsData}" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/createTweetActionButton"
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="17dp"
+            android:onClick="@{() -> viewModel.mainFragment.navigateToCreateTweet()}"
             app:backgroundTint="@color/colorPrimary"
             app:elevation="10dp"
             app:srcCompat="@drawable/ic_plus" />

@@ -7,18 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.twitter.R
 import by.twitter.TwitterApplication
 import by.twitter.databinding.FragmentTimelineBinding
-import by.twitter.storage.entity.Tweet
-import by.twitter.storage.entity.TweetWithUser
-import by.twitter.ui.createtweet.CreateTweetFragment
 import by.twitter.ui.main.MainFragment
 import by.twitter.ui.timeline.adapter.AllTweetsAdapterBinding
-import kotlinx.android.synthetic.main.fragment_timeline.*
 import javax.inject.Inject
 
 class TimelineFragment : Fragment() {
@@ -39,13 +34,13 @@ class TimelineFragment : Fragment() {
         timelineViewModel = ViewModelProvider(this, viewModelProviderFactory).get(TimelineViewModel::class.java)
         timelineViewModel.mainFragment = parentFragment as MainFragment
 
-        fragmentTimelineBinding.viewModel = timelineViewModel
-        fragmentTimelineBinding.lifecycleOwner = this
-
-        subscribeTimelineViewModel()
-
-        createTweetActionButton.setOnClickListener {
-            navigateToCreateTweet()
+        val adapter = AllTweetsAdapterBinding(listOf(), timelineViewModel)
+        fragmentTimelineBinding.apply {
+            viewModel = timelineViewModel
+            lifecycleOwner = this@TimelineFragment
+            executePendingBindings()
+            tweetsRecyclerView.layoutManager = LinearLayoutManager(context)
+            tweetsRecyclerView.adapter = adapter
         }
     }
 
@@ -54,36 +49,8 @@ class TimelineFragment : Fragment() {
         (context.applicationContext as TwitterApplication).appComponent.inject(this)
     }
 
-    private fun subscribeTimelineViewModel() {
-        val userOnClick: (Long) -> Unit = { userId -> navigateToUser(userId) }
-        val tweetOnClick: (Long) -> Unit = { tweetId -> navigateToTweet(tweetId) }
-
-        timelineViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<TweetWithUser>> { tweets ->
-            tweetsRecyclerView.adapter = AllTweetsAdapterBinding(tweets, userOnClick, tweetOnClick, timelineViewModel)
-            tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-            tweetsRecyclerView.scrollToPosition(timelineViewModel.position)
-        })
-    }
-
-    private fun navigateToUser(userId: Long) {
-        val mainFragment: MainFragment = parentFragment as MainFragment
-        mainFragment.navigateToUser(userId)
-    }
-
-    private fun navigateToTweet(tweetId: Long) {
-        val mainFragment: MainFragment = parentFragment as MainFragment
-        mainFragment.navigateToTweet(tweetId)
-    }
-
-    private fun navigateToCreateTweet() {
-        val mainFragment: MainFragment = parentFragment as MainFragment
-        mainFragment.navigateToCreateTweet()
-    }
-
     companion object {
-
         fun newInstance(): Fragment = TimelineFragment()
-
     }
 
 }
