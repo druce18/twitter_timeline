@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import by.twitter.databinding.ItemTweetBinding
 import by.twitter.storage.entity.TweetWithUser
-import by.twitter.ui.timeline.BindableListAdapter
 import by.twitter.ui.timeline.TimelineViewModel
 
 class AllTweetsAdapterBinding(private var tweetsList: List<TweetWithUser>,

@@ -1,4 +1,4 @@
-package by.twitter.ui.timeline
+package by.twitter.ui.timeline.adapter
 
 import android.widget.ImageButton
 import android.widget.ImageView

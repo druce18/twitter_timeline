@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import by.twitter.R
 import by.twitter.TwitterApplication
+import by.twitter.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_create_tweet.*
 import kotlinx.android.synthetic.main.tool_bar.*
 import javax.inject.Inject
@@ -44,6 +45,7 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
     }
 
     private fun subscribeViewModel() {
+        var massage = ""
         createTweetViewModel.loading.observe(viewLifecycleOwner, Observer<Boolean?> {
             if (it == null) return@Observer
             if (it) {
@@ -58,12 +60,13 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
         createTweetViewModel.goBackToTimeline.observe(viewLifecycleOwner, Observer<Boolean?> {
             if (it == null) return@Observer
             if (it) {
+                (activity as MainActivity).createTweetNotification(massage)
                 findNavController().popBackStack()
             }
         })
 
         sendTweetButton.setOnClickListener {
-            val massage = massageTweetInputEditText.text.toString()
+            massage = massageTweetInputEditText.text.toString()
             if (massage.isNotEmpty()) {
                 createTweetViewModel.createTweet(massage)
             }
@@ -72,9 +75,7 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
     }
 
     companion object {
-
         fun newInstance(): Fragment = CreateTweetFragment()
-
     }
 
 }

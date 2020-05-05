@@ -15,7 +15,7 @@ class TimelineViewModel @Inject constructor(private val tweetRepository: TweetRe
     }
     lateinit var mainFragment: MainFragment
 
-    
+
     fun likeOrDislikeTweet(tweet: Tweet) {
         if (tweet.favorited) {
             tweetRepository.favoritesDestroy(tweet.id)
