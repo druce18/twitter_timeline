@@ -7,9 +7,9 @@ import by.twitter.databinding.ItemTweetBinding
 import by.twitter.storage.entity.TweetWithUser
 import by.twitter.ui.timeline.TimelineViewModel
 
-class AllTweetsAdapterBinding(private var tweetsList: List<TweetWithUser>,
+class AllTweetsBindingAdapter(private var tweetsList: List<TweetWithUser>,
                               private val timelineViewModel: TimelineViewModel) :
-        RecyclerView.Adapter<AllTweetsAdapterBinding.ViewHolder>(), BindableListAdapter<List<TweetWithUser>> {
+        RecyclerView.Adapter<AllTweetsBindingAdapter.ViewHolder>(), DataAdapterBindable<List<TweetWithUser>> {
 
     override fun setData(data: List<TweetWithUser>) {
         tweetsList = data
@@ -39,7 +39,6 @@ class AllTweetsAdapterBinding(private var tweetsList: List<TweetWithUser>,
     class ViewHolder(private val itemTweetBinding: ItemTweetBinding) : RecyclerView.ViewHolder(itemTweetBinding.root) {
 
         fun bind(tweetUser: TweetWithUser, timelineViewModel: TimelineViewModel) {
-
             itemTweetBinding.apply {
                 tweetWithUser = tweetUser
                 itemTweetBinding.executePendingBindings()

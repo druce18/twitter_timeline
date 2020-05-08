@@ -6,9 +6,6 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import by.twitter.R
-import by.twitter.storage.entity.Tweet
-import by.twitter.storage.entity.TweetWithUser
-import by.twitter.ui.timeline.adapter.AllTweetsAdapterBinding
 import by.twitter.util.DateUtil
 import com.bumptech.glide.Glide
 import java.time.OffsetDateTime
@@ -53,11 +50,7 @@ fun setRetweetTweet(imageButton: ImageButton, retweeted: Boolean) {
 
 @BindingAdapter("app:listData")
 fun <T> setRecyclerViewList (recyclerView: RecyclerView, data: T) {
-    if (recyclerView.adapter is BindableListAdapter<*>) {
-        (recyclerView.adapter as BindableListAdapter<T>).setData(data)
+    if (recyclerView.adapter is DataAdapterBindable<*>) {
+        (recyclerView.adapter as DataAdapterBindable<T>).setData(data)
     }
-}
-
-interface BindableListAdapter<T> {
-    fun setData(data: T)
 }

@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import by.twitter.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.dialog_direct.view.*
-import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.fragment_direct_massage.*
 
 class DirectMassageFragment : Fragment(R.layout.fragment_direct_massage) {
 

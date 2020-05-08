@@ -13,7 +13,7 @@ import by.twitter.R
 import by.twitter.TwitterApplication
 import by.twitter.databinding.FragmentTimelineBinding
 import by.twitter.ui.main.MainFragment
-import by.twitter.ui.timeline.adapter.AllTweetsAdapterBinding
+import by.twitter.ui.timeline.adapter.AllTweetsBindingAdapter
 import javax.inject.Inject
 
 class TimelineFragment : Fragment() {
@@ -34,7 +34,7 @@ class TimelineFragment : Fragment() {
         timelineViewModel = ViewModelProvider(this, viewModelProviderFactory).get(TimelineViewModel::class.java)
         timelineViewModel.mainFragment = parentFragment as MainFragment
 
-        val adapter = AllTweetsAdapterBinding(listOf(), timelineViewModel)
+        val adapter = AllTweetsBindingAdapter(listOf(), timelineViewModel)
         fragmentTimelineBinding.apply {
             viewModel = timelineViewModel
             lifecycleOwner = this@TimelineFragment

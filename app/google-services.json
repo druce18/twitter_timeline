@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "822678127026",
+    "firebase_url": "https://twitter-app-by-andrey.firebaseio.com",
+    "project_id": "twitter-app-by-andrey",
+    "storage_bucket": "twitter-app-by-andrey.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822678127026:android:6b882af2e914412886a4ab",
+        "android_client_info": {
+          "package_name": "by.twitter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "822678127026-qo9ema4ocnahfhlimvio0okjqnkpbjnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCd_pwx20BV4GzOryxvoUzY9OR4jP17GJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "822678127026-qo9ema4ocnahfhlimvio0okjqnkpbjnp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,7 +3,6 @@ package by.twitter.ui.main
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import by.twitter.R
@@ -22,7 +21,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         TabLayoutMediator(tab, viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> "HOME"
-                1 -> "Direct Massage"
+                1 -> "Error"
                 else -> throw IllegalArgumentException("position not found")
             }
         }.attach()
