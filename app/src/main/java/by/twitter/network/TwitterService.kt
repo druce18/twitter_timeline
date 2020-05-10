@@ -7,11 +7,11 @@ import retrofit2.http.*
 interface TwitterService {
 
     @GET("statuses/home_timeline.json")
-    fun getHomeTimeline(@Query("count") count: Long = 50): Call<List<TweetPayload>>
+    fun getHomeTimeline(@Query("count") count: Long = 100): Call<List<TweetPayload>>
 
     @GET("statuses/user_timeline.json")
     fun getUserTimeline(@Query("user_id") userId: Long,
-                        @Query("count") count: Long = 50
+                        @Query("count") count: Long = 100
     ): Call<List<TweetPayload>>
 
     @POST("statuses/update.json")

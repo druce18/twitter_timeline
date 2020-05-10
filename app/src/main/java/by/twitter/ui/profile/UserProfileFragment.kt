@@ -99,8 +99,10 @@ class UserProfileFragment : Fragment(R.layout.fragment_timeline_user_profile) {
             userProfileViewModel.retweetOrUnretweet(tweet, position)
         }
 
+        val tweetsAdapter = AllTweetsAdapter(listOf(), userOnClick, tweetOnClick, likeOnClick, retweetOnClick)
         userProfileViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<TweetWithUser>> { tweets ->
-            tweetsRecyclerView.adapter = AllTweetsAdapter(tweets, userOnClick, tweetOnClick, likeOnClick, retweetOnClick)
+            tweetsAdapter.tweetsList = tweets
+            tweetsRecyclerView.adapter = tweetsAdapter
             tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             tweetsRecyclerView.scrollToPosition(userProfileViewModel.position)
         })

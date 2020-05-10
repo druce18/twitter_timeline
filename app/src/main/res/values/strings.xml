@@ -17,6 +17,6 @@
     <string name="retweets">Retweets</string>
     <string name="likes">Likes</string>
     <string name="tweet">Tweet</string>
-    <string name="channel_name">channel_main</string>
+    <string name="channel_name">Main channel</string>
     <string name="channel_description">task notifications</string>
 </resources>

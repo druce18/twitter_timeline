@@ -8,7 +8,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -17,12 +16,8 @@ import by.twitter.R
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        createNotificationChannel()
-    }
-
     fun createTweetNotification(massage: String) {
+        createNotificationChannel()
         val intent = Intent(this, ActionReceiver::class.java).apply {
             action = Activity.RESULT_OK.toString()
             putExtra(EXTRA_NOTIFICATION_ID, notificationId)
