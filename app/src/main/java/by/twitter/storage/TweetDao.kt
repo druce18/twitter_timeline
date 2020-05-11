@@ -39,7 +39,7 @@ interface TweetDao {
           users.*
           FROM tweets 
          INNER JOIN users ON tweets.user_id=users.id
-         WHERE tweet_in_reply_to_status_id=:inReplyToStatusId
+         WHERE tweets.in_reply_to_status_id=:inReplyToStatusId
          ORDER BY tweet_created_at DESC 
             """
     )
@@ -65,7 +65,7 @@ interface TweetDao {
           users.*
           FROM tweets 
          INNER JOIN users ON tweets.user_id=users.id
-         WHERE users.id=:userId AND tweet_in_reply_to_status_id=:inReplyToStatusId
+         WHERE users.id=:userId AND tweets.in_reply_to_status_id=:inReplyToStatusId
          ORDER BY tweet_created_at DESC
             """
     )
@@ -88,7 +88,7 @@ interface TweetDao {
           users.*
           FROM tweets 
          INNER JOIN users ON tweets.user_id=users.id
-         WHERE tweet_id=:tweetId
+         WHERE tweets.id=:tweetId
          ORDER BY tweet_created_at DESC
             """
     )

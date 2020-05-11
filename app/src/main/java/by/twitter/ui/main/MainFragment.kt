@@ -21,10 +21,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         TabLayoutMediator(tab, viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> "HOME"
-                1 -> "Direct Massage"
+                1 -> "Error"
                 else -> throw IllegalArgumentException("position not found")
             }
         }.attach()
+
     }
 
     override fun onAttach(context: Context) {
@@ -39,6 +40,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     fun navigateToTweet(tweetId: Long) {
         val action = MainFragmentDirections.actionFragmentMainToTweetTimelineFragment(tweetId)
+        findNavController().navigate(action)
+    }
+
+    fun navigateToCreateTweet() {
+        val action = MainFragmentDirections.actionFragmentMainToCreateTweetFragment()
         findNavController().navigate(action)
     }
 

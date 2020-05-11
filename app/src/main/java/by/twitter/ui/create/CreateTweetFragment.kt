@@ -1,4 +1,4 @@
-package by.twitter.ui.createtweet
+package by.twitter.ui.create
 
 import android.content.Context
 import android.os.Bundle
@@ -7,8 +7,10 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import by.twitter.R
 import by.twitter.TwitterApplication
+import by.twitter.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_create_tweet.*
 import kotlinx.android.synthetic.main.tool_bar.*
 import javax.inject.Inject
@@ -30,7 +32,7 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
         imm.showSoftInput(massageTweetInputEditText, InputMethodManager.SHOW_IMPLICIT)
 
         backImageButton.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
+            findNavController().popBackStack()
         }
 
         subscribeViewModel()
@@ -43,6 +45,7 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
     }
 
     private fun subscribeViewModel() {
+        var massage = ""
         createTweetViewModel.loading.observe(viewLifecycleOwner, Observer<Boolean?> {
             if (it == null) return@Observer
             if (it) {
@@ -57,12 +60,13 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
         createTweetViewModel.goBackToTimeline.observe(viewLifecycleOwner, Observer<Boolean?> {
             if (it == null) return@Observer
             if (it) {
-                requireActivity().supportFragmentManager.popBackStack()
+                (activity as MainActivity).createTweetNotification(massage)
+                findNavController().popBackStack()
             }
         })
 
         sendTweetButton.setOnClickListener {
-            val massage = massageTweetInputEditText.text.toString()
+            massage = massageTweetInputEditText.text.toString()
             if (massage.isNotEmpty()) {
                 createTweetViewModel.createTweet(massage)
             }
@@ -71,9 +75,7 @@ class CreateTweetFragment : Fragment(R.layout.fragment_create_tweet) {
     }
 
     companion object {
-
         fun newInstance(): Fragment = CreateTweetFragment()
-
     }
 
 }

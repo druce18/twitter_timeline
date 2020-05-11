@@ -1,14 +1,17 @@
 package by.twitter.storage
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import by.twitter.storage.entity.Tweet
+import by.twitter.storage.entity.TweetWithUser
 
 interface TweetRepository {
 
     fun create(text: String): MutableLiveData<Boolean>
 
-    fun homeTimeline()
+    fun homeTimeline(): LiveData<List<TweetWithUser>>
 
-    fun userTimeline(userId: Long)
+    fun userTimeline(userId: Long): LiveData<List<TweetWithUser>>
 
     fun retweet(id: Long)
 
@@ -18,8 +21,6 @@ interface TweetRepository {
 
     fun favoritesDestroy(id: Long)
 
-    fun getAnswersByTweetId(id: Long)
-
-    fun delete(id: Long)
+    fun deleteTweet(tweet: Tweet)
 
 }

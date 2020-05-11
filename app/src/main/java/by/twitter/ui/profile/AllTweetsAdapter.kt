@@ -1,4 +1,4 @@
-package by.twitter.ui.timeline.adapter
+package by.twitter.ui.profile
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_tweet.*
 
-class AllTweetsAdapter(private val tweetsList: List<TweetWithUser>,
+class AllTweetsAdapter(var tweetsList: List<TweetWithUser>,
                        private val userClickListener: (Long) -> Unit,
                        private val tweetClickListener: (Long) -> Unit,
                        private val likeClickListener: (Tweet, Int) -> Unit,

@@ -1,4 +1,4 @@
-package by.twitter.ui.search
+package by.twitter.ui.error
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,10 +6,11 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import by.twitter.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.dialog_search.view.*
-import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.dialog_error.view.*
+import kotlinx.android.synthetic.main.fragment_error.*
+import java.lang.RuntimeException
 
-class SearchFragment : Fragment(R.layout.fragment_search) {
+class ErrorFragment : Fragment(R.layout.fragment_error) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -20,12 +21,13 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun displayDialog() {
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_search, null)
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_error, null)
         val builder = MaterialAlertDialogBuilder(requireContext()).setView(dialogView)
         val alertDialog = builder.show()
 
         dialogView.okButton.setOnClickListener {
             alertDialog.dismiss()
+            throw RuntimeException("Run Error")
         }
 
         dialogView.exitButton.setOnClickListener {
@@ -35,7 +37,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     companion object {
 
-        fun newInstance(): Fragment = SearchFragment()
+        fun newInstance(): Fragment = ErrorFragment()
 
     }
 

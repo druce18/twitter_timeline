@@ -2,25 +2,35 @@ package by.twitter.ui.timeline
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import by.twitter.storage.AppDatabase
 import by.twitter.storage.TweetRepository
+import by.twitter.storage.entity.Tweet
 import by.twitter.storage.entity.TweetWithUser
+import by.twitter.ui.main.MainFragment
 import javax.inject.Inject
 
-class TimelineViewModel @Inject constructor(
-        private val tweetRepository: TweetRepository,
-        private val appDatabase: AppDatabase
-) : ViewModel() {
+class TimelineViewModel @Inject constructor(private val tweetRepository: TweetRepository) : ViewModel() {
 
-    private lateinit var tweetsData: LiveData<List<TweetWithUser>>
+    val tweetsData: LiveData<List<TweetWithUser>> by lazy {
+        tweetRepository.homeTimeline()
+    }
+    lateinit var mainFragment: MainFragment
 
-    fun getTweets(): LiveData<List<TweetWithUser>> {
-        return tweetsData
+
+    fun likeOrDislikeTweet(tweet: Tweet) {
+        if (tweet.favorited) {
+            tweetRepository.favoritesDestroy(tweet.id)
+        } else {
+            tweetRepository.favoritesCreate(tweet.id)
+        }
     }
 
-    fun setTweetsTimeline() {
-        tweetRepository.homeTimeline()
-        tweetsData = appDatabase.tweetDao().getAllWithUser()
+    fun retweetOrUnretweet(tweet: Tweet) {
+        if (tweet.retweeted) {
+            tweetRepository.unretweet(tweet.id)
+        } else {
+            tweetRepository.retweet(tweet.id)
+        }
+        tweetRepository.deleteTweet(tweet)
     }
 
 }

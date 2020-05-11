@@ -2,11 +2,10 @@ package by.twitter.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import by.twitter.ui.createtweet.CreateTweetViewModel
+import by.twitter.ui.create.CreateTweetViewModel
 import by.twitter.ui.profile.UserProfileViewModel
 import by.twitter.ui.timeline.TimelineViewModel
 import by.twitter.ui.profile.TweetProfileViewModel
-import by.twitter.ui.timeline.RetweetLikeViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -36,10 +35,5 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TweetProfileViewModel::class)
     internal abstract fun tweetProfileViewModel(viewModel: TweetProfileViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(RetweetLikeViewModel::class)
-    internal abstract fun retweetLikeViewModel(viewModel: RetweetLikeViewModel): ViewModel
 
 }
