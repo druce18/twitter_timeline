@@ -82,7 +82,7 @@ class TweetProfileFragment : Fragment(R.layout.fragment_timeline_tweet_profile) 
                 likeTweetImageButton.setImageResource(R.drawable.ic_dislike_tweet)
             }
             likeTweetImageButton.setOnClickListener {
-                tweetProfileViewModel.likeOrDislikeTweet(tweetWithUser.tweet, 0)
+                tweetProfileViewModel.likeOrDislikeTweet(tweetWithUser.tweet)
             }
 
             if (tweetWithUser.tweet.retweeted) {
@@ -97,19 +97,19 @@ class TweetProfileFragment : Fragment(R.layout.fragment_timeline_tweet_profile) 
         tweetProfileViewModel.setTweetsTimeline()
         val userOnClick: (Long) -> Unit = { userId -> navigateToUser(userId) }
         val tweetOnClick: (Long) -> Unit = { tweetId -> navigateToTweet(tweetId) }
-        val likeOnClick: (Tweet, Int) -> Unit = { tweet, position ->
-            tweetProfileViewModel.likeOrDislikeTweet(tweet, position)
+        val likeOnClick: (Tweet) -> Unit = { tweet ->
+            tweetProfileViewModel.likeOrDislikeTweet(tweet)
         }
-        val retweetOnClick: (Tweet, Int) -> Unit = { tweet, position ->
-            tweetProfileViewModel.retweetOrUnretweet(tweet, position)
+        val retweetOnClick: (Tweet) -> Unit = { tweet ->
+            tweetProfileViewModel.retweetOrUnretweet(tweet)
         }
 
         val tweetsAdapter = AllTweetsAdapter(listOf(), userOnClick, tweetOnClick, likeOnClick, retweetOnClick)
+        tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        tweetsRecyclerView.adapter = tweetsAdapter
         tweetProfileViewModel.getTweets().observe(viewLifecycleOwner, Observer<List<TweetWithUser>> { tweets ->
             tweetsAdapter.tweetsList = tweets
-            tweetsRecyclerView.adapter = tweetsAdapter
-            tweetsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-            tweetsRecyclerView.scrollToPosition(tweetProfileViewModel.position)
+            tweetsAdapter.notifyDataSetChanged()
         })
     }
 

@@ -16,7 +16,6 @@ class UserProfileViewModel @Inject constructor(
 
     private lateinit var tweetsData: LiveData<List<TweetWithUser>>
     var userId: Long = 0L
-    var position = 0
 
 
     fun getUser(): LiveData<User> {
@@ -31,8 +30,7 @@ class UserProfileViewModel @Inject constructor(
         tweetsData = tweetRepository.userTimeline(userId)
     }
 
-    fun likeOrDislikeTweet(tweet: Tweet, pos: Int) {
-        position = pos
+    fun likeOrDislikeTweet(tweet: Tweet) {
         if (tweet.favorited) {
             tweetRepository.favoritesDestroy(tweet.id)
         } else {
@@ -40,8 +38,7 @@ class UserProfileViewModel @Inject constructor(
         }
     }
 
-    fun retweetOrUnretweet(tweet: Tweet, pos: Int) {
-        position = pos
+    fun retweetOrUnretweet(tweet: Tweet) {
         if (tweet.retweeted) {
             tweetRepository.unretweet(tweet.id)
         } else {
