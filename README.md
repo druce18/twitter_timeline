@@ -1,3 +1,3 @@
 # Twitter timeline
-### Impl Twitter API (Android Epam Lab)
+### Impl Twitter API
 Studying Android application development (Android Epam Lab)
